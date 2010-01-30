@@ -78,7 +78,7 @@ namespace Scallywags
 			AllBarriers = new ArrayList();
 
             Random rand = new Random();
-            for (int x = -1; x < 30; x++)
+            for (int x = -1; x < 35; x++)
             {
                 for (int y = -20; y < 30; y++)
                 {
