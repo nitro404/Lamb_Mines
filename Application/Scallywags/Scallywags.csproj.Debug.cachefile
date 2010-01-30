@@ -1,0 +1,230 @@
+Content\Textures\Splash.xnb
+Content\HUD\Player Status\HUD__0003_rings.xnb
+Content\Textures\TerrainHeightMap.xnb
+Content\HUD\HUD_cannon.xnb
+Content\HUD\HUD_fuse.xnb
+Content\HUD\XBOX Buttons\xboxButtonsA.xnb
+Content\HUD\XBOX Buttons\xboxButtonsB.xnb
+Content\HUD\XBOX Buttons\xboxButtonsGuide.xnb
+Content\HUD\XBOX Buttons\xboxButtonsX.xnb
+Content\HUD\XBOX Buttons\xboxButtonsY.xnb
+Content\HUD\XBOX Buttons\xboxControllerButtonBack.xnb
+Content\HUD\XBOX Buttons\xboxControllerButtonStart.xnb
+Content\HUD\XBOX Buttons\xboxControllerDPad.xnb
+Content\HUD\XBOX Buttons\xboxControllerDPadDown.xnb
+Content\HUD\XBOX Buttons\xboxControllerDPadLeft.xnb
+Content\HUD\XBOX Buttons\xboxControllerDPadRight.xnb
+Content\HUD\XBOX Buttons\xboxControllerDPadUp.xnb
+Content\HUD\XBOX Buttons\xboxControllerLeftShoulder.xnb
+Content\HUD\XBOX Buttons\xboxControllerLeftThumbstick.xnb
+Content\HUD\XBOX Buttons\xboxControllerLeftTrigger.xnb
+Content\HUD\XBOX Buttons\xboxControllerRightShoulder.xnb
+Content\HUD\XBOX Buttons\xboxControllerRightThumbstick.xnb
+Content\HUD\XBOX Buttons\xboxControllerRightTrigger.xnb
+Content\Textures\smoke.xnb
+Content\Textures\fire.xnb
+Content\Textures\wake.xnb
+Content\HUD\MovementBar\MovmentBarSkull.xnb
+Content\HUD\Player Status\HUD_glow.xnb
+Content\HUD\Player Status\HUD_miniRing.xnb
+Content\Textures\splashWater.xnb
+Content\Menu\CharSelectBG.xnb
+Content\Menu\CharSelPortrait0.xnb
+Content\Menu\CharSelPortrait1.xnb
+Content\Menu\CharSelPortrait3.xnb
+Content\Menu\CharSelPortrait4.xnb
+Content\Menu\CharSelPortrait5.xnb
+Content\Menu\CharSelPortrait2.xnb
+Content\Menu\CharSelPortraitUnknown.xnb
+Content\Menu\CharSelectCursor1.xnb
+Content\Menu\CharSelectCursor2.xnb
+Content\Menu\CharSelectCursor3.xnb
+Content\Menu\CharSelectCursor4.xnb
+Content\Menu\CharSelectMiniPortraits.xnb
+Content\Menu\SlideBack.xnb
+Content\Menu\SlideCursor.xnb
+Content\Menu\ControlsDisplay.xnb
+Content\HUD\Player Status\HUD_ppAmber.xnb
+Content\HUD\Player Status\HUD_ppBlack.xnb
+Content\HUD\Player Status\HUD_ppBlue.xnb
+Content\HUD\Player Status\HUD_ppIndigo.xnb
+Content\HUD\Player Status\HUD_ppMoldy.xnb
+Content\HUD\Player Status\HUD_ppRed.xnb
+Content\HUD\Player Status\HUD_psBoatDown.xnb
+Content\HUD\Player Status\HUD_psBoatUp.xnb
+Content\HUD\Player Status\HUD_psBuy.xnb
+Content\HUD\Player Status\HUD_psGold.xnb
+Content\HUD\Player Status\HUD_psEmpty.xnb
+Content\Menu\Banner.xnb
+Content\Menu\MenuBack.xnb
+Content\HUD\Player Status\HUD_GoldDisplay.xnb
+Content\HUD\PauseBox.xnb
+Content\Menu\CharSelectCursor1NoGlow.xnb
+Content\Menu\CharSelectCursor2NoGlow.xnb
+Content\Menu\CharSelectCursor3NoGlow.xnb
+Content\Menu\CharSelectCursor4NoGlow.xnb
+Content\HUD\XBOX Buttons\xboxButtonTip.xnb
+Content\Textures\Load0.xnb
+Content\Textures\Load1.xnb
+Content\Textures\Load2.xnb
+Content\Textures\Load3.xnb
+Content\Textures\Load4.xnb
+Content\HUD\MovementBar\MovementBarBacking.xnb
+Content\HUD\MovementBar\MovementBarBorder.xnb
+Content\HUD\MovementBar\MovementBarWater.xnb
+Content\Textures\Tent Diffuse Map.xnb
+Content\Textures\coveFlagDiffuseMap.xnb
+Content\Textures\BoatDiffuseMap.xnb
+Content\HUD\XBOX Buttons\xboxButtonsAcrop.xnb
+Content\HUD\XBOX Buttons\xboxButtonsBcrop.xnb
+Content\HUD\Player Status\HUD_glow2.xnb
+Content\Textures\Dirt.xnb
+Content\Textures\Sand.xnb
+Content\Textures\Stone.xnb
+Content\HUD\Player Status\HUD_woodBacking.xnb
+Content\HUD\XBOX Buttons\thubstickAni2.xnb
+Content\HUD\Player Status\HUD_miniRingHalf.xnb
+Content\HUD\Turn Display\TurnBG.xnb
+Content\HUD\Turn Display\TurnInfinity.xnb
+Content\Textures\Cloud.xnb
+Content\Menu\CharSelectRing.xnb
+Content\HUD\endTurn.xnb
+Content\Textures\Tower.xnb
+Content\Textures\Boat.xnb
+Content\Textures\Cannon.xnb
+Content\Textures\Influence.xnb
+Content\Textures\Coin.xnb
+Content\HUD\XBOX Buttons\xboxButtonsYcrop.xnb
+Content\HUD\endTurnBG.xnb
+Content\HUD\XBOX Buttons\xboxControllerButtonStartCrop.xnb
+Content\HUD\cannonBall.xnb
+Content\HUD\Win\win_duke.xnb
+Content\HUD\Win\win_indigo.xnb
+Content\HUD\Win\win_irongut.xnb
+Content\HUD\Win\win_moldy.xnb
+Content\HUD\Win\win_scarlet.xnb
+Content\HUD\Win\win_amber.xnb
+Content\HUD\Win\coin_anim.xnb
+Content\Font\DebugFont.xnb
+Content\Font\PirateFontExtraLarge.xnb
+Content\Font\PirateFontMedium.xnb
+Content\Font\PirateFontLarge.xnb
+Content\Font\PirateFont.xnb
+Content\Models\terrain.xnb
+Content\Models\water.xnb
+Content\Models\tempBoat.xnb
+Content\Models\TargetCircle.xnb
+Content\Models\water1.xnb
+Content\Models\Coin.xnb
+Content\Models\TargetingSelector2.xnb
+Content\Models\TargetingSelector1.xnb
+Content\Models\TargetingSelector3.xnb
+Content\Models\MenuWater01.xnb
+Content\Models\water2.xnb
+Content\Models\IslandPlaceholder.xnb
+Content\Models\CannonBall.xnb
+Content\Models\FiringArchOrb.xnb
+Content\Models\Sunkenshipslayout.xnb
+Content\Models\Rocks.xnb
+Content\Models\ChestLid.xnb
+Content\Models\IslandShrubLayout.xnb
+Content\Models\TerrainTex.xnb
+Content\Models\AITarget.xnb
+Content\Models\waterTex_v2.xnb
+Content\Models\TreeLayout.xnb
+Content\Models\BoatGold.xnb
+Content\Models\EastBoeys.xnb
+Content\Models\NorthBoeys.xnb
+Content\Models\SouthBoeys.xnb
+Content\Models\WestBoeys.xnb
+Content\Models\TargetCyl.xnb
+Content\Models\Cove1.xnb
+Content\Models\Cove2.xnb
+Content\Models\Cove3.xnb
+Content\Models\Cove4.xnb
+Content\Models\Tent1.xnb
+Content\Models\Tent2.xnb
+Content\Models\Tent3.xnb
+Content\Models\Tent4.xnb
+Content\Models\menu_terrain.xnb
+Content\Models\menu sign.xnb
+Content\Models\TowerBase.xnb
+Content\Models\Houses.xnb
+Content\Models\Boat.xnb
+Content\Models\Cannon.xnb
+Content\Models\Chest.xnb
+Content\Models\IslandTrees.xnb
+Content\Models\Lighthouse.xnb
+Content\Models\Tower.xnb
+Content\Models\BelgiumSmack.xnb
+Content\Models\JapWarBoat.xnb
+Content\Models\ScottishBoat.xnb
+Content\Models\TargetingSelector4.xnb
+Content\Models\Dock1.xnb
+Content\Models\Dock2.xnb
+Content\Models\Dock3.xnb
+Content\Models\Dock4.xnb
+Content\Models\Tower_Destroyed.xnb
+Content\Models\Tower_Normal.xnb
+Content\Models\waterTex.xnb
+Content\Models\Seaweed.xnb
+Content\Models\SkyHorizon.xnb
+Content\Models\TEST_Seaweed001.xnb
+Content\Models\TEST_Seaweed002.xnb
+Content\Models\TEST_Seaweed003.xnb
+Content\Models\TEST_Seaweed004.xnb
+Content\Models\TEST_Seaweed005.xnb
+Content\Models\TEST_Seaweed006.xnb
+Content\Models\STANDIN_Cove1.xnb
+Content\Models\STANDIN_Cove2.xnb
+Content\Models\STANDIN_Cove3.xnb
+Content\Models\STANDIN_Cove4.xnb
+Content\Models\STANDIN_Flag1.xnb
+Content\Models\STANDIN_Flag2.xnb
+Content\Models\STANDIN_Flag3.xnb
+Content\Models\STANDIN_Flag4.xnb
+Content\Shaders\Water.xnb
+Content\Shaders\BasicEffect.xnb
+Content\Shaders\PostprocessEffect.xnb
+Content\Shaders\ParticleEffect.xnb
+Content\Models\TerrianBake_0.xnb
+Content\Models\Cylinder01CompleteMap_0.xnb
+Content\Models\Gold2_128x128_0.xnb
+Content\Models\Water_1024x1024_0.xnb
+Content\Models\DarkIron2_4x4_0.xnb
+Content\Models\rock_0.xnb
+Content\Models\LidTexture_0.xnb
+Content\Models\leafTex_0.xnb
+Content\Models\CompleteMap_v2_2048x2048_0.xnb
+Content\Models\treeTexture2_0.xnb
+Content\Models\coveflagtemplate_0.xnb
+Content\Models\TentUVRender_0.xnb
+Content\Models\towerTex_0.xnb
+Content\Models\houseEXTexture2_0.xnb
+Content\Models\houseEXTexture_0.xnb
+Content\Models\houseDIMTexture_0.xnb
+Content\Models\houseTexture_0.xnb
+Content\Models\cannonTemplate_0.xnb
+Content\Models\BottomTexture_0.xnb
+Content\Models\treeTexture2_1.xnb
+Content\Models\lighthouseTexture_0.xnb
+Content\Models\TowerUVMap_0.xnb
+Content\Models\Wood_4BlankPlanks_512x512_0.xnb
+Content\Models\towerTex_1.xnb
+Content\Models\TowerUVMap_1.xnb
+Content\Models\SkyBox_1024x1024_0.xnb
+Content\Models\KelpPlentiful_1024x1024_0.xnb
+Content\Models\HousesOrange.xnb
+Content\Models\HousesPink.xnb
+Content\Models\HousesRed.xnb
+Content\Models\Trees.xnb
+Content\Models\HousesSeparated.xnb
+Content\Models\houseEXTextureCombined_0.xnb
+Content\Textures\Paused.xnb
+Content\AudioFiles\Xbox\GameSound.xgs
+Content\AudioFiles\Xbox\Sound Bank.xsb
+Content\AudioFiles\Xbox\Wave Bank.xwb
+Content\AudioFiles\Win\GameSound.xgs
+Content\AudioFiles\Win\Sound Bank.xsb
+Content\AudioFiles\Win\Wave Bank.xwb
+Content\Font\FinalCredits.txt
