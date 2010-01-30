@@ -20,9 +20,9 @@ namespace Scallywags
 
         }
 
-        public override void Update(float elapsedTime)
+        public override bool Update(float elapsedTime)
         {
-            
+			return true;
         }
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch sb, Microsoft.Xna.Framework.GameTime gameTime)

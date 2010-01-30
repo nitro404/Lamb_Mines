@@ -25,8 +25,9 @@ namespace Scallywags
 
         private struct TriggerObject
         {
-            double[] objectLoc;
-            object referenceObj;
+			public TriggerObject(Vector2 objLoc, Object objRef) { objectLoc = objLoc; referenceObj = objRef; }
+            public Vector2 objectLoc;
+            public Object referenceObj;
         }
         private static ArrayList TriggerList = new ArrayList();
         public enum RuleList { RULE_PLACEMENT, RULE_TARGET };
@@ -77,6 +78,8 @@ namespace Scallywags
             AllObjects.Add(new ArrayList());
 			AllBarriers = new ArrayList();
 
+			Vector2 tempVec = new Vector2();
+
             Random rand = new Random();
             for (int x = -1; x < 35; x++)
             {
@@ -111,32 +114,46 @@ namespace Scallywags
 					int val2 = int.Parse(((string[])value.Split(','))[1]);
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
 
-					Mine tempMine = new Mine(new Vector2(val1,val2), textureList[val3]);
-					((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
+					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
+					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
+					Mine tempMine = new Mine(tempVec, textureList[val3]);
+					((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(new TriggerObject(tempMine.Position,tempMine));
 				}
 			}
 
 			if (fileInfoHash.Contains("Rocks") || fileInfoHash.Contains("Trees") || fileInfoHash.Contains("Fences"))
 			{
-				foreach (string value in ((ArrayList)fileInfoHash["Mine"]))
+				foreach (string value in ((ArrayList)fileInfoHash["Rocks"]))
 				{
 					int val1 = int.Parse(((string[])value.Split(','))[0]);
 					int val2 = int.Parse(((string[])value.Split(','))[1]);
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
-
-					Clutter tempClutter = new Clutter(new Vector2(val1, val2), textureList[val3]);
+					if (val3 == 16)
+					{
+						int what = 0;
+						what = 0;
+					}
+					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
+					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
+					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
 					((ArrayList)AllObjects[0]).Add(tempClutter);
-
+				}
+				foreach (string value in ((ArrayList)fileInfoHash["Trees"]))
+				{
+					int val1 = int.Parse(((string[])value.Split(','))[0]);
+					int val2 = int.Parse(((string[])value.Split(','))[1]);
+					int val3 = int.Parse(((string[])value.Split(','))[2]);
+					if (val3 == 16)
+					{
+						int what = 0;
+						what = 0;
+					}
+					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
+					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
+					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
+					((ArrayList)AllObjects[0]).Add(tempClutter);
 				}
 			}
-
-
-			
-			//for (int i = 0; i < 10; i++)
-			//{
-			//	Mine tempMine = new Mine(new int[] { 15, i }, ref textureList[1]);
-			//	((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
-			//}
 
             for (int i = 0; i < 20; i++)
             {
@@ -150,25 +167,12 @@ namespace Scallywags
                 ((ArrayList)AllObjects[0]).Add(tempSheep);
             }
 
-			/*
-			Mine tempMine = new Mine(new int[] { 1, 1 }, ref textureList[1]);
-			((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
-			tempMine.Position = new double[]{ 5, 5};
-			((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
-			tempMine.Position = new double[]{ 2, 2 };
-			((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
-			tempMine.Position = new double[]{ 0, 5};
-			((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
-            */
-
             return true;
         }
 
 
         public bool Spawn()
         {
-
-
             return true;
         }
 
@@ -187,33 +191,82 @@ namespace Scallywags
             {
                 //loop through each tile object. check the collision.
                 //if the collision has occured then
+				foreach (ArrayList planeList in AllObjects)
+				{
+					for (int c = 0; c < planeList.Count; c++)
+					{
+						//check the collision and if the two object collide.
+						//the call the on collision method.
+						Vector2 dist = ((Object)((TriggerObject)TriggerList[i]).referenceObj).Position;
+						dist = dist - ((Object)planeList[c]).Position;
+						float finalDist = dist.Length();
+						if (finalDist < 48 && finalDist != 0 )
+						{
+							((Object)((TriggerObject)TriggerList[i]).referenceObj).onCollision((Object)planeList[c]);
+						}
+					}
+				}
             }
         }
 
         public void Update(float elapsedTime)
         {
+			ArrayList triggerToDelete = new ArrayList();
+			ArrayList subToDelete = new ArrayList();
             //loop through each main list
-            foreach (object listMain in AllObjects)
+            foreach (ArrayList listMain in AllObjects)
             {
                 //loop through each sub list of objects
-                foreach (object listSub in (ArrayList)listMain)
+                foreach (Object listSub in (ArrayList)listMain)
                 {
-                    Object thisObject = (Object)listSub;
-                    thisObject.Update(elapsedTime);
+                    //Object thisObject = listSub;
+					if (!listSub.Update(elapsedTime))
+					{
+						//this object has died.
+						//it is a landmine or a sheep.
+						//loop through the trigger list to remove the mine from the list
+						for (int i = 0; i < TriggerList.Count; i++)
+						{
+							if (((TriggerObject)TriggerList[i]).referenceObj == listSub)
+							{
+								//TriggerList.RemoveAt(i);
+								triggerToDelete.Add(TriggerList[i]);
+								break;
+							}
+						}
+						subToDelete.Add(listSub);
+					}
                 }
             }
+			//go from the reverse of the list because we are removing entries.
+			for (int i = 0; i < triggerToDelete.Count; i++)
+			{
+				TriggerList.Remove(triggerToDelete[i]);
+			}
+			for (int i = 0; i < subToDelete.Count; i++)
+			{
+				((ArrayList)AllObjects[0]).Remove(subToDelete[i]);
+			}
         }
 
-        public void Draw(GraphicsDevice device, GameTime gameTime)
+		public void Draw(GraphicsDevice device, GameTime gameTime)
         {
             //Draw the terrain first.
 
             device.Clear(Color.Red);
             m_sb.Begin();
             Random rand = new Random(gameTime.ElapsedRealTime.Milliseconds);
-
-
-            
+			/*
+            for (int x = -100; x < 100; x++)
+            {
+                for (int y = -100; y < 100; y++)
+                {
+                    Vector2 position = new Vector2(x * Settings.SCREEN_TILE_MULTIPLIER_X, y * Settings.SCREEN_TILE_MULTIPLIER_Y );
+                    position = GlobalHelpers.GetScreenCoords(position);
+					m_sb.Draw(textureList[0], position, Color.White);
+                }
+            }
+            */
             //loop through each main list
             foreach (object listMain in AllObjects)
             {
@@ -299,7 +352,7 @@ namespace Scallywags
 						((ArrayList)outHash["Mine"]).Add(info.Trim());
 					}
 				}
-				else if (info.StartsWith("Rockss: "))
+				else if (info.StartsWith("Rocks: "))
 				{
 					if (!outHash.Contains("Rocks"))
 						outHash.Add("Rocks", new ArrayList());
@@ -310,7 +363,7 @@ namespace Scallywags
 						((ArrayList)outHash["Rocks"]).Add(info.Trim());
 					}
 				}
-				else if (info.StartsWith("Treess: "))
+				else if (info.StartsWith("Trees: "))
 				{
 					if (!outHash.Contains("Trees"))
 						outHash.Add("Trees", new ArrayList());

@@ -42,16 +42,16 @@ namespace Scallywags
 			return false;//This object will be destroyed.
 		}
 
-		public override void Update(float elapsedTime)
+		public override bool Update(float elapsedTime)
 		{
-
+			return true;
 		}
 		public override void Draw(SpriteBatch spriteThing, GameTime gameTime)
 		{
 
-			Vector2 position = new Vector2((float)Position.X * Settings.SCREEN_TILE_MULTIPLIER_X + 3, (float)Position.Y * Settings.SCREEN_TILE_MULTIPLIER_Y + 3);
-			position = GlobalHelpers.GetScreenCoords(position);
-			spriteThing.Draw(myTexture, position, Color.White);
+			//Vector2 position = new Vector2((float)Position.X, (float)Position.Y);
+			//position = GlobalHelpers.GetScreenCoords(position);
+			spriteThing.Draw(myTexture, Position, Color.White);
 		}
 		public override void Kill()
 		{

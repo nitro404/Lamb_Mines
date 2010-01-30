@@ -30,12 +30,16 @@ namespace Scallywags
 		}
         public bool isAlive
         {
-            get { return isAlive; }
+			get { return StillAlive; }
         }
 		public bool Stopped
 		{
 			get { return AmIStopped; }
 			set { AmIStopped = value; }
+		}
+		public Vector2 WorldPosition
+		{
+			get { return GlobalHelpers.GetScreenCoords((new Vector2(position.X * Settings.SCREEN_TILE_MULTIPLIER_X, position.Y * Settings.SCREEN_TILE_MULTIPLIER_Y))); }
 		}
 
 		//public methods.
@@ -83,7 +87,7 @@ namespace Scallywags
         /// <summary>
         /// General update loop
         /// </summary>
-        abstract public void Update(float elapsedTime);
+        abstract public bool Update(float elapsedTime);
 
         /// <summary>
         /// General draw loop

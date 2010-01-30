@@ -57,9 +57,9 @@ namespace Scallywags
         /// <summary>
         /// General update loop
         /// </summary>
-        public override void Update(float elapsedTime)
+        public override bool Update(float elapsedTime)
         {
-
+			return true;
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Scallywags
         /// </summary>
         public override void Draw(SpriteBatch sb, GameTime gameTime)
         {
-            animationPlayer.Draw(gameTime, sb, GlobalHelpers.GetScreenCoords(Position), new SpriteEffects());
+            animationPlayer.Draw(gameTime, sb, Position, new SpriteEffects());
         }
 
         /// <summary>

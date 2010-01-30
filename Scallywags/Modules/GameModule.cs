@@ -62,6 +62,8 @@ namespace Scallywags
             if( ParentApp.Inputs.IsKeyPressed(Keys.F12) )
                 this.Initialize();
 
+			testLevel.ProcessTriggers();
+
             testLevel.Update(fElapsedTime);
 
             return MODULE_IDENTIFIER.MID_THIS;    //Continue running the module.
@@ -74,20 +76,6 @@ namespace Scallywags
          */
         public override void Draw(GraphicsDevice device, GameTime gameTime)
         {
-            /*
-            device.Clear(Color.Red);
-            m_sb.Begin();
-            for (int x = -1; x < 35; x++)
-            {
-                for (int y = -20; y < 25; y++)
-                {
-                    Vector2 position = new Vector2(x * 48, y * 48);
-                    position = GetScreenCoords(position);
-                    m_sb.Draw(grass, position, Color.White);
-                }
-            }
-            m_sb.End();
-            */
             testLevel.Draw(device, gameTime);
         }
 

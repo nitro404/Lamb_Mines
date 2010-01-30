@@ -29,13 +29,13 @@ namespace Scallywags
             : base(Location, animationList, tex)
         {
             goal = Location;
-            speed = 0.5f;
-            maxSpeed = 150.0f;
+            speed = 5f;
+            maxSpeed = 15.0f;
             ai = new Random(randomizer);
             randomizer++;
         }
 
-        public override void Update(float elapsedTime)
+        public override bool Update(float elapsedTime)
         {
             if (Position == goal)
             {
@@ -61,6 +61,9 @@ namespace Scallywags
                 }
             }
             base.Update(elapsedTime);
+
+			return isAlive;
+
         }
 
         public override void Draw(SpriteBatch sb, GameTime gameTime)
@@ -71,8 +74,12 @@ namespace Scallywags
 
         public void GetNewGoal()
         {
-            goal = new Vector2(ai.Next(-20, 20) + Position.X, ai.Next(-20, 20) + Position.Y);
+            goal = new Vector2(ai.Next(-200, 200) + Position.X, ai.Next(-200, 200) + Position.Y);
         }
+		public override void Kill()
+		{
+			KillMe();
+		}
 
         public int GetAnimationDirection(Vector2 direction)
         {
