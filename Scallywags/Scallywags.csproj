@@ -89,6 +89,7 @@
     <Compile Include="GlobalHelpers.cs" />
     <Compile Include="Level\AnimatedObject.cs" />
     <Compile Include="Level\Clutter.cs" />
+    <Compile Include="Level\Explosion.cs" />
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\Mine.cs" />
     <Compile Include="Level\Object.cs" />

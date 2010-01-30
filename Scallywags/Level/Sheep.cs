@@ -69,8 +69,11 @@ namespace Scallywags
 
         public override void Draw(SpriteBatch sb, GameTime gameTime, Vector2 Offset)
         {
-
             base.Draw(sb, gameTime, Offset);
+			if (shadowTexture != null)
+				sb.Draw(shadowTexture, GlobalHelpers.GetScreenCoords(Position) + Offset, Color.White);
+				//sb.Draw(myTexture, Position + Offset, Color.White);
+				
         }
 
         public void GetNewGoal()

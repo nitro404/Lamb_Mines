@@ -169,10 +169,11 @@ namespace Scallywags
 					}
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
 					Sheep tempSheep = new Sheep(tempVec, animList, textureList[val3]);
+					tempSheep.AddShadow(textureList[21]);
 					((ArrayList)AllObjects[1]).Add(tempSheep);
 				}
 			}
-
+			
             //for (int i = 0; i < 20; i++)
             //{
             //    List<Animation> animList = new List<Animation>();
@@ -189,13 +190,13 @@ namespace Scallywags
             List<Animation> anims = new List<Animation>();
             for (int j = 0; j < 8; j++)
             {
-                Animation anim = new Animation(textureList[19], 0.1f, true, new Vector2(35, 35), j);
+                Animation anim = new Animation(textureList[20], 0.1f, true, new Vector2(35, 35), j);
                 anims.Add(anim);
             }
-            Player tempPlayer = new Player(m_ParentApp.Inputs , new Vector2(512, 256), anims, textureList[18]);
+            Player tempPlayer = new Player(m_ParentApp.Inputs , new Vector2(512, 256), anims, textureList[20]);
             ((ArrayList)AllObjects[1]).Add(tempPlayer);
             TriggerList.Add(new TriggerObject(100.0f, tempPlayer));
-
+			
             return true;
         }
 
@@ -233,9 +234,13 @@ namespace Scallywags
 						Vector2 dist = ((Object)((TriggerObject)TriggerList[i]).referenceObj).Position;
 						dist = dist - ((Object)planeList[c]).Position;
 						float finalDist = dist.Length();
-						if (finalDist < ((TriggerObject)TriggerList[i]).radius && finalDist != 0 )
+						if (finalDist < ((TriggerObject)TriggerList[i]).radius && finalDist != 0 && ((Object)planeList[c]).WhatAmI() != "Explosion" )
 						{
-							((Object)((TriggerObject)TriggerList[i]).referenceObj).onCollision((Object)planeList[c]);
+							Object tempObject = ((Object)((TriggerObject)TriggerList[i]).referenceObj).onCollision((Object)planeList[c],textureList);
+							if (tempObject != null)
+							{
+								((ArrayList)AllObjects[1]).Add(tempObject);
+							}
 						}
 					}
 				}
@@ -352,6 +357,8 @@ namespace Scallywags
 					for (int i = 0; i < count; i++)
 					{
 						info = theReader.ReadLine();
+						info = info.Trim();
+						info = ((string[])info.Split(' '))[1];
 						((ArrayList)outHash["Textures"]).Add(info.Trim());
 						
 					}

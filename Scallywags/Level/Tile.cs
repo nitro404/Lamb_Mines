@@ -30,9 +30,9 @@ namespace Scallywags
             sb.Draw(myTexture, GlobalHelpers.GetScreenCoords(Position + Offset), Color.White);
         }
 
-        public override bool onCollision(Object collisionObject)
+		public override Object onCollision(Object collisionObject, Texture2D[] textureList)
         {
-            return true;
+            return null;
         }
 
         public override void Kill()

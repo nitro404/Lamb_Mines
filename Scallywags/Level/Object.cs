@@ -19,6 +19,7 @@ namespace Scallywags
         //private variables
         private Vector2 position = new Vector2();
         public Texture2D myTexture;
+		public Texture2D shadowTexture;
         private bool StillAlive = true;
 		private bool AmIStopped = false;
 
@@ -83,7 +84,7 @@ namespace Scallywags
         /// </summary>
         /// <param name="collisionObject">This is a reference to the object that has collided with this event</param>
         /// <returns>Returns FALSE only if this object needs to be destroyed.</returns>
-        abstract public bool onCollision(Object collisionObject);
+        abstract public Object onCollision(Object collisionObject,Texture2D[] textureList);
 
         /// <summary>
         /// General update loop
@@ -99,6 +100,16 @@ namespace Scallywags
         /// Kill this unit.
         /// </summary>
         abstract public void Kill();
+
+		virtual public string WhatAmI()
+		{
+			return "Object";
+		}
+
+		virtual public void AddShadow(Texture2D shadowTex)
+		{
+			shadowTexture = shadowTex;
+		}
 
     }
 }

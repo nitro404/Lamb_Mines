@@ -44,9 +44,9 @@ namespace Scallywags
         /// </summary>
         /// <param name="collisionObject">This is a reference to the object that has collided with this event</param>
         /// <returns>Returns FALSE only if this object needs to be destroyed.</returns>
-        public override bool onCollision(Object collisionObject)
+        public override Object onCollision(Object collisionObject,Texture2D[] textureList)
         {
-            return true;
+            return null;
         }
 
         public void PlayAnimation(int value)

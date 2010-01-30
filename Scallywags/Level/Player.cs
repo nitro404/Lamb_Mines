@@ -62,9 +62,10 @@ namespace Scallywags
                 }
 
             return base.Update(elapsedTime);
+			return true;
         }
 
-        public override bool onCollision(Object collisionObject)
+		public override Object onCollision(Object collisionObject, Texture2D[] textureList)
         {
             if (input.IsKeyDown(Keys.Space))
             {          
@@ -73,7 +74,7 @@ namespace Scallywags
                     ((Sheep)collisionObject).Seek(Position);
                 }
             }
-            return base.onCollision(collisionObject);
+			return base.onCollision(collisionObject, textureList);
         }
     }
 }

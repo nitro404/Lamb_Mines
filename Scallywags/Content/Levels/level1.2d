@@ -1,25 +1,27 @@
 2D World: Version 1.0
-Textures: 20
-	grass_base01
-	grass_base02
-	grass_base03
-	grass_base04
-	grass_base05
-	grass_base06
-	grass_base07
-	grass_base08
-	grass_base09
-	grass_base10
-	grass_fence01
-	grass_fence02
-	grass_fence03
-	grass_fence04
-	grass_rock01
-	grass_tree01
-	landmine01
-	sheep_shadow01
-	sheep_sheet01
-	player_sheet01	
+Textures: 22
+	0 grass_base01
+	1 grass_base02
+	2 grass_base03
+	3 grass_base04
+	4 grass_base05
+	5 grass_base06
+	6 grass_base07
+	7 grass_base08
+	8 grass_base09
+	9 grass_base10
+	10 grass_fence01
+	11 grass_fence02
+	12 grass_fence03
+	13 grass_fence04
+	14 grass_rock01
+	15 grass_tree01
+	16 landmine01
+	17 sheep_shadow01
+	18 sheep_sheet01
+	19 explosion_sheet01
+	20 player_sheet01
+	21 sheep_shadow01
 Barriers: 1
 	Edges: 5
 		50,50,60,200
@@ -62,26 +64,67 @@ Fences: 8
 	7,-5,11
 	8,-4,10
 	9,-4,10
-Sheep: 22
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
-	12,-6,18
+Sheep: 62
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
+	14,-3,18
