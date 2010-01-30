@@ -46,7 +46,7 @@ namespace Scallywags
         public override void Draw(SpriteBatch spriteThing)
         {
 
-            Vector2 position = new Vector2((float)Position.X * Settings.SCREEN_TILE_MULTIPLIER_X, (float)Position.Y * Settings.SCREEN_TILE_MULTIPLIER_Y);
+            Vector2 position = new Vector2((float)Position.X * Settings.SCREEN_TILE_MULTIPLIER_X + 2, (float)Position.Y * Settings.SCREEN_TILE_MULTIPLIER_Y + 2);
             position = GlobalHelpers.GetScreenCoords(position);
             spriteThing.Draw(myTexture, position, Color.White);
         }
