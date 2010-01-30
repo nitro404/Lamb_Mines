@@ -14,6 +14,13 @@ public class World {
 	final public static String WORLD_TYPE = "2D World";
 	final public static double WORLD_VERSION = 1.0;
 	
+	final public static int GRID_WIDTH = 64;
+	final public static int GRID_HEIGHT = 64;
+	
+	final public static int ISOMETRIC_GRID_WIDTH = World.getIsometricWidth(GRID_WIDTH, GRID_HEIGHT);
+	final public static int ISOMETRIC_GRID_HEIGHT = World.getIsometricHeight(GRID_WIDTH, GRID_HEIGHT);
+	final public static double ISOMETRIC_GRID_ANGLE = Math.atan(1.0 / 2.0) * (180.0 / Math.PI);
+	
 	public World() {
 		this.map = new Graph();
 		this.entities = new Vector<Entity>();
@@ -26,6 +33,14 @@ public class World {
 	
 	public boolean containsEdge(Edge e) {
 		return this.map.containsEdge(e);
+	}
+	
+	public static int getIsometricWidth(int width, int height) {
+		return (int) Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
+	}
+	
+	public static int getIsometricHeight(int width, int height) {
+		return (int) (getIsometricWidth(width, height) / 2);
 	}
 	
 	public static World parseFrom(String fileName) {
