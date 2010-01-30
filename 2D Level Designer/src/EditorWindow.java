@@ -29,22 +29,26 @@ public class EditorWindow extends JFrame implements ActionListener {
 		setSize(800, 600);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		createMenu();
-		
 		fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir") + MAP_DIRECTORY));
 		
+		createMenu();
+		
 		editorPanel = new EditorPanel();
 		editorPanelScrollPane = new JScrollPane(editorPanel);
+		add(editorPanelScrollPane);
+		
+//		editorPanelScrollPane = new JScrollPane(editorPanel);
 //		editorPanelScrollPane.setPreferredSize(new Dimension(editorPanel.getWidth(), editorPanel.getHeight()));
-		editorPanelScrollPane.setPreferredSize(new Dimension(320, 240));
+//		editorPanelScrollPane.setPreferredSize(new Dimension(320, 240));
 //		Rule columnView = new Rule(Rule.HORIZONTAL, true);
 //        Rule rowView = new Rule(Rule.VERTICAL, true);
 //        columnView.setPreferredWidth(320);
 //        Rule rowView.setPreferredHeight(480);
 //		editorPanelScrollPane.setColumnHeaderView(columnView);
 //		editorPanelScrollPane.setRowHeaderView(rowView);
-		add(editorPanel);
+		
+//		add(editorPanel);
 	}
 	
 	public void createMenu() {
@@ -97,6 +101,7 @@ public class EditorWindow extends JFrame implements ActionListener {
 	public void update() {
 		this.repaint();
 		editorPanel.update();
+System.out.println(editorPanelScrollPane.getPreferredSize());
 	}
 	
 }
