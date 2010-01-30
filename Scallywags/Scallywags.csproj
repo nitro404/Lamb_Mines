@@ -88,10 +88,12 @@
     <Compile Include="Application\ModuleLoader.cs" />
     <Compile Include="GlobalHelpers.cs" />
     <Compile Include="Level\AnimatedObject.cs" />
+    <Compile Include="Level\Clutter.cs" />
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\Mine.cs" />
     <Compile Include="Level\Object.cs" />
     <Compile Include="Level\Sheep.cs" />
+    <Compile Include="Level\Tile.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Modules\CreditsModule.cs" />
     <Compile Include="Modules\GameModule.cs" />

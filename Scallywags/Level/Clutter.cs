@@ -42,11 +42,11 @@ namespace Scallywags
 			return false;//This object will be destroyed.
 		}
 
-		public override void Update()
+		public override void Update(float elapsedTime)
 		{
 
 		}
-		public override void Draw(SpriteBatch spriteThing)
+		public override void Draw(SpriteBatch spriteThing, GameTime gameTime)
 		{
 
 			Vector2 position = new Vector2((float)Position.X * Settings.SCREEN_TILE_MULTIPLIER_X + 3, (float)Position.Y * Settings.SCREEN_TILE_MULTIPLIER_Y + 3);

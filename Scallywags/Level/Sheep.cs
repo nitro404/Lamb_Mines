@@ -29,8 +29,8 @@ namespace Scallywags
             : base(Location, animationList, tex)
         {
             goal = Location;
-            speed = 1f;
-            maxSpeed = 10.0f;
+            speed = 0.5f;
+            maxSpeed = 150.0f;
             ai = new Random(randomizer);
             randomizer++;
         }
@@ -49,6 +49,8 @@ namespace Scallywags
                 Vector2 dir = ((goal - Position) / (goal - Position).Length());
                 float dist = Math.Min(maxSpeed, (goal - Position).Length() * speed);
                 Vector2 travel = dir * dist;
+                int choose = GetAnimationDirection(dir);
+                AnimationPlay.PlayAnimation(Animations[choose]);
                 if (dist > elapsedTime)
                 {
                     Position += (travel * elapsedTime);
@@ -70,6 +72,21 @@ namespace Scallywags
         public void GetNewGoal()
         {
             goal = new Vector2(ai.Next(-20, 20) + Position.X, ai.Next(-20, 20) + Position.Y);
+        }
+
+        public int GetAnimationDirection(Vector2 direction)
+        {
+            double angle = Math.Atan2(direction.Y, direction.X) + (Math.PI * 7/8);
+            double fraction = angle * 0.5 / Math.PI;
+            fraction += 1.0 / 16.0;
+            if (fraction >= 1.0)
+            {
+                fraction -= 1.0;
+            }
+            int index = (int)(fraction * 8.0);
+            //float angle = (float)Math.Atan2(direction.Y, direction.X) - (float)Math.Atan2(1.0f, 0.0f);
+            //return (int)((angle/(Math.PI/4)) + 8) % 8;
+            return index;
         }
 
     }

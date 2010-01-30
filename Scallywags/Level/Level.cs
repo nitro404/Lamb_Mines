@@ -77,6 +77,17 @@ namespace Scallywags
             AllObjects.Add(new ArrayList());
 			AllBarriers = new ArrayList();
 
+            Random rand = new Random();
+            for (int x = -1; x < 30; x++)
+            {
+                for (int y = -20; y < 30; y++)
+                {
+                    Vector2 position = new Vector2(x * Settings.SCREEN_TILE_MULTIPLIER_X, y * Settings.SCREEN_TILE_MULTIPLIER_Y);
+                    Tile tile = new Tile(position, textureList[rand.Next(0,9)]);
+                    ((ArrayList)AllObjects[0]).Add(tile);
+                }
+            }
+
 			if (fileInfoHash.Contains("Barrier"))
 			{
 				foreach (Hashtable table in (Hashtable)fileInfoHash["Barrier"])
@@ -104,7 +115,7 @@ namespace Scallywags
 					((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
 				}
 			}
-<<<<<<< .mine
+
 			if (fileInfoHash.Contains("Rocks") || fileInfoHash.Contains("Trees") || fileInfoHash.Contains("Fences"))
 			{
 				foreach (string value in ((ArrayList)fileInfoHash["Mine"]))
@@ -126,15 +137,16 @@ namespace Scallywags
 			//	Mine tempMine = new Mine(new int[] { 15, i }, ref textureList[1]);
 			//	((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
 			//}
-=======
->>>>>>> .r22
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 20; i++)
             {
-                Animation anim = new Animation(textureList[1], 1, true, new Vector2(textureList[1].Width, textureList[1].Height), 0);
                 List<Animation> animList = new List<Animation>();
-                animList.Add(anim);
-                Sheep tempSheep = new Sheep(new Vector2(i * 48, i ), animList, textureList[1]);
+                for (int j = 0; j < 8; j++)
+                {
+                    Animation anim = new Animation(textureList[18], 1, true, new Vector2(35,35), j);
+                    animList.Add(anim);
+                }
+                Sheep tempSheep = new Sheep(new Vector2((i * 64) + 10, i * -24 ), animList, textureList[18]);
                 ((ArrayList)AllObjects[0]).Add(tempSheep);
             }
 
@@ -198,16 +210,9 @@ namespace Scallywags
 
             device.Clear(Color.Red);
             m_sb.Begin();
+            Random rand = new Random(gameTime.ElapsedRealTime.Milliseconds);
 
-            for (int x = -100; x < 100; x++)
-            {
-                for (int y = -100; y < 100; y++)
-                {
-                    Vector2 position = new Vector2(x * Settings.SCREEN_TILE_MULTIPLIER_X, y * Settings.SCREEN_TILE_MULTIPLIER_Y);
-                    position = GlobalHelpers.GetScreenCoords(position);
-					m_sb.Draw(textureList[0], position, Color.White);
-                }
-            }
+
             
             //loop through each main list
             foreach (object listMain in AllObjects)

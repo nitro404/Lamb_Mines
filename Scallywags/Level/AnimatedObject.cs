@@ -28,6 +28,16 @@ namespace Scallywags
             animationPlayer.PlayAnimation(animations[0]);
         }
 
+        public List<Animation> Animations
+        {
+            get { return animations; }
+        }
+
+        public AnimationPlayer AnimationPlay
+        {
+            get { return animationPlayer; }
+        }
+
         /// <summary>
         /// This is the trigger function that is called when there is a collision on this object. 
         /// Only an object that has been set with an associated onCollisionEvent can be called.

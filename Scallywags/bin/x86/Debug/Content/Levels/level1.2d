@@ -1,5 +1,5 @@
 2D World: Version 1.0
-Textures: 18
+Textures: 19
 	grass_base01
 	grass_base02
 	grass_base03
@@ -17,7 +17,8 @@ Textures: 18
 	grass_rock01
 	grass_tree01
 	landmine01
-	sheep_shadow01	
+	sheep_shadow01
+	sheep_sheet01	
 Barriers: 1
 	Edges: 5
 		50,50,60,200

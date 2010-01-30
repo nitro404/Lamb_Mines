@@ -47,13 +47,8 @@ namespace Scallywags
         }
 
         //These are some default constructors
-<<<<<<< .mine
-        public Object(ref Texture2D aTexture) { myTexture = aTexture; }
-        public Object(int[] Location, Texture2D aTexture)
-=======
         public Object(Texture2D aTexture) { myTexture = aTexture; }
         public Object(int[] Location, Texture2D aTexture)
->>>>>>> .r22
         {
             position.X = (float)Location[0];
             position.Y = (float)Location[1];

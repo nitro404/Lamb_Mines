@@ -16,13 +16,8 @@ namespace Scallywags
     class Mine:Object
     {
 
-<<<<<<< .mine
-        public Mine(int[] location, Texture2D aTexture)
-            : base(location,aTexture)
-=======
         public Mine(int[] location, Texture2D aTexture)
             : base(location, aTexture)
->>>>>>> .r22
         {
 
         }

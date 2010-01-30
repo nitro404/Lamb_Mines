@@ -6,6 +6,7 @@ Content\Font\PirateFont.xnb
 Content\Textures\grass_base01.xnb
 Content\Textures\grass_base02.xnb
 Content\Textures\sheep_sheet01.xnb
+Content\Textures\landmine01.xnb
 Content\Textures\explosion_sheet01.xnb
 Content\Textures\grass_base03.xnb
 Content\Textures\grass_base04.xnb
@@ -21,7 +22,6 @@ Content\Textures\grass_fence03.xnb
 Content\Textures\grass_fence04.xnb
 Content\Textures\grass_rock01.xnb
 Content\Textures\grass_tree01.xnb
-Content\Textures\landmine01.xnb
 Content\Textures\sheep_shadow01.xnb
 Content\Levels\level1.2d
 Content\Font\FinalCredits.txt
