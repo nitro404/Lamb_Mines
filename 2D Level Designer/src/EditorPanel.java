@@ -20,31 +20,9 @@ public class EditorPanel extends JPanel implements Scrollable, MouseListener, Mo
 		this.world = world;
 	}
 	
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		
-		if(world != null) {
-			g.clearRect(0, 0, this.getWidth(), this.getHeight());
-			world.paintOn(g);
-		}
-		
-		drawIsometricGrid(g);
-	}
-	
-	public void drawIsometricGrid(Graphics g) {
-		g.setColor(new Color(0, 0, 0));
-		int x = World.ISOMETRIC_GRID_WIDTH;
-		int y = World.ISOMETRIC_GRID_HEIGHT;
-		for(int i=0;i<getWidth()+x;i+=x) {
-			for(int j=0;j<getHeight()+y;j+=y) {
-				g.drawLine(i - x, j - y, i, j);
-				g.drawLine(i - x, j, i, j - y);
-			}
-		}
-	}
-	
 	public Dimension getPreferredSize() {
-		return new Dimension(1920, 1200);
+//TODO: Get map size
+return new Dimension(1920, 1200);
 	}
 	
 	public Dimension getPreferredScrollableViewportSize() {
@@ -63,10 +41,11 @@ public class EditorPanel extends JPanel implements Scrollable, MouseListener, Mo
 		int maxUnitIncrement = 1;
 		if(direction < 0) {
 			int newPosition = currentPosition -
-                             (currentPosition / maxUnitIncrement)
+							  (currentPosition / maxUnitIncrement)
                               * maxUnitIncrement;
             return (newPosition == 0) ? maxUnitIncrement : newPosition;
-        } else {
+        }
+		else {
             return ((currentPosition / maxUnitIncrement) + 1)
                    * maxUnitIncrement
                    - currentPosition;
@@ -120,6 +99,29 @@ System.out.println("Mouse Released " + e.getX() + ", " + e.getY());
 		return false;
 	}
 	
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		if(world != null) {
+			g.clearRect(0, 0, this.getWidth(), this.getHeight());
+			world.paintOn(g);
+		}
+		
+		drawIsometricGrid(g);
+	}
+	
+	public void drawIsometricGrid(Graphics g) {
+		g.setColor(new Color(0, 0, 0));
+		int x = World.ISOMETRIC_GRID_WIDTH;
+		int y = World.ISOMETRIC_GRID_HEIGHT;
+		for(int i=0;i<getWidth()+x;i+=x) {
+			for(int j=0;j<getHeight()+y;j+=y) {
+				g.drawLine(i - x, j - y, i, j);
+				g.drawLine(i - x, j, i, j - y);
+			}
+		}
+	}
+
 	public void update() {
 		this.repaint();
 	}

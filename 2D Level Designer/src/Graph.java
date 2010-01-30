@@ -39,7 +39,7 @@ public class Graph {
 	public void writeTo(PrintWriter out) throws IOException {
 		out.println("Edges: " + this.edges.size());
 		for(int i=0;i<this.edges.size();i++) {
-			out.print("\t");
+			out.print("\t\t");
 			this.edges.elementAt(i).writeTo(out);
 			out.println();
 		}

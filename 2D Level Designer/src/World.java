@@ -4,7 +4,7 @@ import java.io.*;
 
 public class World {
 	
-	public Graph map;
+	public Vector<Graph> barriers;
 	public Vector<Entity> entities;
 	Vector<String> textureNames;
 // set boundaries
@@ -12,7 +12,7 @@ public class World {
 // animated textures
 	
 	final public static String WORLD_TYPE = "2D World";
-	final public static double WORLD_VERSION = 1.0;
+	final public static double WORLD_VERSION = 1.1;
 	
 	final public static int GRID_WIDTH = 64;
 	final public static int GRID_HEIGHT = 64;
@@ -23,17 +23,19 @@ public class World {
 	final public static int ISOMETRIC_GRID_INCREMENT = 48;
 	
 	public World() {
-		this.map = new Graph();
+		this.barriers = new Vector<Graph>();
 		this.entities = new Vector<Entity>();
 		this.textureNames = new Vector<String>();
 	}
 	
-	public void addEdge(Edge e) {
-		this.map.addEdge(e);
+	public void addBarrier(Graph g) {
+		if(!this.barriers.contains(g)) {
+			this.barriers.add(g);
+		}
 	}
 	
-	public boolean containsEdge(Edge e) {
-		return this.map.containsEdge(e);
+	public boolean containsBarrier(Graph g) {
+		return this.barriers.contains(g);
 	}
 	
 	public static int getIsometricWidth(int width, int height) {
@@ -45,25 +47,28 @@ public class World {
 	}
 	
 	public static int getIsometricX(int x, int y) {
-		xCart = (x-z)*Math.cos(0.46365);
-		xI = xCart+xOrigin;
-		return (xI);
+//		xCart = (x-z)*Math.cos(0.46365);
+//		xI = xCart+xOrigin;
+//		return (xI);
+return -1;
 	}
 	
 	public static int getIsometricY(int x, int y) {
-		yCart = y+(x+z)*Math.sin(0.46365);
-		yI = -yCart+yOrigin;
-		return (yI);
+//		yCart = y+(x+z)*Math.sin(0.46365);
+//		yI = -yCart+yOrigin;
+//		return (yI);
+return -1;
 	}
 	
 	public static int getCartesianX(int x, int y) {
-		
+return -1;
 	}
 	
 	public static int getCartesianY(int x, int y) {
-		
+return -1;
 	}
 	
+	/*
 	// --- Functions ---
 	// Convert isometric coordinates to Flash X coordinate
 	xFla = function (x, y, z) {
@@ -109,6 +114,7 @@ public class World {
 		this._y -= flaMouseY;
 
 	};
+	*/
 	
 	public static World parseFrom(String fileName) {
 		if(fileName == null || fileName.trim().length() == 0) {
@@ -152,17 +158,27 @@ public class World {
 			System.out.println("ERROR: Incompatible world type (" + worldType + "). Current editor only supports worlds of type " + WORLD_TYPE + ".");
 			return null;
 		}
-		double worldVersion = Double.valueOf(input.substring(input.lastIndexOf(' ', input.length() - 1), input.length() - 1).trim());
+		double worldVersion = Double.valueOf(input.substring(input.lastIndexOf(' ', input.length() - 1), input.length()).trim());
 		if(WORLD_VERSION != worldVersion) {
 			System.out.println("ERROR: Incompatible map version (" + worldVersion + "). Current editor only supports version " + WORLD_VERSION + ".");
 			return null;
 		}
 		
+		// read in the map dimensions
+		input = in.readLine();
+		String dimensionsHeader = input.substring(0, input.indexOf(':', 0)).trim();
+		if(!dimensionsHeader.equals("Dimensions")) {
+			System.out.println("ERROR: Corrupted world file. Expected header \"Dimensions\", found \"" + dimensionsHeader + "\".");
+			return null;
+		}
+		int mapWidth = Integer.valueOf(input.substring(input.indexOf(':', 0) + 1, input.indexOf(',', 0)).trim());
+		int mapHeight = Integer.valueOf(input.substring(input.indexOf(',', 0) + 1, input.length()).trim());
+		
 		// read in the texture names
 		input = in.readLine();
-		String textureHeader = input.substring(0, input.indexOf(':', 0)).trim();
-		if(!textureHeader.equals("Textures")) {
-			System.out.println("ERROR: Corrupted world file. Expected header \"Textures\", found \"" + textureHeader + "\".");
+		String texturesHeader = input.substring(0, input.indexOf(':', 0)).trim();
+		if(!texturesHeader.equals("Textures")) {
+			System.out.println("ERROR: Corrupted world file. Expected header \"Textures\", found \"" + texturesHeader + "\".");
 			return null;
 		}
 		int numberOfTextures = Integer.valueOf(input.substring(input.lastIndexOf(':', input.length() - 1) + 1, input.length()).trim());
@@ -175,17 +191,28 @@ public class World {
 			}
 		}
 		
-		// read in the edges
+		// read in the barriers
 		input = in.readLine();
-		String edgesHeader = input.substring(0, input.indexOf(':', 0)).trim();
-		if(!edgesHeader.equals("Edges")) {
-			System.out.println("ERROR: Corrupted world file. Expected header \"Edges\", found \"" + edgesHeader + "\".");
+		String barriersHeader = input.substring(0, input.indexOf(':', 0)).trim();
+		if(!barriersHeader.equals("Barriers")) {
+			System.out.println("ERROR: Corrupted world file. Expected header \"Edges\", found \"" + barriersHeader + "\".");
 			return null;
 		}
-		int numberOfEdges = Integer.valueOf(input.substring(input.lastIndexOf(':', input.length() - 1) + 1, input.length()).trim());
-		for(int i=0;i<numberOfEdges;i++) {
-			input = in.readLine().trim();
-			world.addEdge(Edge.parseFrom(input));
+		int numberOfBarriers = Integer.valueOf(input.substring(input.lastIndexOf(':', input.length() - 1) + 1, input.length()).trim());
+		
+		// read in the corresponding edges for each barrier
+		for(int i=0;i<numberOfBarriers;i++) {
+			input = in.readLine();
+			String edgesHeader = input.substring(0, input.indexOf(':', 0)).trim();
+			if(!edgesHeader.equals("Edges")) {
+				System.out.println("ERROR: Corrupted world file. Expected header \"Edges\", found \"" + edgesHeader + "\".");
+				return null;
+			}
+			int numberOfEdges = Integer.valueOf(input.substring(input.lastIndexOf(':', input.length() - 1) + 1, input.length()).trim());
+			for(int j=0;j<numberOfEdges;j++) {
+				input = in.readLine().trim();
+				world.addEdge(Edge.parseFrom(input));
+			}
 		}
 		
 		// read in the entities

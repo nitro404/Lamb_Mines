@@ -37,18 +37,6 @@ public class EditorWindow extends JFrame implements ActionListener {
 		editorPanel = new EditorPanel();
 		editorPanelScrollPane = new JScrollPane(editorPanel);
 		add(editorPanelScrollPane);
-		
-//		editorPanelScrollPane = new JScrollPane(editorPanel);
-//		editorPanelScrollPane.setPreferredSize(new Dimension(editorPanel.getWidth(), editorPanel.getHeight()));
-//		editorPanelScrollPane.setPreferredSize(new Dimension(320, 240));
-//		Rule columnView = new Rule(Rule.HORIZONTAL, true);
-//        Rule rowView = new Rule(Rule.VERTICAL, true);
-//        columnView.setPreferredWidth(320);
-//        Rule rowView.setPreferredHeight(480);
-//		editorPanelScrollPane.setColumnHeaderView(columnView);
-//		editorPanelScrollPane.setRowHeaderView(rowView);
-		
-//		add(editorPanel);
 	}
 	
 	public void createMenu() {
@@ -101,7 +89,6 @@ public class EditorWindow extends JFrame implements ActionListener {
 	public void update() {
 		this.repaint();
 		editorPanel.update();
-System.out.println(editorPanelScrollPane.getPreferredSize());
 	}
 	
 }
