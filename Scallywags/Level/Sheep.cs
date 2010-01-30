@@ -81,20 +81,5 @@ namespace Scallywags
 			KillMe();
 		}
 
-        public int GetAnimationDirection(Vector2 direction)
-        {
-            double angle = Math.Atan2(direction.Y, direction.X) + (Math.PI * 7/8);
-            double fraction = angle * 0.5 / Math.PI;
-            fraction += 1.0 / 16.0;
-            if (fraction >= 1.0)
-            {
-                fraction -= 1.0;
-            }
-            int index = (int)(fraction * 8.0);
-            //float angle = (float)Math.Atan2(direction.Y, direction.X) - (float)Math.Atan2(1.0f, 0.0f);
-            //return (int)((angle/(Math.PI/4)) + 8) % 8;
-            return index;
-        }
-
     }
 }

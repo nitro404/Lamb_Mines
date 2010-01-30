@@ -92,6 +92,7 @@
     <Compile Include="Level\Level.cs" />
     <Compile Include="Level\Mine.cs" />
     <Compile Include="Level\Object.cs" />
+    <Compile Include="Level\Player.cs" />
     <Compile Include="Level\Sheep.cs" />
     <Compile Include="Level\Tile.cs" />
     <Compile Include="Log.cs" />

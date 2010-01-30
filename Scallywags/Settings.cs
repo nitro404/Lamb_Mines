@@ -69,7 +69,7 @@ namespace Scallywags
 
         ///////////////////////////////////////////
         //Application settings
-        public const float SWITCH_INPUT_DELAY       = 0.3f;         ///< The delay, when switching modules, before processing input
+        public const float SWITCH_INPUT_DELAY       = 0.01f;         ///< The delay, when switching modules, before processing input
   
         //These will be ignored if the startup is full screen
         public const int PREFFERED_WINDOW_WIDTH     = 1280;         ///< The preffered window width

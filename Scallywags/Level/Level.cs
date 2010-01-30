@@ -190,7 +190,17 @@ namespace Scallywags
                 Sheep tempSheep = new Sheep(new Vector2((i * 64) + 10, i * -24 ), animList, textureList[18]);
                 ((ArrayList)AllObjects[1]).Add(tempSheep);
             }
-			*/
+
+            //Player
+            List<Animation> anims = new List<Animation>();
+            for (int j = 0; j < 8; j++)
+            {
+                Animation anim = new Animation(textureList[19], 0.1f, true, new Vector2(35, 35), j);
+                anims.Add(anim);
+            }
+            Player tempPlayer = new Player(m_ParentApp.Inputs , new Vector2(512, 256), anims, textureList[18]);
+            ((ArrayList)AllObjects[0]).Add(tempPlayer);
+
             return true;
         }
 
