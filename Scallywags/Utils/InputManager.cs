@@ -23,6 +23,8 @@ namespace Scallywags
         List<GamePadState> m_GamePadStates;         ///< The current gamepad states
         List<GamePadState> m_OldGamePadStates;      ///< The previous gamepad states
 
+        MouseState m_MouseState;
+        MouseState m_OldMouseState;
 
         KeyboardState m_KeyState;                   ///< The current keyboard state
         KeyboardState m_OldKeyState;                ///< The previous keybaord state
@@ -40,6 +42,7 @@ namespace Scallywags
             {
                 m_OldGamePadStates = m_GamePadStates;
                 m_OldKeyState = m_KeyState;
+                m_OldMouseState = m_MouseState;
                 m_Delay = value;
             }
         }
@@ -67,6 +70,9 @@ namespace Scallywags
          */
         public InputManager()
         {
+
+            m_MouseState = new MouseState();
+            m_OldMouseState = new MouseState();
             
             m_GamePadStates = new List<GamePadState>();
             m_OldGamePadStates = new List<GamePadState>();
@@ -112,6 +118,9 @@ namespace Scallywags
             m_KeyState = new KeyboardState();
             m_OldKeyState = new KeyboardState();
 
+            m_MouseState = new MouseState();
+            m_OldMouseState = new MouseState();
+
 
         }
 
@@ -136,6 +145,9 @@ namespace Scallywags
                 m_GamePadStates[1] = GamePad.GetState(PlayerIndex.Two);
                 m_GamePadStates[2] = GamePad.GetState(PlayerIndex.Three);
                 m_GamePadStates[3] = GamePad.GetState(PlayerIndex.Four);
+
+                m_OldMouseState = m_MouseState;
+                m_MouseState = Mouse.GetState();
             }
 
             for (int i = 0; i < m_fControllerIdleTime.Count; i++ )
@@ -586,6 +598,105 @@ namespace Scallywags
                         return true;
                     else
                         return false;
+                }
+            }
+            return false;
+        }
+        //Returns the mouse position as a vector
+        public Vector2 GetMousePosition() {
+            Vector2 thePosition;
+            thePosition.X = m_MouseState.X;
+            thePosition.Y = m_MouseState.Y;
+            return thePosition;
+        }
+        //Returns the X value of the mouse position as a float
+        public float GetMousePositionX() {
+            float mouseX;
+            mouseX = m_MouseState.X;
+            return mouseX;
+        }
+        //Returns the Y value of the mouse position as a float
+        public float GetMousePositionY() {
+            float mouseY;
+            mouseY = m_MouseState.Y;
+            return mouseY;
+        }
+        //Checks if the Left Mouse Button is currently down
+        public bool IsMouseLeftDown() 
+        {
+            if (m_MouseState.LeftButton == ButtonState.Pressed) {
+                return true;
+            }
+            else { return false; }
+        }
+        //Checks if the Right Mouse Button is currently down
+        public bool IsMouseRightDown() {
+            if (m_MouseState.RightButton == ButtonState.Pressed) {
+                return true;
+            }
+            else { return false; }
+        }
+        //Checks if the Middle Mouse Button is currently down
+        public bool IsMouseMiddleDown() {
+            if (m_MouseState.MiddleButton == ButtonState.Pressed) {
+                return true;
+            }
+            else { return false; }
+        }
+        //Checks the current value of the mouse scroll wheel compared to the previous update
+        public float MouseWheelChanged() {
+            return m_MouseState.ScrollWheelValue - m_OldMouseState.ScrollWheelValue;
+        }
+        //Checks if the Left Mouse Button has just been pressed within the last update
+        public bool IsMouseLeftPressed() {
+            if (m_MouseState.LeftButton == ButtonState.Pressed) {
+                if (m_OldMouseState.LeftButton == ButtonState.Released) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        //Checks if the Right Mouse Button has just been pressed within the last update
+        public bool IsMouseRightPressed() {
+            if (m_MouseState.RightButton == ButtonState.Pressed) {
+                if (m_OldMouseState.RightButton == ButtonState.Released) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        //Checks if the Middle Mouse Button has just been pressed within the last update
+        public bool IsMouseMiddlePressed() {
+            if (m_MouseState.MiddleButton == ButtonState.Pressed) {
+                if (m_OldMouseState.MiddleButton == ButtonState.Released) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        //Checks if the Left Mouse Button has just been released within the last update
+        public bool IsMouseLeftReleased() {
+            if (m_MouseState.LeftButton == ButtonState.Released) {
+                if (m_OldMouseState.LeftButton == ButtonState.Pressed) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        //Checks if the Right Mouse Button has just been released within the last update
+        public bool IsMouseRightReleased() {
+            if (m_MouseState.RightButton == ButtonState.Released) {
+                if (m_OldMouseState.RightButton == ButtonState.Pressed) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        //Checks if the Middle Mouse Button has just been released within the last update
+        public bool IsMouseMiddleReleased() {
+            if (m_MouseState.MiddleButton == ButtonState.Released) {
+                if (m_OldMouseState.MiddleButton == ButtonState.Pressed) {
+                    return true;
                 }
             }
             return false;
