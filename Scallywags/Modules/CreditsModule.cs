@@ -56,9 +56,6 @@ namespace Scallywags
                 }
                 m_Credits.Add(goodInfo);
             }
-
-
-            SoundPlayer.PlayCue("menu_cleaned");
         }
 
         /** @fn     MODULE_IDENTIFIER Update( GameTime gameTime )
@@ -94,29 +91,7 @@ namespace Scallywags
          */
         public override void Draw(GraphicsDevice device, GameTime gameTime)
         {
-
-        }
-
-        /** @fn     void Draw( GameTime gameTime )
-        *  @brief  Draw the module's non-processed bits
-        *  @param  device [in] the active graphics device
-        *  @param  gameTime [in] information about the time between frames
-        */
-        public override void DrawNonEdgeDetectedFeatures(GraphicsDevice device, GameTime gameTime)
-        {
-                device.Clear(Color.Black);
-
-                SpriteBatch sb = new SpriteBatch(device);
-
-                for (int i = 0; i < m_Credits.Count; i++)
-                {
-                    ParentApp.DebugFont.DrawFont(sb, m_Credits[i], 0.4f, 1.05f + 0.03f * (i + 1) + m_CreditsPosition, Color.Gold);
-                }
-
-                /////////////////////////////////////
-                //Debug output
-
-                //ParentApp.DebugFont.DrawFont(sb, "Credits Module", 0, 0.95f, Color.White);
+            device.Clear(Color.Silver);
         }
 
         /** @fn     void ShutDown()

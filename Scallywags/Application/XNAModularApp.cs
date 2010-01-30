@@ -34,19 +34,8 @@ namespace Scallywags
         //Our Utilities
         private FontUtil        m_font;             ///< A vector font for debugging
         private InputManager    m_Inputs;
-        private SoundManager    m_soundManager;     ///< The sound manager
+        //private SoundManager    m_soundManager;     ///< The sound manager
                                                     ///
-
-        // Effect used to apply the edge detection and pencil sketch postprocessing.
-        Effect postprocessEffect;
-
-        int settingsIndex = 0;
-
-
-        // Custom rendertargets.
-        RenderTarget2D sceneRenderTarget;
-        RenderTarget2D normalDepthRenderTarget;
-
         SpriteBatch spriteBatch;
                                                           
         #endregion
@@ -68,14 +57,6 @@ namespace Scallywags
             }
         }
 
-        public int PostProcessEffect
-        {
-            set
-            {
-                settingsIndex = value;
-            }
-        }
-
         /** @prop   Device
          *  @brief  the graphic device
          */
@@ -90,13 +71,13 @@ namespace Scallywags
         /** @prop   SoundPlayer
          *  @brief  the tool to play sounds and music with
          */
-        public SoundManager SoundPlayer
-        {
-            get
-            {
-                return m_soundManager;
-            }
-        }
+        //public SoundManager SoundPlayer
+        //{
+        //    get
+        //    {
+                //return m_soundManager;
+        //    }
+        //}
 
         /** @prop   Graphics
          *  @brief  the device manager
@@ -157,12 +138,6 @@ namespace Scallywags
             }
         }
 
-        // Choose what display settings to use.
-        NonPhotoRealisticSettings PPSettings
-        {
-            get { return NonPhotoRealisticSettings.PresetSettings[settingsIndex]; }
-        }
-
         #endregion
 
         #region CONSTRUCTION
@@ -182,8 +157,6 @@ namespace Scallywags
             m_fElapsedDelay = 0;
 
             m_graphics = new GraphicsDeviceManager(this);
-
-            Components.Add(new GamerServicesComponent(this));
 
             //Anti aliasing doesn't seem to have an effect with edge enhancement on.
             m_graphics.PreferMultiSampling = true;
@@ -220,7 +193,7 @@ namespace Scallywags
             m_font = new FontUtil();
 
             m_Inputs = new InputManager();
-            m_soundManager = new SoundManager();
+            //m_soundManager = new SoundManager();
         }
 
         #endregion
@@ -248,77 +221,22 @@ namespace Scallywags
 
          void PrepareDevice(object sender, PreparingDeviceSettingsEventArgs eventargs)
         {
-
-#if XBOX
-            eventargs.GraphicsDeviceInformation.PresentationParameters.MultiSampleQuality = 0;
-            eventargs.GraphicsDeviceInformation.PresentationParameters.MultiSampleType = MultiSampleType.FourSamples;
-            return;  
-#else
-            //For the purple problem
-            eventargs.GraphicsDeviceInformation.PresentationParameters.RenderTargetUsage = RenderTargetUsage.PreserveContents;
-            
-             //Set up antialiasing
-             int quality = 0;
-            GraphicsAdapter adapter = eventargs.GraphicsDeviceInformation.Adapter;
-            SurfaceFormat format = adapter.CurrentDisplayMode.Format;
-            // Check for 4xAA
-            if (adapter.CheckDeviceMultiSampleType(DeviceType.Hardware, format,
-                false, MultiSampleType.FourSamples, out quality))
-            {
-                // even if a greater quality is returned, we only want quality 0
-                eventargs.GraphicsDeviceInformation.PresentationParameters.MultiSampleQuality = 0;
-                eventargs.GraphicsDeviceInformation.PresentationParameters.MultiSampleType =
-                    MultiSampleType.FourSamples;
-            }
-            // Check for 2xAA
-            else if (adapter.CheckDeviceMultiSampleType(DeviceType.Hardware, format,
-                false, MultiSampleType.TwoSamples, out quality))
-            {
-                // even if a greater quality is returned, we only want quality 0
-                eventargs.GraphicsDeviceInformation.PresentationParameters.MultiSampleQuality = 0;
-                eventargs.GraphicsDeviceInformation.PresentationParameters.MultiSampleType =
-                    MultiSampleType.TwoSamples;
-            }
-
             return;               
-#endif
-         }
+        }
 
         /** @fn     void Initialize()
          *  @brief  set up running module properties.
          */
         protected override void Initialize()
         {
-            m_soundManager.Init( Content );
+            //m_soundManager.Init( Content );
             m_loader.Init( GraphicsDevice );
 
             //Allow key presses right as the app starts (so you can skip the splash module)
             m_fElapsedDelay = Settings.SWITCH_INPUT_DELAY;
 
-            postprocessEffect = Content.Load<Effect>("Content/Shaders/PostprocessEffect");
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // Create two custom rendertargets.
-            PresentationParameters pp =GraphicsDevice.PresentationParameters;
-
-#if XBOX
-           sceneRenderTarget = new RenderTarget2D(GraphicsDevice,
-                pp.BackBufferWidth, pp.BackBufferHeight, 1,
-                pp.BackBufferFormat, pp.MultiSampleType, pp.MultiSampleQuality, RenderTargetUsage.DiscardContents );
-
-            normalDepthRenderTarget = new RenderTarget2D(GraphicsDevice,
-                pp.BackBufferWidth, pp.BackBufferHeight, 1,
-                pp.BackBufferFormat, pp.MultiSampleType, pp.MultiSampleQuality, RenderTargetUsage.DiscardContents ); 
-#else
-            sceneRenderTarget = new RenderTarget2D( GraphicsDevice,
-                pp.BackBufferWidth, pp.BackBufferHeight, 1,
-                pp.BackBufferFormat, pp.MultiSampleType, pp.MultiSampleQuality, RenderTargetUsage.PreserveContents );
-
-            normalDepthRenderTarget = new RenderTarget2D( GraphicsDevice,
-                pp.BackBufferWidth, pp.BackBufferHeight, 1,
-                pp.BackBufferFormat, pp.MultiSampleType, pp.MultiSampleQuality, RenderTargetUsage.PreserveContents );
-
-#endif
             //Load the start module 
             SwitchModule( m_startModule.ID );            
             base.Initialize();
@@ -330,7 +248,7 @@ namespace Scallywags
          */
         protected override void Update(GameTime gameTime)
         {
-            m_soundManager.Update();
+            //m_soundManager.Update();
 
             //Calculate the elapsed time in seconds
             float fElapsedTime = (float)gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
@@ -351,14 +269,6 @@ namespace Scallywags
                     //Handle escape keyboard press on windows builds
                     if( m_Inputs.IsKeyDown( Keys.Escape ) )
                         Exit();
-
-                    if (m_Inputs.IsKeyPressed(Keys.Tab))
-                    {
-                        if (settingsIndex != NonPhotoRealisticSettings.PresetSettings.Length - 1)
-                            settingsIndex++;
-                        else
-                            settingsIndex = 0;
-                    }
 
                 #endif
 
@@ -387,7 +297,6 @@ namespace Scallywags
          */
         protected override void Draw(GameTime gameTime)
         {
-            Device.RenderState.DepthBufferEnable = true;
 
             SpriteBatch sb = new SpriteBatch( Graphics.GraphicsDevice );
            //Draw the current module, or the loader if no module is loaded
@@ -399,27 +308,6 @@ namespace Scallywags
             {
                 if (Settings.FAST_MODE == false)
                 {
-                    // If we are doing edge detection, first off we need to render the
-                    // normals and depth of our model into a special rendertarget.
-                    if (PPSettings.EnableEdgeDetect)
-                    {
-                        GraphicsDevice.SetRenderTarget(0, normalDepthRenderTarget);
-
-                        //GraphicsDevice.Clear(Color.Black);
-
-                        Settings.DETECT_EDGES = true;
-                        m_currentModule.Draw(m_graphics.GraphicsDevice, gameTime);
-                        Settings.DETECT_EDGES = false;
-                    }
-                    // If we are doing edge detection and/or pencil sketch processing, we
-                    // need to draw the model into a special rendertarget which can then be
-                    // fed into the postprocessing shader. Otherwise can just draw it
-                    // directly onto the backbuffer.
-                    if (PPSettings.EnableEdgeDetect || PPSettings.EnableSketch)
-                        GraphicsDevice.SetRenderTarget(0, sceneRenderTarget);
-                    else
-                        GraphicsDevice.SetRenderTarget(0, null);
-
 
                     m_currentModule.Draw(m_graphics.GraphicsDevice, gameTime);
 
@@ -428,93 +316,14 @@ namespace Scallywags
                         string strFPS = "FPS: " + m_nFPS;
                         m_font.DrawFont(sb, strFPS, 0, 0, Color.White);
                     }
-
-                    // Run the postprocessing filter over the scene that we just rendered.
-                    if (PPSettings.EnableEdgeDetect || PPSettings.EnableSketch)
-                    {
-                        GraphicsDevice.SetRenderTarget(0, null);
-
-                        ApplyPostprocess();
-                    }
-                    m_currentModule.DrawNonEdgeDetectedFeatures(m_graphics.GraphicsDevice, gameTime);
                 }
-                else
-                {
-                    m_currentModule.Draw(m_graphics.GraphicsDevice, gameTime);
-                    m_currentModule.DrawNonEdgeDetectedFeatures(m_graphics.GraphicsDevice, gameTime);
-                }
+
             }
 
             base.Draw(gameTime);
         }
 
-        /// <summary>
-        /// Helper applies the edge detection and pencil sketch postprocess effect.
-        /// </summary>
-        void ApplyPostprocess()
-        {
-            EffectParameterCollection parameters = postprocessEffect.Parameters;
-            string effectTechniqueName;
-
-            // Set effect parameters controlling the pencil sketch effect.
-            if (PPSettings.EnableSketch)
-            {
-                parameters["SketchThreshold"].SetValue(PPSettings.SketchThreshold);
-                parameters["SketchBrightness"].SetValue(PPSettings.SketchBrightness);
-            }
-
-            // Set effect parameters controlling the edge detection effect.
-            if (PPSettings.EnableEdgeDetect)
-            {
-                Vector2 resolution = new Vector2(sceneRenderTarget.Width,
-                                                 sceneRenderTarget.Height);
-
-                Texture2D normalDepthTexture = normalDepthRenderTarget.GetTexture();
-
-                parameters["EdgeWidth"].SetValue(PPSettings.EdgeWidth);
-                parameters["EdgeIntensity"].SetValue(PPSettings.EdgeIntensity);
-                parameters["ScreenResolution"].SetValue(resolution);
-                parameters["NormalDepthTexture"].SetValue(normalDepthTexture);
-
-                // Choose which effect technique to use.
-                if (PPSettings.EnableSketch)
-                {
-                    if (PPSettings.SketchInColor)
-                        effectTechniqueName = "EdgeDetectColorSketch";
-                    else
-                        effectTechniqueName = "EdgeDetectMonoSketch";
-                }
-                else
-                    effectTechniqueName = "EdgeDetect";
-            }
-            else
-            {
-                // If edge detection is off, just pick one of the sketch techniques.
-                if (PPSettings.SketchInColor)
-                    effectTechniqueName = "ColorSketch";
-                else
-                    effectTechniqueName = "MonoSketch";
-            }
-
-            // Activate the appropriate effect technique.
-            postprocessEffect.CurrentTechnique =
-                                    postprocessEffect.Techniques[effectTechniqueName];
-
-            // Draw a fullscreen sprite to apply the postprocessing effect.
-            spriteBatch.Begin(SpriteBlendMode.None,
-                              SpriteSortMode.Immediate,
-                              SaveStateMode.SaveState);
-
-            postprocessEffect.Begin();
-            postprocessEffect.CurrentTechnique.Passes[0].Begin();
-
-            spriteBatch.Draw(sceneRenderTarget.GetTexture(), Vector2.Zero, Color.White);
-
-            spriteBatch.End();
-
-            postprocessEffect.CurrentTechnique.Passes[0].End();
-            postprocessEffect.End();
-        }
+     
 
         #endregion
 
@@ -532,7 +341,7 @@ namespace Scallywags
                 {
                     m_Inputs.ResetInput();// ClearInput();
                     
-                    m_soundManager.StopAll();
+                    //m_soundManager.StopAll();
 
                     m_fElapsedDelay = 0;
 
@@ -544,7 +353,6 @@ namespace Scallywags
                     m_font.Init(Graphics.GraphicsDevice.Viewport.Width,
                     Graphics.GraphicsDevice.Viewport.Height,
                     m_loader.Content.Load<SpriteFont>(@"Content\Font\DebugFont"));
-                    PostProcessEffect = 0;
 
                     break;
                 }

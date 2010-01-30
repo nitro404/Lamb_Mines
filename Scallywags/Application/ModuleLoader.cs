@@ -23,17 +23,9 @@ namespace Scallywags
         private ContentManager  m_content;      ///< Content manager
         private XNAModule       m_nextModule;   ///< The ID of the next module
         private XNAModularApp   m_app;          ///< The app controlling the loader
-        private string          m_strState;     ///< The current loading state
-                                         
-        //string                  m_strLoadImg;     ///< The image asset name
-        //Texture2D               m_texLoadImg;     ///< The image to show while loading
-        Texture2D[]             m_vLoadImages;      ///< the array of loading images      
-        int                     m_nCurrentImage;
-        Texture2D               m_texFade;          ///< The fade in/out texture
                                                
         private bool            m_bLoaded;      ///< Has the current module been fully loaded?
-        private float           m_fFadeTime;    ///< Time remaining to fade complete
-        private bool            m_bReady;       ///< Is the loader ready to be drawn?
+
 
         #endregion
 
@@ -61,17 +53,6 @@ namespace Scallywags
             }
         }
 
-        /** @prop   Ready
-         *  @brief  is the loader ready to draw?
-         */
-        public bool Ready
-        {
-            get
-            {
-                return m_bReady;
-            }
-        }
-
         #endregion
 
         #region CONSTRUCTION
@@ -86,15 +67,7 @@ namespace Scallywags
             m_content       = new ContentManager(services);
             m_nextModule    = null;
             
-            m_strState      = "";
-
-            m_vLoadImages   = null;
-
             m_app           = app;
-            m_fFadeTime     = 0;
-            m_texFade       = null;
-
-            m_bReady        = false;
         }
 
         #endregion
@@ -107,23 +80,7 @@ namespace Scallywags
          */
         public void Init( GraphicsDevice device )
         {
-            m_nCurrentImage = 0;
-
-            try
-            {
-                m_texFade = new Texture2D( device, 1, 1);
-
-                Color[] pixels = new Color[1];
-                pixels[0] = Color.Black;
-
-                m_texFade.SetData<Color>(pixels);
-
-                m_vLoadImages = new Texture2D[ NUM_TEXTURES ];
-            }
-            catch (Exception ex)
-            {
-                Error.Trace("Error in ModuleLoader constructor: " + ex.Message);
-            }
+          
         }
         
         /** @fn     void LoadModule( XNAModule moduleToLoad )
@@ -140,44 +97,14 @@ namespace Scallywags
                 m_app.CurrentModule = null;
             }
 
-            m_nCurrentImage = 0;
-
             //Unload any existing content
             m_content.Unload();
             m_nextModule = moduleToLoad;
 
-            if( m_nextModule.ShowLoadScreen )
-            {
-                Error.Trace( "Spawning load thread" );
-
-                try
-                {
-                    //Load the module resources with the loading screen
-                    m_vLoadImages[ 0 ] = m_content.Load< Texture2D >( "Content/Textures/Load0" );
-                    m_vLoadImages[ 1 ] = m_content.Load< Texture2D >( "Content/Textures/Load1" );
-                    m_vLoadImages[ 2 ] = m_content.Load< Texture2D >( "Content/Textures/Load2" );
-                    m_vLoadImages[ 3 ] = m_content.Load< Texture2D >( "Content/Textures/Load3" );
-                    m_vLoadImages[ 4 ] = m_content.Load< Texture2D >( "Content/Textures/Load4" );
-                }
-                catch( Exception ex )
-                {
-                    Error.Trace( "Error loading module loader textures: " + ex.Message );
-                    m_app.Exit();
-                    return;
-                }
-
-                m_bReady = true;
-
-                //Spawn loading thread
-                Thread thLoad = new Thread( LoadResources );
-                thLoad.Start();
-            }
-            else
-            {
-                Error.Trace( "Loading Module without load screen" );
-                //Load the resources, don't show a splash screen
-                LoadResources();
-            }
+           
+            Error.Trace( "Loading Module without load screen" );
+            //Load the resources, don't show a splash screen
+            LoadResources();
         }
 
         /** @fn     void Update( GameTime gameTime )
@@ -191,15 +118,9 @@ namespace Scallywags
                 //When loading is complete, initialize the module.
                 if( m_bLoaded == true )
                 {
-                    m_fFadeTime -= fElapsedTime;
-                    SetFadeAmount( 1.0f - ( m_fFadeTime / Settings.LOADER_FADE_OUT_TIME ) );
+                    //Tell the app to start running the new module
+                    m_app.CurrentModule = m_nextModule;
 
-                    if( m_fFadeTime <= 0 )
-                    {
-                        //Tell the app to start running the new module
-                        m_bReady = false;
-                        m_app.CurrentModule = m_nextModule;
-                    }
                 } 
             }
             catch( Exception ex )
@@ -216,42 +137,7 @@ namespace Scallywags
          */
         public void Draw(GraphicsDevice device, GameTime gameTime)
         {
-            try
-            {
-                device.Clear(Color.Black);
-
-                //Cases where we don't want this to draw.
-                if( ( m_bLoaded == true && m_fFadeTime <= 0 ) || m_bReady == false )
-                    return;
-
-                SpriteBatch sb = new SpriteBatch( device );
-
-                sb.Begin( SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.SaveState );
-
-                float fY = ( device.Viewport.Height - m_vLoadImages[ m_nCurrentImage ].Height ) / 2.0f;
-                float fX = ( device.Viewport.Width - m_vLoadImages[ m_nCurrentImage ].Width ) / 2.0f;
-
-                sb.Draw( m_vLoadImages[m_nCurrentImage], new Vector2( fX, fY ), Color.White );
-
-                sb.End();
-
-                m_app.DebugFont.DrawFont(sb, m_strState, 0, 0, Color.White);
-
-                sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Deferred, SaveStateMode.SaveState);
-
-                    if (m_fFadeTime > 0)
-                    {
-                        //Draw the fade
-                        sb.Draw(m_texFade, new Rectangle(0, 0, device.Viewport.Width, device.Viewport.Height), Color.Black);
-
-                    }
-                sb.End();           
-            }
-            catch( Exception ex )
-            {
-                Error.Trace( "Loader Draw Exception: " + ex.Message );
-                Error.Trace( " \n\nStack trace\n\n " + ex.StackTrace );
-            }
+            device.Clear(Color.Black);    
         }
 
         #endregion
@@ -267,9 +153,6 @@ namespace Scallywags
             //Check for any exceptions loading resources (most likely, resource not found)
             try
             {
-                //Load the models
-                m_strState      = "Loading Models";
-                m_nCurrentImage = 0;
                 Thread.Sleep(100);
 
                 foreach (string str in m_nextModule.ModelResources)
@@ -281,9 +164,6 @@ namespace Scallywags
                     m_nextModule.AddModel( strName, mdl );
                 }
                
-                //Load the textures
-                m_strState = "Loading Textures";
-                m_nCurrentImage = 1;
                 Thread.Sleep(100);
 
                 foreach ( string str in m_nextModule.TextureResources )
@@ -292,10 +172,6 @@ namespace Scallywags
                     string strName = ExtractResourceName(str);
                     m_nextModule.AddTexture(strName, tex);
                 }
-
-                //Load the shaders
-                m_strState = "Loading Shaders";
-                m_nCurrentImage = 2;
                 Thread.Sleep(100);
 
                 foreach ( string str in m_nextModule.ShaderResources )
@@ -306,10 +182,6 @@ namespace Scallywags
                     m_nextModule.AddEffect( strName, eff );
                 }
 
-
-                //Load the fonts
-                m_strState = "Loading Fonts";
-                m_nCurrentImage = 3;
                 Thread.Sleep(100);
                 foreach ( string str in m_nextModule.FontResources )
                 {
@@ -319,9 +191,6 @@ namespace Scallywags
                     m_nextModule.AddFont( strName, font );
                 }
 
-                //Signal that the thread is complete
-                m_strState = "Loading Complete";
-                m_nCurrentImage = 4;
                 Thread.Sleep(100);
             }
             catch( Exception ex )
@@ -338,7 +207,6 @@ namespace Scallywags
             try
             {
                 //Initialize the new module
-                m_strState = "Initializing Module";
                 m_nextModule.Initialize();                
             }
             catch( Exception ex )
@@ -352,19 +220,8 @@ namespace Scallywags
             }
 
             m_bLoaded   = true;
-            m_fFadeTime = Settings.LOADER_FADE_OUT_TIME;
 
             return;
-        }
-
-        /** @fn     void SetFadeAmount( float fAmt )
-         *  @brief  set the amount of fade to apply to the background image
-         */
-        private void SetFadeAmount( float fAmt )
-        {
-            Color[] nPixels = new Color[1];
-            nPixels[0] = new Color( 0.0f, 0, 0, fAmt );
-            m_texFade.SetData<Color>(nPixels);
         }
 
         /** @fn     string ExtractResourceName( string strFullResourcePath )

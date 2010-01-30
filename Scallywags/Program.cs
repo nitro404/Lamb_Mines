@@ -19,7 +19,7 @@ namespace Scallywags
                 try
                 {
                     game = new ScallyWagsApp( gameModule );
-                    game.AddModule(new MenuModule());
+                    game.AddModule(new MenuModule());    
                     game.AddModule(new CreditsModule());
                     game.AddModule(new SplashModule() );
                     game.Run();

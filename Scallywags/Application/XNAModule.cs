@@ -188,13 +188,13 @@ namespace Scallywags
         /** @prop   SoundPlayer
          *  @brief  shorthand to the app's sound player
          */
-        public SoundManager SoundPlayer
-        {
-            get
-            {
-                return ParentApp.SoundPlayer;
-            }
-        }
+        //public SoundManager SoundPlayer
+        //{
+        //    get
+        //    {
+        //        return ParentApp.SoundPlayer;
+        //    }
+        //}
 
         /** @prop   ID
          *  @brief  the id of the module, should be unique
@@ -440,14 +440,6 @@ namespace Scallywags
          *  @param  gameTime [in] information about the time between frames
          */
         public abstract void Draw(GraphicsDevice device, GameTime gameTime);
-
-        /** @fn     void DrawHud( GameTime gameTime )
-         *  @brief  Draw the module's aspects which will not have Post Processing Applied to them
-         *          *NOTE: These are drawn last, over top of everything else
-         *  @param  device [in] the active graphics device
-         *  @param  gameTime [in] information about the time between frames
-         */
-        public abstract void DrawNonEdgeDetectedFeatures(GraphicsDevice device, GameTime gameTime);
 
         #endregion
 
