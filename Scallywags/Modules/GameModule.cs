@@ -75,9 +75,9 @@ namespace Scallywags
         {
             device.Clear(Color.Red);
             m_sb.Begin();
-            for (int x = -100; x < 100; x++)
+            for (int x = -1; x < 35; x++)
             {
-                for (int y = -100; y < 100; y++)
+                for (int y = -20; y < 25; y++)
                 {
                     Vector2 position = new Vector2(x * 48, y * 48);
                     position = GetScreenCoords(position);

@@ -70,6 +70,7 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -96,8 +97,8 @@
     <Compile Include="Application\XNAModule.cs" />
     <Compile Include="Modules\SplashModule.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Animation\AnimatedTexture.cs" />
-    <Compile Include="Animation\Animation.cs" />
+    <Compile Include="Utils\Animation\Animation.cs" />
+    <Compile Include="Utils\Animation\AnimationPlayer.cs" />
     <Compile Include="Utils\FontUtil.cs" />
     <Compile Include="Utils\InputManager.cs" />
     <Compile Include="Utils\Sound\SoundCue.cs" />
