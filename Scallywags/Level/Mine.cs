@@ -41,7 +41,7 @@ namespace Scallywags
 
         public override bool Update(float elapsedTime)
         {
-			return true;
+			return isAlive;
         }
         public override void Draw(SpriteBatch spriteThing, GameTime gameTime)
         {

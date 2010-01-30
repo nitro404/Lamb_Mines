@@ -75,7 +75,8 @@ namespace Scallywags
 
             //load in all the objects.
             AllObjects = new ArrayList();
-            AllObjects.Add(new ArrayList());
+            AllObjects.Add(new ArrayList());//Add th efirst render plane. This plane will be exclusively for the terrain tiles.
+
 			AllBarriers = new ArrayList();
 
 			Vector2 tempVec = new Vector2();
@@ -86,6 +87,7 @@ namespace Scallywags
                 for (int y = -20; y < 30; y++)
                 {
                     Vector2 position = new Vector2(x * Settings.SCREEN_TILE_MULTIPLIER_X, y * Settings.SCREEN_TILE_MULTIPLIER_Y);
+					position = GlobalHelpers.GetScreenCoords(position);
                     Tile tile = new Tile(position, textureList[rand.Next(0,9)]);
                     ((ArrayList)AllObjects[0]).Add(tile);
                 }
@@ -106,6 +108,7 @@ namespace Scallywags
 					}
 				}
 			}
+			AllObjects.Add(new ArrayList());//Add a second plane to start placing the objects on
 			if (fileInfoHash.Contains("Mine"))
 			{
 				foreach (string value in ((ArrayList)fileInfoHash["Mine"]))
@@ -117,7 +120,7 @@ namespace Scallywags
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
 					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
 					Mine tempMine = new Mine(tempVec, textureList[val3]);
-					((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(new TriggerObject(tempMine.Position,tempMine));
+					((ArrayList)AllObjects[1]).Add(tempMine); TriggerList.Add(new TriggerObject(tempMine.Position,tempMine));
 				}
 			}
 
@@ -136,7 +139,7 @@ namespace Scallywags
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
 					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
 					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
-					((ArrayList)AllObjects[0]).Add(tempClutter);
+					((ArrayList)AllObjects[1]).Add(tempClutter);
 				}
 				foreach (string value in ((ArrayList)fileInfoHash["Trees"]))
 				{
@@ -151,10 +154,46 @@ namespace Scallywags
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
 					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
 					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
-					((ArrayList)AllObjects[0]).Add(tempClutter);
+					((ArrayList)AllObjects[1]).Add(tempClutter);
+				}
+				foreach (string value in ((ArrayList)fileInfoHash["Fences"]))
+				{
+					int val1 = int.Parse(((string[])value.Split(','))[0]);
+					int val2 = int.Parse(((string[])value.Split(','))[1]);
+					int val3 = int.Parse(((string[])value.Split(','))[2]);
+					if (val3 == 16)
+					{
+						int what = 0;
+						what = 0;
+					}
+					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
+					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
+					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
+					((ArrayList)AllObjects[1]).Add(tempClutter);
 				}
 			}
 
+			if (fileInfoHash.Contains("Sheep"))
+			{
+				List<Animation> animList = new List<Animation>();
+				foreach(string value in ((ArrayList)fileInfoHash["Sheep"])){
+
+					int val1 = int.Parse(((string[])value.Split(','))[0]);
+					int val2 = int.Parse(((string[])value.Split(','))[1]);
+					int val3 = int.Parse(((string[])value.Split(','))[2]);
+
+					for (int j = 0; j < 8; j++)
+					{
+						Animation anim = new Animation(textureList[val3], 1, true, new Vector2(35, 35), j);
+						animList.Add(anim);
+					}
+					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
+					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
+					Sheep tempSheep = new Sheep(tempVec, animList, textureList[val3]);
+					((ArrayList)AllObjects[1]).Add(tempSheep);
+				}
+			}
+			/*
             for (int i = 0; i < 20; i++)
             {
                 List<Animation> animList = new List<Animation>();
@@ -164,9 +203,9 @@ namespace Scallywags
                     animList.Add(anim);
                 }
                 Sheep tempSheep = new Sheep(new Vector2((i * 64) + 10, i * -24 ), animList, textureList[18]);
-                ((ArrayList)AllObjects[0]).Add(tempSheep);
+                ((ArrayList)AllObjects[1]).Add(tempSheep);
             }
-
+			*/
             return true;
         }
 
@@ -191,8 +230,12 @@ namespace Scallywags
             {
                 //loop through each tile object. check the collision.
                 //if the collision has occured then
+				bool flag = true;
 				foreach (ArrayList planeList in AllObjects)
 				{
+					//check the flag so that the first element in the array is skipped. 
+					if (flag) { flag = false; continue; }
+
 					for (int c = 0; c < planeList.Count; c++)
 					{
 						//check the collision and if the two object collide.
@@ -245,7 +288,7 @@ namespace Scallywags
 			}
 			for (int i = 0; i < subToDelete.Count; i++)
 			{
-				((ArrayList)AllObjects[0]).Remove(subToDelete[i]);
+				((ArrayList)AllObjects[1]).Remove(subToDelete[i]);
 			}
         }
 
@@ -383,6 +426,17 @@ namespace Scallywags
 					{
 						info = theReader.ReadLine();
 						((ArrayList)outHash["Fences"]).Add(info.Trim());
+					}
+				}
+				else if (info.StartsWith("Sheep: "))
+				{
+					if (!outHash.Contains("Sheep"))
+						outHash.Add("Sheep", new ArrayList());
+					int count = int.Parse(info.Substring(7).Trim());
+					for (int i = 0; i < count; i++)
+					{
+						info = theReader.ReadLine();
+						((ArrayList)outHash["Sheep"]).Add(info.Trim());
 					}
 				}
 			}
