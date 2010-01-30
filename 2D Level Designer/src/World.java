@@ -22,8 +22,8 @@ public class World {
 	
 	final public static int ISOMETRIC_GRID_WIDTH = World.getIsometricWidth(GRID_WIDTH, GRID_HEIGHT);
 	final public static int ISOMETRIC_GRID_HEIGHT = World.getIsometricHeight(GRID_WIDTH, GRID_HEIGHT);
-	final public static double ISOMETRIC_GRID_ANGLE = Math.atan(1.0 / 2.0) * (180.0 / Math.PI);
-	final public static int ISOMETRIC_GRID_INCREMENT = 48;
+	final public static double ISOMETRIC_GRID_ANGLE_RAD = Math.atan(1.0 / 2.0);
+	final public static double ISOMETRIC_GRID_ANGLE_DEG = ISOMETRIC_GRID_ANGLE_RAD * (180.0 / Math.PI);
 	
 	public World() {
 		this.barriers = new Vector<Graph>();
@@ -54,74 +54,20 @@ public class World {
 	}
 	
 	public static int getIsometricX(int x, int y) {
-		return (int) (x * Math.cos(0.46365));
-//		xCart = (x-z)*Math.cos(0.46365);
-//		xI = xCart+xOrigin;
-//		return (xI);
+		return (int) ((Math.cos(ISOMETRIC_GRID_ANGLE_RAD) * x) + ((-Math.sin(ISOMETRIC_GRID_ANGLE_RAD)) * y));
 	}
 	
 	public static int getIsometricY(int x, int y) {
-		return (int) (y + (x * Math.sin(0.46365)));
-//		yCart = y+(x+z)*Math.sin(0.46365);
-//		yI = -yCart+yOrigin;
-//		return (yI);
+		return (int) ((Math.sin(ISOMETRIC_GRID_ANGLE_RAD) * x) + (Math.cos(ISOMETRIC_GRID_ANGLE_RAD) * y));
 	}
 	
 	public static int getCartesianX(int x, int y) {
-		return (int) (x * Math.cos(0.46365));
+		return (int) ((Math.cos(ISOMETRIC_GRID_ANGLE_RAD) * x) + (Math.sin(ISOMETRIC_GRID_ANGLE_RAD) * y));
 	}
 	
 	public static int getCartesianY(int x, int y) {
-		return (int) (- (y + (x * Math.sin(0.46365))));
+		return (int) (((-Math.sin(ISOMETRIC_GRID_ANGLE_RAD)) * x) + (Math.cos(ISOMETRIC_GRID_ANGLE_RAD) * y));
 	}
-	
-	/*
-	// --- Functions ---
-	// Convert isometric coordinates to Flash X coordinate
-	xFla = function (x, y, z) {
-		return ((x-z)*isoCos);
-	};
-	// Convert isometric coordinates to Flash Y coordinate
-	yFla = function (x, y, z) {
-		return (-(y+(x+z)*isoSin));
-	};
-	// Convert Flash X and Y and altitude coordinates to isometric X coordinate
-	xIso = function (xF, yF, y) {
-		return ((xF)/isoCos-(yF+y)/isoSin)/2;
-	};
-	// Convert Flash X and Y and altitude coordinates to isometric Y coordinate (actually Z, but I don't give a hoot)
-	yIso = function (xF, yF, y) {
-		return (-((xF)/isoCos+(yF+y)/isoSin))/2;
-	};
-
-	// --- Variables ---
-	// isoCos and isoSin are defined in variables so they don't have to be calculated every time the functions are executed
-	isoCos = Math.cos(0.46365);
-	isoSin = Math.sin(0.46365);
-
-	// --- Example Use ---
-	// This example shows mostly why I wanted the new functions
-
-	isoWorld_mc.onMouseUp = function() {
-
-		// Let's put _xmouse and _ymouse into isometric coordinates
-		isoMouseX = xIso(_xmouse, _ymouse, 0);
-		isoMouseY = yIso(_xmouse, _ymouse, 0);
-
-		// Let's round it to the nearest 100
-		isoMouseSnapX = Math.round(isoMouseX/100)*100;
-		isoMouseSnapY = Math.round(isoMousey/100)*100;
-
-		// Let's convert them back to Flash coordinates
-		flaMouseX = xFla(isoMouseSnapX, 0, isoMouseSnapY);
-		flaMouseY = yFla(isoMouseSnapX, 0, isoMouseSnapY);
-
-		// Now, let's change the position of this sucker
-		this._x -= flaMouseX;
-		this._y -= flaMouseY;
-
-	};
-	*/
 	
 	public static World parseFrom(String fileName) {
 		if(fileName == null || fileName.trim().length() == 0) {
