@@ -19,6 +19,7 @@ namespace Scallywags
     {
         //This list must be a list of lists. This way each set of objects is on a different rendering plane so that objects can be rendered ontop of each other.
         private ArrayList AllObjects;
+		private ArrayList AllBarriers;
         Texture2D[] textureList;//The grass object
         private SpriteBatch m_sb;               ///< The sprite batch for 2D rendering
 
@@ -63,22 +64,34 @@ namespace Scallywags
 					{
 						textureList[i] = m_ParentApp.Content.Load<Texture2D>("Content/Textures/" + ((ArrayList)fileInfoHash["Textures"])[i].ToString());
 					}
-					catch (Exception error)
+					catch (Exception)
 					{
 						Log.WriteToLog(Log.LogErrorLevel.ERROR_MAJOR,"Could not load resource " + ((ArrayList)fileInfoHash["Textures"])[i].ToString());
 					}
 				}
 			}
-
-            //load the texture resources
-            //grass = m_ParentApp.Content.Load<Texture2D>("Content/Textures/grass_base01");
-            //tempTex = m_ParentApp.Content.Load<Texture2D>("Content/Textures/grass_base555-01");
+			
 
             //load in all the objects.
-            //temp code
             AllObjects = new ArrayList();
             AllObjects.Add(new ArrayList());
+			AllBarriers = new ArrayList();
 
+			if (fileInfoHash.Contains("Barrier"))
+			{
+				foreach (Hashtable table in (Hashtable)fileInfoHash["Barrier"])
+				{
+					AllBarriers.Add(new ArrayList());
+					foreach (ArrayList secondTable in table)
+					{
+						for (int i = 0; i < secondTable.Count; i++)
+						{
+							//load each of the collision barriers into an array.
+							((ArrayList)AllBarriers[i]).Add(secondTable[i]);
+						}
+					}
+				}
+			}
 			if (fileInfoHash.Contains("Mine"))
 			{
 				foreach (string value in ((ArrayList)fileInfoHash["Mine"]))
@@ -91,6 +104,30 @@ namespace Scallywags
 					((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
 				}
 			}
+<<<<<<< .mine
+			if (fileInfoHash.Contains("Rocks") || fileInfoHash.Contains("Trees") || fileInfoHash.Contains("Fences"))
+			{
+				foreach (string value in ((ArrayList)fileInfoHash["Mine"]))
+				{
+					int val1 = int.Parse(((string[])value.Split(','))[0]);
+					int val2 = int.Parse(((string[])value.Split(','))[1]);
+					int val3 = int.Parse(((string[])value.Split(','))[2]);
+
+					Clutter tempClutter = new Clutter(new Vector2(val1, val2), textureList[val3]);
+					((ArrayList)AllObjects[0]).Add(tempClutter);
+
+				}
+			}
+
+
+			
+			//for (int i = 0; i < 10; i++)
+			//{
+			//	Mine tempMine = new Mine(new int[] { 15, i }, ref textureList[1]);
+			//	((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
+			//}
+=======
+>>>>>>> .r22
 
             for (int i = 0; i < 10; i++)
             {
@@ -205,48 +242,92 @@ namespace Scallywags
         private Hashtable readLevelFile(string theFile)
         {
             StreamReader theReader = new StreamReader(theFile);
-            int readIndex = 0;
+
 			Hashtable outHash = new Hashtable();
 
             string info = "";
-            while ((info = theReader.ReadLine()) != null)
-            {
-                if (readIndex == 0)
-                {
-                    if (info.StartsWith("Textures: "))
-                    {
-                        readIndex = 1;
-                    }
-					else if (info.StartsWith("Mine: "))
-					{
-						readIndex = 2;
-					}
-                }
-                else if (readIndex == 1)
-                {
-					if (info.Trim().ToLower() == "end")
-					{
-						readIndex = 0;
-						continue;
-					}
+			while ((info = theReader.ReadLine()) != null)
+			{
+				if (info.StartsWith("Dimensions"))
+				{
+					if (!outHash.Contains("Dimensions"))
+						outHash.Add("Dimensions", new ArrayList());
+					((ArrayList)outHash["Dimensions"]).Add(info.Trim());
+				}
+				else if (info.StartsWith("Textures: "))
+				{
 					if (!outHash.Contains("Textures"))
 						outHash.Add("Textures", new ArrayList());
-					((ArrayList)outHash["Textures"]).Add(info.Trim());
-                }
-				else if (readIndex == 2)
-				{
-					if (info.Trim().ToLower() == "end")
+					int count = int.Parse(info.Substring(10).Trim());
+					for (int i = 0; i < count; i++)
 					{
-						readIndex = 0;
-						continue;
+						info = theReader.ReadLine();
+						((ArrayList)outHash["Textures"]).Add(info.Trim());
+						
 					}
-					if (!outHash.Contains("Mine"))
-						outHash.Add("Mine",new ArrayList());
-					((ArrayList)outHash["Mine"]).Add(info.Trim());
 				}
-
-
-            }
+				else if (info.StartsWith("Barriers: "))
+				{
+					if (!outHash.Contains("Barriers"))
+						outHash.Add("Barriers", new Hashtable());
+					int count = int.Parse(info.Substring(10).Trim());
+					for (int i = 0; i < count; i++)
+					{
+						info = theReader.ReadLine();
+						((Hashtable)outHash["Barriers"]).Add(i, new ArrayList());
+						int count2 = int.Parse(info.Substring(7));//"Edges: "
+						for (int c = 0; c < count2; c++)
+						{
+							info = theReader.ReadLine();
+							((ArrayList)((Hashtable)outHash["Barriers"])[i]).Add(info.Trim());
+						}
+					}
+				}
+				else if (info.StartsWith("Mines: "))
+				{
+					if (!outHash.Contains("Mine"))
+						outHash.Add("Mine", new ArrayList());
+					int count = int.Parse(info.Substring(6).Trim());
+					for (int i = 0; i < count; i++)
+					{
+						info = theReader.ReadLine();
+						((ArrayList)outHash["Mine"]).Add(info.Trim());
+					}
+				}
+				else if (info.StartsWith("Rockss: "))
+				{
+					if (!outHash.Contains("Rocks"))
+						outHash.Add("Rocks", new ArrayList());
+					int count = int.Parse(info.Substring(7).Trim());
+					for (int i = 0; i < count; i++)
+					{
+						info = theReader.ReadLine();
+						((ArrayList)outHash["Rocks"]).Add(info.Trim());
+					}
+				}
+				else if (info.StartsWith("Treess: "))
+				{
+					if (!outHash.Contains("Trees"))
+						outHash.Add("Trees", new ArrayList());
+					int count = int.Parse(info.Substring(7).Trim());
+					for (int i = 0; i < count; i++)
+					{
+						info = theReader.ReadLine();
+						((ArrayList)outHash["Trees"]).Add(info.Trim());
+					}
+				}
+				else if (info.StartsWith("Fences: "))
+				{
+					if (!outHash.Contains("Fences"))
+						outHash.Add("Fences", new ArrayList());
+					int count = int.Parse(info.Substring(8).Trim());
+					for (int i = 0; i < count; i++)
+					{
+						info = theReader.ReadLine();
+						((ArrayList)outHash["Fences"]).Add(info.Trim());
+					}
+				}
+			}
 			return outHash;
         }
         

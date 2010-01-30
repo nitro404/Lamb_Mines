@@ -20,6 +20,7 @@ namespace Scallywags
         private Vector2 position = new Vector2();
         public Texture2D myTexture;
         private bool StillAlive = true;
+		private bool AmIStopped = false;
 
         //properties
         public Vector2 Position
@@ -27,19 +28,32 @@ namespace Scallywags
             get { return position; }
             set { position = value; }
 		}
-
         public bool isAlive
         {
             get { return isAlive; }
         }
+		public bool Stopped
+		{
+			get { return AmIStopped; }
+			set { AmIStopped = value; }
+		}
+
+		//public methods.
         public void KillMe()
         {
+			// I'm writing a note here... huge success.
+			// It's hard to overstate my... satisfaction.
             StillAlive = false;
         }
 
         //These are some default constructors
+<<<<<<< .mine
+        public Object(ref Texture2D aTexture) { myTexture = aTexture; }
+        public Object(int[] Location, Texture2D aTexture)
+=======
         public Object(Texture2D aTexture) { myTexture = aTexture; }
         public Object(int[] Location, Texture2D aTexture)
+>>>>>>> .r22
         {
             position.X = (float)Location[0];
             position.Y = (float)Location[1];

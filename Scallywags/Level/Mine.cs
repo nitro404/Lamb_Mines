@@ -16,8 +16,13 @@ namespace Scallywags
     class Mine:Object
     {
 
+<<<<<<< .mine
+        public Mine(int[] location, Texture2D aTexture)
+            : base(location,aTexture)
+=======
         public Mine(int[] location, Texture2D aTexture)
             : base(location, aTexture)
+>>>>>>> .r22
         {
 
         }
@@ -46,7 +51,7 @@ namespace Scallywags
         public override void Draw(SpriteBatch spriteThing, GameTime gameTime)
         {
 
-            Vector2 position = new Vector2((float)Position.X * Settings.SCREEN_TILE_MULTIPLIER_X + 2, (float)Position.Y * Settings.SCREEN_TILE_MULTIPLIER_Y + 2);
+            Vector2 position = new Vector2((float)Position.X * Settings.SCREEN_TILE_MULTIPLIER_X + 3, (float)Position.Y * Settings.SCREEN_TILE_MULTIPLIER_Y + 3);
             position = GlobalHelpers.GetScreenCoords(position);
             spriteThing.Draw(myTexture, position, Color.White);
         }
