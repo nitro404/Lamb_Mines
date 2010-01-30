@@ -17,7 +17,7 @@ namespace Scallywags
         Animation tileSet;
         int frameIndex;
         float time;
-
+        bool isPlaying;
 
         public Animation TileSet
         {
@@ -29,6 +29,12 @@ namespace Scallywags
         {
             get { return frameIndex; }
             set { frameIndex = value; }
+        }
+
+        public bool IsPlaying
+        {
+            get { return isPlaying; }
+            set { isPlaying = value; }
         }
 
         public Vector2 Origin
@@ -44,6 +50,7 @@ namespace Scallywags
             tileSet = animation;
             frameIndex = 0;
             time = 0.0f;
+            isPlaying = true;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, SpriteEffects spriteEffects)
@@ -64,6 +71,10 @@ namespace Scallywags
                 else
                 {
                     frameIndex = Math.Min(frameIndex + 1, tileSet.FrameCount - 1);
+                    if (frameIndex + 1 > tileSet.FrameCount - 1)
+                    {
+                        isPlaying = false;
+                    }
                 }
             }
 

@@ -27,7 +27,7 @@ namespace Scallywags
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch sb, Microsoft.Xna.Framework.GameTime gameTime, Vector2 Offset)
         {
-            sb.Draw(myTexture, Position + Offset, Color.White);
+            sb.Draw(myTexture, GlobalHelpers.GetScreenCoords(Position + Offset), Color.White);
         }
 
         public override bool onCollision(Object collisionObject)

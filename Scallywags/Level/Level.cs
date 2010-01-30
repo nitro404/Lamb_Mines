@@ -25,8 +25,8 @@ namespace Scallywags
 
         private struct TriggerObject
         {
-			public TriggerObject(Vector2 objLoc, Object objRef) { objectLoc = objLoc; referenceObj = objRef; }
-            public Vector2 objectLoc;
+			public TriggerObject(float rad, Object objRef) { radius = rad; referenceObj = objRef; }
+            public float radius;
             public Object referenceObj;
         }
         private static ArrayList TriggerList = new ArrayList();
@@ -87,7 +87,6 @@ namespace Scallywags
                 for (int y = -20; y < 30; y++)
                 {
                     Vector2 position = new Vector2(x * Settings.SCREEN_TILE_MULTIPLIER_X, y * Settings.SCREEN_TILE_MULTIPLIER_Y);
-					position = GlobalHelpers.GetScreenCoords(position);
                     Tile tile = new Tile(position, textureList[rand.Next(0,9)]);
                     ((ArrayList)AllObjects[0]).Add(tile);
                 }
@@ -118,9 +117,8 @@ namespace Scallywags
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
 
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
 					Mine tempMine = new Mine(tempVec, textureList[val3]);
-					((ArrayList)AllObjects[1]).Add(tempMine); TriggerList.Add(new TriggerObject(tempMine.Position,tempMine));
+					((ArrayList)AllObjects[1]).Add(tempMine); TriggerList.Add(new TriggerObject(45.0f,tempMine));
 				}
 			}
 
@@ -132,7 +130,6 @@ namespace Scallywags
 					int val2 = int.Parse(((string[])value.Split(','))[1]);
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
 					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
 					((ArrayList)AllObjects[1]).Add(tempClutter);
 				}
@@ -142,7 +139,6 @@ namespace Scallywags
 					int val2 = int.Parse(((string[])value.Split(','))[1]);
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
 					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
 					((ArrayList)AllObjects[1]).Add(tempClutter);
 				}
@@ -152,7 +148,6 @@ namespace Scallywags
 					int val2 = int.Parse(((string[])value.Split(','))[1]);
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
 					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
 					((ArrayList)AllObjects[1]).Add(tempClutter);
 				}
@@ -173,23 +168,22 @@ namespace Scallywags
 						animList.Add(anim);
 					}
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
 					Sheep tempSheep = new Sheep(tempVec, animList, textureList[val3]);
 					((ArrayList)AllObjects[1]).Add(tempSheep);
 				}
 			}
-			/*
-            for (int i = 0; i < 20; i++)
-            {
-                List<Animation> animList = new List<Animation>();
-                for (int j = 0; j < 8; j++)
-                {
-                    Animation anim = new Animation(textureList[18], 1, true, new Vector2(35,35), j);
-                    animList.Add(anim);
-                }
-                Sheep tempSheep = new Sheep(new Vector2((i * 64) + 10, i * -24 ), animList, textureList[18]);
-                ((ArrayList)AllObjects[1]).Add(tempSheep);
-            }
+
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    List<Animation> animList = new List<Animation>();
+            //    for (int j = 0; j < 8; j++)
+            //    {
+            //        Animation anim = new Animation(textureList[18], 1, true, new Vector2(35,35), j);
+            //        animList.Add(anim);
+            //    }
+            //    Sheep tempSheep = new Sheep(new Vector2((i * 64) + 10, i * -24 ), animList, textureList[18]);
+            //    ((ArrayList)AllObjects[1]).Add(tempSheep);
+            //}
 
             //Player
             List<Animation> anims = new List<Animation>();
@@ -199,7 +193,8 @@ namespace Scallywags
                 anims.Add(anim);
             }
             Player tempPlayer = new Player(m_ParentApp.Inputs , new Vector2(512, 256), anims, textureList[18]);
-            ((ArrayList)AllObjects[0]).Add(tempPlayer);
+            ((ArrayList)AllObjects[1]).Add(tempPlayer);
+            TriggerList.Add(new TriggerObject(100.0f, tempPlayer));
 
             return true;
         }
@@ -238,7 +233,7 @@ namespace Scallywags
 						Vector2 dist = ((Object)((TriggerObject)TriggerList[i]).referenceObj).Position;
 						dist = dist - ((Object)planeList[c]).Position;
 						float finalDist = dist.Length();
-						if (finalDist < 48 && finalDist != 0 )
+						if (finalDist < ((TriggerObject)TriggerList[i]).radius && finalDist != 0 )
 						{
 							((Object)((TriggerObject)TriggerList[i]).referenceObj).onCollision((Object)planeList[c]);
 						}

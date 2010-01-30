@@ -45,7 +45,7 @@ namespace Scallywags
         }
         public override void Draw(SpriteBatch spriteThing, GameTime gameTime, Vector2 Offset)
         {
-			spriteThing.Draw(myTexture, Position + Offset, Color.White);
+            spriteThing.Draw(myTexture, GlobalHelpers.GetScreenCoords(Position + Offset), Color.White);
         }
         public override void Kill()
         {

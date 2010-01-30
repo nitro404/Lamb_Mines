@@ -20,6 +20,7 @@ namespace Scallywags
 
         public static int randomizer = 0;
         //static const SPEED = 25;
+        float interest;
         float speed;
         float maxSpeed;
         Vector2 goal;
@@ -76,6 +77,29 @@ namespace Scallywags
         {
             goal = new Vector2(ai.Next(-200, 200) + Position.X, ai.Next(-200, 200) + Position.Y);
         }
+
+        public void SetNewGoal(Vector2 value)
+        {
+            goal = value;
+        }
+
+        public void Seek(Vector2 value)
+        {
+            float distance = (value - Position).Length();
+            Vector2 direction = value - Position;
+            direction.Normalize();
+            goal = new Vector2(ai.Next((int)(-distance / 10.0f), (int)(distance / 10.0f)) + value.X, ai.Next((int)(-distance / 10.0f), (int)(distance / 10.0f)) + value.Y);
+        }
+
+        public void Repel(Vector2 value)
+        {
+            float distance = (value - Position).Length();
+            Vector2 direction = value - Position;
+            direction.Normalize();
+            goal = new Vector2(ai.Next((int)(-distance / 10.0f), (int)(distance / 10.0f)) + value.X, ai.Next((int)(-distance / 10.0f), (int)(distance / 10.0f)) + value.Y);
+        
+        }
+
 		public override void Kill()
 		{
 			KillMe();

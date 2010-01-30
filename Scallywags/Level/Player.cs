@@ -29,25 +29,25 @@ namespace Scallywags
             speed = 50.0f;
         }
 
-        public override void Update(float elapsedTime)
+        public override bool Update(float elapsedTime)
         {
                 Vector2 movement = input.CheckLStick(0);
-                if(input.IsKeyDown(Keys.Up))
+                if(input.IsKeyDown(Keys.W))
                 {
                     movement.X -= speed * elapsedTime;
                     movement.Y -= speed * elapsedTime;
                 }
-                if(input.IsKeyDown(Keys.Down))
+                if(input.IsKeyDown(Keys.S))
                 {
                     movement.X += speed * elapsedTime;
                     movement.Y += speed * elapsedTime;
                 }
-                if(input.IsKeyDown(Keys.Left))
+                if(input.IsKeyDown(Keys.A))
                 {
                     movement.X -= speed * elapsedTime;
                     movement.Y += speed * elapsedTime;
                 }
-                if(input.IsKeyDown(Keys.Right))
+                if(input.IsKeyDown(Keys.D))
                 {
                     movement.X += speed * elapsedTime;
                     movement.Y -= speed * elapsedTime;
@@ -61,7 +61,19 @@ namespace Scallywags
                     AnimationPlay.PlayAnimation(Animations[choose]);
                 }
 
-            base.Update(elapsedTime);
+            return base.Update(elapsedTime);
+        }
+
+        public override bool onCollision(Object collisionObject)
+        {
+            if (input.IsKeyDown(Keys.Space))
+            {          
+                if (String.Compare(collisionObject.GetType().FullName, "Scallywags.Sheep") == 0)
+                {
+                    ((Sheep)collisionObject).Seek(Position);
+                }
+            }
+            return base.onCollision(collisionObject);
         }
     }
 }

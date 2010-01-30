@@ -50,7 +50,7 @@ namespace Scallywags
 		{
 			//Vector2 position = new Vector2((float)Position.X, (float)Position.Y);
 			//position = GlobalHelpers.GetScreenCoords(position);
-			spriteThing.Draw(myTexture, Position + Offset, Color.White);
+            spriteThing.Draw(myTexture, GlobalHelpers.GetScreenCoords(Position + Offset), Color.White);
 		}
 		public override void Kill()
 		{
