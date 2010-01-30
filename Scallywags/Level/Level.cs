@@ -195,7 +195,7 @@ namespace Scallywags
             }
             Player tempPlayer = new Player(m_ParentApp.Inputs , new Vector2(512, 256), anims, textureList[20]);
             ((ArrayList)AllObjects[1]).Add(tempPlayer);
-            TriggerList.Add(new TriggerObject(100.0f, tempPlayer));
+            TriggerList.Add(new TriggerObject(200.0f, tempPlayer));
 			
             return true;
         }

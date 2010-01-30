@@ -62,7 +62,6 @@ namespace Scallywags
                 }
 
             return base.Update(elapsedTime);
-			return true;
         }
 
 		public override Object onCollision(Object collisionObject, Texture2D[] textureList)
@@ -72,6 +71,14 @@ namespace Scallywags
                 if (String.Compare(collisionObject.GetType().FullName, "Scallywags.Sheep") == 0)
                 {
                     ((Sheep)collisionObject).Seek(Position);
+                }
+            }
+
+            if (input.IsKeyDown(Keys.B))
+            {
+                if (String.Compare(collisionObject.GetType().FullName, "Scallywags.Sheep") == 0)
+                {
+                    ((Sheep)collisionObject).Repel(Position);
                 }
             }
 			return base.onCollision(collisionObject, textureList);
