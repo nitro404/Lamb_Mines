@@ -16,13 +16,13 @@ namespace Scallywags
     class Mine:Object
     {
 
-        public Mine(int[] location,ref Texture2D aTexture)
-            : base(location,ref aTexture)
+        public Mine(int[] location, Texture2D aTexture)
+            : base(location, aTexture)
         {
 
         }
-		public Mine(Vector2 location, ref Texture2D aTexture)
-			: base(location, ref aTexture)
+		public Mine(Vector2 location, Texture2D aTexture)
+			: base(location, aTexture)
 		{
 
 		}
@@ -39,11 +39,11 @@ namespace Scallywags
             return false;//This object will be destroyed.
         }
 
-        public override void Update()
+        public override void Update(float elapsedTime)
         {
 
         }
-        public override void Draw(SpriteBatch spriteThing)
+        public override void Draw(SpriteBatch spriteThing, GameTime gameTime)
         {
 
             Vector2 position = new Vector2((float)Position.X * Settings.SCREEN_TILE_MULTIPLIER_X + 2, (float)Position.Y * Settings.SCREEN_TILE_MULTIPLIER_Y + 2);

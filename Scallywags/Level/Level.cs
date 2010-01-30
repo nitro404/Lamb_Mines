@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
@@ -86,15 +87,19 @@ namespace Scallywags
 					int val2 = int.Parse(((string[])value.Split(','))[1]);
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
 
-					Mine tempMine = new Mine(new Vector2(val1,val2), ref textureList[val3]);
+					Mine tempMine = new Mine(new Vector2(val1,val2), textureList[val3]);
 					((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
 				}
 			}
-			//for (int i = 0; i < 10; i++)
-			//{
-			//	Mine tempMine = new Mine(new int[] { 15, i }, ref textureList[1]);
-			//	((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
-			//}
+
+            for (int i = 0; i < 10; i++)
+            {
+                Animation anim = new Animation(textureList[1], 1, true, new Vector2(textureList[1].Width, textureList[1].Height), 0);
+                List<Animation> animList = new List<Animation>();
+                animList.Add(anim);
+                Sheep tempSheep = new Sheep(new Vector2(i * 48, i ), animList, textureList[1]);
+                ((ArrayList)AllObjects[0]).Add(tempSheep);
+            }
 
 			/*
 			Mine tempMine = new Mine(new int[] { 1, 1 }, ref textureList[1]);
@@ -136,9 +141,18 @@ namespace Scallywags
             }
         }
 
-        public void Update()
+        public void Update(float elapsedTime)
         {
-
+            //loop through each main list
+            foreach (object listMain in AllObjects)
+            {
+                //loop through each sub list of objects
+                foreach (object listSub in (ArrayList)listMain)
+                {
+                    Object thisObject = (Object)listSub;
+                    thisObject.Update(elapsedTime);
+                }
+            }
         }
 
         public void Draw(GraphicsDevice device, GameTime gameTime)
@@ -166,7 +180,7 @@ namespace Scallywags
                 {
 
                     Object thisObject = (Object)listSub;
-                    thisObject.Draw(m_sb);
+                    thisObject.Draw(m_sb, gameTime);
                 }
             }
             

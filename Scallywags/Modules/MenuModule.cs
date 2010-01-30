@@ -39,7 +39,7 @@ namespace Scallywags
         public override void Initialize()
         {
             m_sb = new SpriteBatch(ParentApp.Device);
-            anim = new Animation(Textures["sheep_sheet01"], 0.1f, true, new Vector2(35, 35), 1);
+            anim = new Animation(Textures["sheep_sheet01"], 0.5f, true, new Vector2(35, 35), 2);
             player.PlayAnimation(anim);
         }
 

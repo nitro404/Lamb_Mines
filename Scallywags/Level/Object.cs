@@ -38,26 +38,26 @@ namespace Scallywags
         }
 
         //These are some default constructors
-        public Object(ref Texture2D aTexture) { myTexture = aTexture; }
-        public Object(int[] Location, ref Texture2D aTexture)
+        public Object(Texture2D aTexture) { myTexture = aTexture; }
+        public Object(int[] Location, Texture2D aTexture)
         {
             position.X = (float)Location[0];
             position.Y = (float)Location[1];
             myTexture = aTexture;
         }
-        public Object(double[] Location, ref Texture2D aTexture)
+        public Object(double[] Location, Texture2D aTexture)
         {
 			position.X = (float)Location[0];
 			position.Y = (float)Location[1];
             myTexture = aTexture;
         }
-        public Object(ArrayList Location, ref Texture2D aTexture)
+        public Object(ArrayList Location, Texture2D aTexture)
         {
             position.X = (float)Location[0];
             position.Y = (float)Location[1];
             myTexture = aTexture;
         }
-		public Object(Vector2 Location, ref Texture2D aTexture)
+		public Object(Vector2 Location, Texture2D aTexture)
 		{
 			position = Location;
 			myTexture = aTexture;
@@ -74,12 +74,12 @@ namespace Scallywags
         /// <summary>
         /// General update loop
         /// </summary>
-        abstract public void Update();
+        abstract public void Update(float elapsedTime);
 
         /// <summary>
         /// General draw loop
         /// </summary>
-        abstract public void Draw(SpriteBatch spriteThing);
+        abstract public void Draw(SpriteBatch sb, GameTime gameTime);
 
         /// <summary>
         /// Kill this unit.

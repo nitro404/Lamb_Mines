@@ -62,6 +62,8 @@ namespace Scallywags
             if( ParentApp.Inputs.IsKeyPressed(Keys.F12) )
                 this.Initialize();
 
+            testLevel.Update(fElapsedTime);
+
             return MODULE_IDENTIFIER.MID_THIS;    //Continue running the module.
         }
 

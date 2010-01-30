@@ -46,8 +46,7 @@ namespace Scallywags
 
         public int FrameCount
         {
-            get { return (int)(((texture.Width - startLocation.X) / dimensions.X) *
-                                ((texture.Height - startLocation.Y) / dimensions.Y));
+            get { return (int)((texture.Width - startLocation.X) / dimensions.X);
             }
         }
 
