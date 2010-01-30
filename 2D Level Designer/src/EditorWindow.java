@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
@@ -88,6 +87,7 @@ public class EditorWindow extends JFrame implements ActionListener {
 	
 	public void update() {
 		this.repaint();
+		editorPanelScrollPane.repaint();
 		editorPanel.update();
 	}
 	

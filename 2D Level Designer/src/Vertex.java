@@ -29,14 +29,14 @@ public class Vertex {
 		
 		String data = input.trim();
 		
-		int x = Integer.valueOf(data.substring(data.indexOf('(', 0) + 1, data.indexOf(',')).trim());
-		int y = Integer.valueOf(data.substring(data.lastIndexOf(',', data.length() - 1) + 1, data.lastIndexOf(')', data.length() - 1)).trim());
+		int x = Integer.valueOf(data.substring(0, data.indexOf(',')).trim());
+		int y = Integer.valueOf(data.substring(data.lastIndexOf(',', data.length() - 1) + 1, data.length()).trim());
 		
 		return new Vertex(x, y);
 	}
 	
 	public void writeTo(PrintWriter out) {
-		out.print("(" + x + ", " + y + ")");
+		out.print(x + ", " + y);
 	}
 	
 	public boolean equals(Object o) {

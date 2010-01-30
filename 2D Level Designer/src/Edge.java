@@ -1,3 +1,4 @@
+import java.util.StringTokenizer;
 import java.io.*;
 import java.awt.*;
 
@@ -37,15 +38,16 @@ public class Edge {
 		
 		String data = input.trim();
 		
-		Vertex a = Vertex.parseFrom((data.substring(data.indexOf('(', 0), data.indexOf(')', 0) + 1)));
-		Vertex b = Vertex.parseFrom(data.substring(data.lastIndexOf('(', data.length() - 1), data.lastIndexOf(')', data.length() - 1) + 1));
+		StringTokenizer st = new StringTokenizer(data, ", ", false);
+		Vertex a = Vertex.parseFrom(st.nextToken() + ", " + st.nextToken());
+		Vertex b = Vertex.parseFrom(st.nextToken() + ", " + st.nextToken());
 		
 		return new Edge(a, b);
 	}
 	
 	public void writeTo(PrintWriter out) throws IOException {
 		a.writeTo(out);
-		out.print(" ");
+		out.print(", ");
 		b.writeTo(out);
 	}
 	

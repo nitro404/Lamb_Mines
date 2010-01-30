@@ -36,8 +36,12 @@ public class Graph {
 		return false;
 	}
 	
+	public int size() {
+		return this.edges.size();
+	}
+	
 	public void writeTo(PrintWriter out) throws IOException {
-		out.println("Edges: " + this.edges.size());
+		out.println("\tEdges: " + this.edges.size());
 		for(int i=0;i<this.edges.size();i++) {
 			out.print("\t\t");
 			this.edges.elementAt(i).writeTo(out);

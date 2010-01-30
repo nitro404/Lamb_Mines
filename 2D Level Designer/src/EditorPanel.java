@@ -21,8 +21,12 @@ public class EditorPanel extends JPanel implements Scrollable, MouseListener, Mo
 	}
 	
 	public Dimension getPreferredSize() {
-//TODO: Get map size
-return new Dimension(1920, 1200);
+		if(world != null) {
+			return world.dimensions;
+		}
+		else {
+			return new Dimension(1024, 768);
+		}
 	}
 	
 	public Dimension getPreferredScrollableViewportSize() {
