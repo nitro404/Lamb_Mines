@@ -86,6 +86,11 @@
   <ItemGroup>
     <Compile Include="Application\Error.cs" />
     <Compile Include="Application\ModuleLoader.cs" />
+    <Compile Include="GlobalHelpers.cs" />
+    <Compile Include="Level\Level.cs" />
+    <Compile Include="Level\Mine.cs" />
+    <Compile Include="Level\Object.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Modules\CreditsModule.cs" />
     <Compile Include="Modules\GameModule.cs" />
     <Compile Include="Modules\MenuModule.cs" />

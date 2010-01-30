@@ -88,5 +88,18 @@ namespace Scallywags
         ///////////////////////////////////////////////////
         //Edge Detection Shader Catch
         public static bool DETECT_EDGES             = false;
+
+
+
+
+
+        //THESE ARE NEW LAMB MINE VALUES
+
+        public const int SCREEN_TILE_MULTIPLIER_X   = 48;
+        public const int SCREEN_TILE_MULTIPLIER_Y   = 48;
+
+
+
+
     }
 }

@@ -2,12 +2,25 @@
 using System.Collections;
 using System.Linq;
 using System.Text;
+using System.IO;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.GamerServices;
 
 namespace Scallywags
 {
     class Level
     {
+        //This list must be a list of lists. This way each set of objects is on a different rendering plane so that objects can be rendered ontop of each other.
         private ArrayList AllObjects;
+        Texture2D[] textureList;//The grass object
+        private SpriteBatch m_sb;               ///< The sprite batch for 2D rendering
+
         private struct TriggerObject
         {
             double[] objectLoc;
@@ -16,13 +29,16 @@ namespace Scallywags
         private static ArrayList TriggerList = new ArrayList();
         public enum RuleList { RULE_PLACEMENT, RULE_TARGET };
 
+        private XNAModularApp m_ParentApp;
+
         /// <summary>
         /// Default constructor
         /// Not much in here yet, and probably not at all
         /// </summary>
-        public Level()
+        public Level(XNAModularApp ParentApp)
         {
-
+            m_ParentApp = ParentApp;
+            m_sb = new SpriteBatch(m_ParentApp.Device);
         }
 
         /// <summary>
@@ -36,17 +52,60 @@ namespace Scallywags
                 Log.WriteToLog(Log.LogErrorLevel.ERROR_MINOR, "The level has already been loaded.");
 
             //load the whole level here
+            Hashtable fileInfoHash = readLevelFile("Content/Levels/level1.2d");
+			if (fileInfoHash.Contains("Textures"))
+			{
+				textureList = new Texture2D[((ArrayList)fileInfoHash["Textures"]).Count];
+				for (int i = 0; i < ((ArrayList)fileInfoHash["Textures"]).Count; i++ )
+				{
+					try
+					{
+						textureList[i] = m_ParentApp.Content.Load<Texture2D>("Content/Textures/" + ((ArrayList)fileInfoHash["Textures"])[i].ToString());
+					}
+					catch (Exception error)
+					{
+						Log.WriteToLog(Log.LogErrorLevel.ERROR_MAJOR,"Could not load resource " + ((ArrayList)fileInfoHash["Textures"])[i].ToString());
+					}
+				}
+			}
 
+            //load the texture resources
+            //grass = m_ParentApp.Content.Load<Texture2D>("Content/Textures/grass_base01");
+            //tempTex = m_ParentApp.Content.Load<Texture2D>("Content/Textures/grass_base555-01");
+
+            //load in all the objects.
             //temp code
             AllObjects = new ArrayList();
             AllObjects.Add(new ArrayList());
 
+			if (fileInfoHash.Contains("Mine"))
+			{
+				foreach (string value in ((ArrayList)fileInfoHash["Mine"]))
+				{
+					int val1 = int.Parse(((string[])value.Split(','))[0]);
+					int val2 = int.Parse(((string[])value.Split(','))[1]);
+					int val3 = int.Parse(((string[])value.Split(','))[2]);
 
-            ((ArrayList)AllObjects[0]).Add(new Mine(new int[] { 10, 10 })); TriggerList.Add(AllObjects[0]);
-            ((ArrayList)AllObjects[0]).Add(new Mine(new int[] { 15, 15 })); TriggerList.Add(AllObjects[1]);
-            ((ArrayList)AllObjects[0]).Add(new Mine(new int[] { 20, 20 })); TriggerList.Add(AllObjects[2]);
-            ((ArrayList)AllObjects[0]).Add(new Mine(new int[] { 10, 15 })); TriggerList.Add(AllObjects[3]);
-            
+					Mine tempMine = new Mine(new Vector2(val1,val2), ref textureList[val3]);
+					((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
+				}
+			}
+			//for (int i = 0; i < 10; i++)
+			//{
+			//	Mine tempMine = new Mine(new int[] { 15, i }, ref textureList[1]);
+			//	((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
+			//}
+
+			/*
+			Mine tempMine = new Mine(new int[] { 1, 1 }, ref textureList[1]);
+			((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
+			tempMine.Position = new double[]{ 5, 5};
+			((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
+			tempMine.Position = new double[]{ 2, 2 };
+			((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
+			tempMine.Position = new double[]{ 0, 5};
+			((ArrayList)AllObjects[0]).Add(tempMine); TriggerList.Add(tempMine);
+            */
 
             return true;
         }
@@ -82,8 +141,36 @@ namespace Scallywags
 
         }
 
-        public void Draw()
+        public void Draw(GraphicsDevice device, GameTime gameTime)
         {
+            //Draw the terrain first.
+
+            device.Clear(Color.Red);
+            m_sb.Begin();
+
+            for (int x = -100; x < 100; x++)
+            {
+                for (int y = -100; y < 100; y++)
+                {
+                    Vector2 position = new Vector2(x * Settings.SCREEN_TILE_MULTIPLIER_X, y * Settings.SCREEN_TILE_MULTIPLIER_Y);
+                    position = GlobalHelpers.GetScreenCoords(position);
+					m_sb.Draw(textureList[0], position, Color.White);
+                }
+            }
+            
+            //loop through each main list
+            foreach (object listMain in AllObjects)
+            {
+                //loop through each sub list of objects
+                foreach (object listSub in (ArrayList)listMain)
+                {
+
+                    Object thisObject = (Object)listSub;
+                    thisObject.Draw(m_sb);
+                }
+            }
+            
+            m_sb.End();
 
         }
 
@@ -101,5 +188,53 @@ namespace Scallywags
 
 
 
+        private Hashtable readLevelFile(string theFile)
+        {
+            StreamReader theReader = new StreamReader(theFile);
+            int readIndex = 0;
+			Hashtable outHash = new Hashtable();
+
+            string info = "";
+            while ((info = theReader.ReadLine()) != null)
+            {
+                if (readIndex == 0)
+                {
+                    if (info.StartsWith("Textures: "))
+                    {
+                        readIndex = 1;
+                    }
+					else if (info.StartsWith("Mine: "))
+					{
+						readIndex = 2;
+					}
+                }
+                else if (readIndex == 1)
+                {
+					if (info.Trim().ToLower() == "end")
+					{
+						readIndex = 0;
+						continue;
+					}
+					if (!outHash.Contains("Textures"))
+						outHash.Add("Textures", new ArrayList());
+					((ArrayList)outHash["Textures"]).Add(info.Trim());
+                }
+				else if (readIndex == 2)
+				{
+					if (info.Trim().ToLower() == "end")
+					{
+						readIndex = 0;
+						continue;
+					}
+					if (!outHash.Contains("Mine"))
+						outHash.Add("Mine",new ArrayList());
+					((ArrayList)outHash["Mine"]).Add(info.Trim());
+				}
+
+
+            }
+			return outHash;
+        }
+        
     }
 }

@@ -46,6 +46,10 @@
       <Name>FinalCredits</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Levels\level1.2d">
+      <Name>level1</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Font\PirateFontExtraLarge.spritefont">
       <Name>PirateFontExtraLarge</Name>
       <Importer>FontDescriptionImporter</Importer>
@@ -85,18 +89,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="grass_base01.png">
-      <Name>grass_base01</Name>
+    <Compile Include="Textures\grass_base555-01.png">
+      <Name>grass_base555-01</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="grass_base02.png">
-      <Name>grass_base02</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="sheep_sheet01.png">
-      <Name>sheep_sheet01</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\grass_base555-02.png">
+      <Name>grass_base555-02</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

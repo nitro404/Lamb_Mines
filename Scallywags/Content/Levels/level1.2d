@@ -1,0 +1,21 @@
+2D World: Version 1.0
+Textures: 2
+	grass_base01
+	grass_base555-02
+End
+Mine: 2
+	5,5,1
+	15,29,1
+	20,10,1
+	3,2,1
+	0,3,1
+	3,4,1
+	3,5,1
+	3,6,1
+	3,7,1
+	3,8,1
+	3,9,1
+	18,5,1
+	5,5,1
+End
+Entities: 0

@@ -20,9 +20,9 @@ namespace Scallywags
     {
         #region DATA_MEMBERS
 
-        Texture2D grass;
-        private SpriteBatch     m_sb;               ///< The sprite batch for 2D rendering
-                
+        //Texture2D grass;
+        //private SpriteBatch     m_sb;               ///< The sprite batch for 2D rendering
+        Level testLevel;
 
         #endregion
 
@@ -42,9 +42,8 @@ namespace Scallywags
          */
         public override void Initialize()
         {
-            m_sb = new SpriteBatch(ParentApp.Device);
-
-            grass = ParentApp.Content.Load<Texture2D>("Content/Textures/grass_base01");
+            testLevel = new Level(ParentApp);
+            testLevel.LoadLevel("Level1.txt");
         }
 
         /** @fn     MODULE_IDENTIFIER Update( GameTime gameTime )
@@ -73,6 +72,7 @@ namespace Scallywags
          */
         public override void Draw(GraphicsDevice device, GameTime gameTime)
         {
+            /*
             device.Clear(Color.Red);
             m_sb.Begin();
             for (int x = -1; x < 35; x++)
@@ -85,6 +85,8 @@ namespace Scallywags
                 }
             }
             m_sb.End();
+            */
+            testLevel.Draw(device, gameTime);
         }
 
 
@@ -103,27 +105,6 @@ namespace Scallywags
         private void TraceGameSettings()
         {
            
-        }
-
-        //TEMP TESTS
-        Vector2 GetScreenCoords(Vector2 iso)
-        {
-            Vector2 result;
-            result.X = GetScreenX(iso);
-            result.Y = GetScreenY(iso);
-            return result;
-        }
-
-        float GetScreenX(Vector2 iso)
-        {
-            float xBasic = (float)(iso.X - iso.Y) * (float)Math.Cos(0.46365);
-            return xBasic;
-        }
-
-        float GetScreenY(Vector2 iso)
-        {
-            float yBasic = (float)(iso.X + iso.Y) * (float)Math.Sin(0.46365);
-            return yBasic;
         }
 
        

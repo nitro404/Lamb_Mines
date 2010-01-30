@@ -3,32 +3,30 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.GamerServices;
+
 namespace Scallywags
 {
     abstract class Object
     {
 
         //private variables
-        private double[] position = new double[2];
-        private int/*Texture*/ myTexture;
+        private Vector2 position = new Vector2();
+        public Texture2D myTexture;
         private bool StillAlive = true;
 
         //properties
-        public double PositionX
-        {
-            get { return position[0]; }
-            set { position[0] = value; }
-        }
-        public double PositionY
-        {
-            get { return position[1]; }
-            set { position[1] = value; }
-        }
-        public double[] Position
+        public Vector2 Position
         {
             get { return position; }
-            set { if (value.Length == 2) { position = value; } else { Log.WriteToLog(Log.LogErrorLevel.ERROR_MINOR, "Position value should have only two values, an X and a Y value"); } }
-        }
+            set { position = value; }
+		}
 
         public bool isAlive
         {
@@ -40,24 +38,30 @@ namespace Scallywags
         }
 
         //These are some default constructors
-        public Object() { }
-        public Object(int[] Location)
+        public Object(ref Texture2D aTexture) { myTexture = aTexture; }
+        public Object(int[] Location, ref Texture2D aTexture)
         {
-            position[0] = (double)Location[0];
-            position[1] = (double)Location[1];
+            position.X = (float)Location[0];
+            position.Y = (float)Location[1];
+            myTexture = aTexture;
         }
-        public Object(double[] Location)
+        public Object(double[] Location, ref Texture2D aTexture)
         {
-            if (Location.Length == 2)
-            {
-                position = Location;
-            }
+			position.X = (float)Location[0];
+			position.Y = (float)Location[1];
+            myTexture = aTexture;
         }
-        public Object(ArrayList Location)
+        public Object(ArrayList Location, ref Texture2D aTexture)
         {
-            position[0] = (int)Location[0];
-            position[1] = (int)Location[1];
+            position.X = (float)Location[0];
+            position.Y = (float)Location[1];
+            myTexture = aTexture;
         }
+		public Object(Vector2 Location, ref Texture2D aTexture)
+		{
+			position = Location;
+			myTexture = aTexture;
+		}
 
         /// <summary>
         /// This is the trigger function that is called when there is a collision on this object. 
@@ -75,7 +79,7 @@ namespace Scallywags
         /// <summary>
         /// General draw loop
         /// </summary>
-        abstract public void Draw();
+        abstract public void Draw(SpriteBatch spriteThing);
 
         /// <summary>
         /// Kill this unit.
