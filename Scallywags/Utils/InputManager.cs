@@ -25,9 +25,13 @@ namespace Scallywags
 
         MouseState m_MouseState;
         MouseState m_OldMouseState;
+        bool m_IsScreenPanning;
 
         KeyboardState m_KeyState;                   ///< The current keyboard state
         KeyboardState m_OldKeyState;                ///< The previous keybaord state
+                                                    ///
+        Vector2 m_MapDisplacement;
+        Vector2 m_OldMapDisplacement;
 
         int m_Delay;              //<! A delay called after the Reset, that locks the controls for a second, to prevent quick turn spasms
         Keys m_EnableKey;         //<! A Key that will unlock the controller, if locked, LockControls(Key) will lock the Control
@@ -35,7 +39,7 @@ namespace Scallywags
         bool m_Locked;          ///< Are the controller inputs locked?
         float m_fKeyIdleTime;      ///< The Keyboards Idle Time
         List<float> m_fControllerIdleTime; ///<The Controllers Idle Time
-
+        
         public int Delay
         {
             set
@@ -73,6 +77,7 @@ namespace Scallywags
 
             m_MouseState = new MouseState();
             m_OldMouseState = new MouseState();
+            m_IsScreenPanning = false;
             
             m_GamePadStates = new List<GamePadState>();
             m_OldGamePadStates = new List<GamePadState>();
@@ -120,8 +125,6 @@ namespace Scallywags
 
             m_MouseState = new MouseState();
             m_OldMouseState = new MouseState();
-
-
         }
 
         /** @fn     void Update()
@@ -148,6 +151,9 @@ namespace Scallywags
 
                 m_OldMouseState = m_MouseState;
                 m_MouseState = Mouse.GetState();
+
+                m_OldMapDisplacement = m_MapDisplacement;
+//                m_MapDisplacement = new Vector2();
             }
 
             for (int i = 0; i < m_fControllerIdleTime.Count; i++ )
@@ -609,17 +615,19 @@ namespace Scallywags
             thePosition.Y = m_MouseState.Y;
             return thePosition;
         }
+        public Vector2 GetPrevMousePosition() {
+            Vector2 thePosition;
+            thePosition.X = m_OldMouseState.X;
+            thePosition.Y = m_OldMouseState.Y;
+            return thePosition;
+        }
         //Returns the X value of the mouse position as a float
         public float GetMousePositionX() {
-            float mouseX;
-            mouseX = m_MouseState.X;
-            return mouseX;
+            return m_MouseState.X;
         }
         //Returns the Y value of the mouse position as a float
         public float GetMousePositionY() {
-            float mouseY;
-            mouseY = m_MouseState.Y;
-            return mouseY;
+            return m_MouseState.Y;
         }
         //Checks if the Left Mouse Button is currently down
         public bool IsMouseLeftDown() 
@@ -632,9 +640,11 @@ namespace Scallywags
         //Checks if the Right Mouse Button is currently down
         public bool IsMouseRightDown() {
             if (m_MouseState.RightButton == ButtonState.Pressed) {
+                m_IsScreenPanning = true;
+                scrollMap();
                 return true;
             }
-            else { return false; }
+            else { m_IsScreenPanning = false; return false; }
         }
         //Checks if the Middle Mouse Button is currently down
         public bool IsMouseMiddleDown() {
@@ -700,6 +710,41 @@ namespace Scallywags
                 }
             }
             return false;
+        }
+        //Passes a mouse displacement to move the screen
+        public Vector2 scrollMap() {
+            Vector2 MouseDisplacement = GetMousePosition() - GetPrevMousePosition();
+            if (m_IsScreenPanning) {
+                return GlobalHelpers.GetScreenCoords(MouseDisplacement);
+            }
+            return Vector2.Zero;
+        }
+        public Vector2 offsetHack() {
+            if (IsKeyDown(Keys.Up)) {
+                m_MapDisplacement.Y = m_OldMapDisplacement.Y + 5;
+                if (IsKeyDown(Keys.Right)) {
+                    m_MapDisplacement.X = m_OldMapDisplacement.X - 5;
+                }
+                else if (IsKeyDown(Keys.Left)) {
+                    m_MapDisplacement.X = m_OldMapDisplacement.X + 5;
+                }
+            }
+            else if (IsKeyDown(Keys.Left)) {
+                m_MapDisplacement.X = m_OldMapDisplacement.X + 5;
+                if (IsKeyDown(Keys.Down)) {
+                    m_MapDisplacement.Y = m_OldMapDisplacement.Y - 5;
+                }
+            }
+            else if (IsKeyDown(Keys.Down)) {
+                m_MapDisplacement.Y = m_OldMapDisplacement.Y - 5;
+                if (IsKeyDown(Keys.Right)) {
+                    m_MapDisplacement.X = m_OldMapDisplacement.X - 5;
+                }
+            }
+            else if (IsKeyDown(Keys.Right)) {
+                m_MapDisplacement.X = m_OldMapDisplacement.X - 5;
+            }
+            return m_MapDisplacement;
         }
     }
 }

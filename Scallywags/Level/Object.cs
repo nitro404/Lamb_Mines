@@ -47,6 +47,7 @@ namespace Scallywags
         {
 			// I'm writing a note here... huge success.
 			// It's hard to overstate my... satisfaction.
+            // Aperture Science...
             StillAlive = false;
         }
 
@@ -92,7 +93,7 @@ namespace Scallywags
         /// <summary>
         /// General draw loop
         /// </summary>
-        abstract public void Draw(SpriteBatch sb, GameTime gameTime);
+        abstract public void Draw(SpriteBatch sb, GameTime gameTime, Vector2 Offset);
 
         /// <summary>
         /// Kill this unit.

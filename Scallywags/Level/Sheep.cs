@@ -66,10 +66,10 @@ namespace Scallywags
 
         }
 
-        public override void Draw(SpriteBatch sb, GameTime gameTime)
+        public override void Draw(SpriteBatch sb, GameTime gameTime, Vector2 Offset)
         {
 
-            base.Draw(sb, gameTime);
+            base.Draw(sb, gameTime, Offset);
         }
 
         public void GetNewGoal()

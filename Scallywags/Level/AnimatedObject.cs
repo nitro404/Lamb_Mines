@@ -65,9 +65,9 @@ namespace Scallywags
         /// <summary>
         /// General draw loop
         /// </summary>
-        public override void Draw(SpriteBatch sb, GameTime gameTime)
+        public override void Draw(SpriteBatch sb, GameTime gameTime, Vector2 Offset)
         {
-            animationPlayer.Draw(gameTime, sb, Position, new SpriteEffects());
+            animationPlayer.Draw(gameTime, sb, Position + Offset, new SpriteEffects());
         }
 
         /// <summary>

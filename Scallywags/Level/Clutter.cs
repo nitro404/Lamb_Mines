@@ -46,12 +46,11 @@ namespace Scallywags
 		{
 			return true;
 		}
-		public override void Draw(SpriteBatch spriteThing, GameTime gameTime)
+		public override void Draw(SpriteBatch spriteThing, GameTime gameTime, Vector2 Offset)
 		{
-
 			//Vector2 position = new Vector2((float)Position.X, (float)Position.Y);
 			//position = GlobalHelpers.GetScreenCoords(position);
-			spriteThing.Draw(myTexture, Position, Color.White);
+			spriteThing.Draw(myTexture, Position + Offset, Color.White);
 		}
 		public override void Kill()
 		{

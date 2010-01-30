@@ -131,11 +131,6 @@ namespace Scallywags
 					int val1 = int.Parse(((string[])value.Split(','))[0]);
 					int val2 = int.Parse(((string[])value.Split(','))[1]);
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
-					if (val3 == 16)
-					{
-						int what = 0;
-						what = 0;
-					}
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
 					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
 					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
@@ -146,11 +141,6 @@ namespace Scallywags
 					int val1 = int.Parse(((string[])value.Split(','))[0]);
 					int val2 = int.Parse(((string[])value.Split(','))[1]);
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
-					if (val3 == 16)
-					{
-						int what = 0;
-						what = 0;
-					}
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
 					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
 					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
@@ -161,11 +151,6 @@ namespace Scallywags
 					int val1 = int.Parse(((string[])value.Split(','))[0]);
 					int val2 = int.Parse(((string[])value.Split(','))[1]);
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
-					if (val3 == 16)
-					{
-						int what = 0;
-						what = 0;
-					}
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
 					tempVec = GlobalHelpers.GetScreenCoords(tempVec);
 					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
@@ -316,9 +301,8 @@ namespace Scallywags
                 //loop through each sub list of objects
                 foreach (object listSub in (ArrayList)listMain)
                 {
-
                     Object thisObject = (Object)listSub;
-                    thisObject.Draw(m_sb, gameTime);
+                    thisObject.Draw(m_sb, gameTime, m_ParentApp.Inputs.offsetHack());
                 }
             }
             

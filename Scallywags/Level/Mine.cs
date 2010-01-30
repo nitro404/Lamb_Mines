@@ -43,9 +43,9 @@ namespace Scallywags
         {
 			return isAlive;
         }
-        public override void Draw(SpriteBatch spriteThing, GameTime gameTime)
+        public override void Draw(SpriteBatch spriteThing, GameTime gameTime, Vector2 Offset)
         {
-			spriteThing.Draw(myTexture, Position, Color.White);
+			spriteThing.Draw(myTexture, Position + Offset, Color.White);
         }
         public override void Kill()
         {
