@@ -28,6 +28,11 @@ namespace Scallywags
 
 			AnimationPlay.PlayAnimation(Animations[0]);
 
+            if (!AnimationPlay.IsPlaying)
+            {
+                Kill();
+            }
+
 			base.Update(elapsedTime);
 
 			if (AnimationPlay.IsPlaying)

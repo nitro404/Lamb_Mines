@@ -30,8 +30,8 @@ namespace Scallywags
             : base(Location, animationList, tex)
         {
             goal = Location;
-            speed = 0.5f;
-            maxSpeed = 50.0f;
+            speed = 0.3f;
+            maxSpeed = 60.0f;
             ai = new Random(randomizer);
             randomizer++;
             interest = 0;

@@ -45,6 +45,22 @@ namespace Scallywags
             m_sb = new SpriteBatch(m_ParentApp.Device);
         }
 
+        public void Cleanup()
+        {
+            if (AllObjects != null)
+            {
+                AllObjects.Clear();
+            }
+            if (AllBarriers != null)
+            {
+                AllBarriers.Clear();
+            }
+            if (TriggerList != null)
+            {
+                TriggerList.Clear();
+            }
+        }
+
         /// <summary>
         /// Load a level from a a level file.
         /// </summary>
@@ -52,6 +68,7 @@ namespace Scallywags
         /// <returns>False if the level could not be loaded or if there is already a level loaded.</returns>
         public bool LoadLevel(string levelName)
         {
+            Cleanup();
             if (AllObjects != null)
                 Log.WriteToLog(Log.LogErrorLevel.ERROR_MINOR, "The level has already been loaded.");
 
