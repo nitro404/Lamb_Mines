@@ -83,7 +83,7 @@ namespace LambMines
         /// </summary>
         public override void Kill()
         {
-            KillMe();
+			KillMe();
         }
 
     }

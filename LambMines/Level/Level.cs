@@ -97,8 +97,6 @@ namespace LambMines
 					}
 				}
 			}
-
-            //m_ParentApp.theOffset.setMapDisplacement(new Vector2(Settings.PREFFERED_WINDOW_WIDTH, Settings.PREFFERED_WINDOW_HEIGHT));
 			
 
             //load in all the objects.
@@ -152,7 +150,7 @@ namespace LambMines
                     int val2 = int.Parse(((string[])value.Split(','))[1]);
                     int val3 = int.Parse(((string[])value.Split(','))[2]);
                     List<Animation> anim = new List<Animation>();
-                    anim.Add(new Animation(textureList[val3], 0.25f, true, new Vector2(90,45), 0));
+                    anim.Add(new Animation(textureList[val3], 0.3f, true, new Vector2(90,45), 0));
                     tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
                     Mine tempMine = new Mine(tempVec, anim, textureList[val3]);
                     ((ArrayList)AllObjects[(int)RenderLevel.RL_MINES]).Add(tempMine); TriggerList.Add(new TriggerObject(45.0f, tempMine));
@@ -168,7 +166,7 @@ namespace LambMines
                     int val2 = int.Parse(((string[])value.Split(','))[1]);
                     int val3 = int.Parse(((string[])value.Split(','))[2]);
                     tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-                    Tile tempClutter = new Tile(tempVec, textureList[val3]);
+                    Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
                     ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
                     tempClutter.parent = this;
                 }
@@ -178,7 +176,7 @@ namespace LambMines
                     int val2 = int.Parse(((string[])value.Split(','))[1]);
                     int val3 = int.Parse(((string[])value.Split(','))[2]);
                     tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-                    Tile tempClutter = new Tile(tempVec, textureList[val3]);
+                    Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
                     ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
                     tempClutter.parent = this;
                 }
@@ -188,7 +186,7 @@ namespace LambMines
                     int val2 = int.Parse(((string[])value.Split(','))[1]);
                     int val3 = int.Parse(((string[])value.Split(','))[2]);
                     tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-                    Tile tempClutter = new Tile(tempVec, textureList[val3]);
+                    Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
                     ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
                     tempClutter.parent = this;
                 }
@@ -224,18 +222,10 @@ namespace LambMines
                 }
             }
 
-            //for (int i = 0; i < 20; i++)
-            //{
-            //    List<Animation> animList = new List<Animation>();
-            //    for (int j = 0; j < 8; j++)
-            //    {
-            //        Animation anim = new Animation(textureList[18], 1, true, new Vector2(35,35), j);
-            //        animList.Add(anim);
-            //    }
-            //    Sheep tempSheep = new Sheep(new Vector2((i * 64) + 10, i * -24 ), animList, textureList[18]);
-            //    ((ArrayList)AllObjects[1]).Add(tempSheep);
-            //}
-
+			//just create an empty array list for the decals.
+			//
+			//((ArrayList)AllObjects[(int)RenderLevel.RL_BLOOD_DECALS]) = new ArrayList();
+			
             //Player
             List<Animation> anims = new List<Animation>();
             for (int j = 0; j < 8; j++)
@@ -251,7 +241,6 @@ namespace LambMines
             Player tempPlayer = new Player(m_ParentApp.Inputs, new Vector2(500, 500), anims, textureList[20]);
             ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempPlayer);
             TriggerList.Add(new TriggerObject(200.0f, tempPlayer));
-            //m_ParentApp.theOffset.setMapDisplacement( -1 *(tempPlayer.Position));
             tempPlayer.parent = this;
 			
             return true;
@@ -312,15 +301,6 @@ namespace LambMines
 			ArrayList shadowsToDelete = new ArrayList();
 			ArrayList minesToDelete = new ArrayList();
 
-            m_ParentApp.theOffset.UpdateVariables();
-            m_ParentApp.theOffset.theExplosion();
-
-            //m_ParentApp.theOffset.incrementVector(m_ParentApp.Inputs.offsetHack());
-
-            m_ParentApp.theOffset.setMapDisplacement(m_ParentApp.Inputs.offsetHack(
-                m_ParentApp.theOffset.getMapDisplacement(),
-                m_ParentApp.theOffset.getOldMapDisplacement()));
-
             //loop through each main list
             foreach (ArrayList listMain in AllObjects)
             {
@@ -328,10 +308,6 @@ namespace LambMines
                 foreach (Object listSub in (ArrayList)listMain)
                 {
                     //Object thisObject = listSub;
-                    if (listSub.WhatAmI() == "Player") {
-                        //m_ParentApp.theOffset.followTarget( (-1 *(listSub.Position)));
-                        //m_ParentApp.theOffset.setMapDisplacement(-1*(listSub.Position));
-                    }
                     if (!listSub.Update(elapsedTime, AllBarriers))
 					{
                         if (String.Compare(listSub.GetType().FullName, "LambMines.Clutter") == 0)
@@ -349,12 +325,14 @@ namespace LambMines
 							{
 								//TriggerList.RemoveAt(i);
 								triggerToDelete.Add(TriggerList[i]);
-                                m_ParentApp.theOffset.setExplosion(true);
 								break;
 							}
-                            m_ParentApp.theOffset.setExplosion(false);
 						}
-
+						if (listSub.WhatAmI() == "Mine")
+						{
+							minesToDelete.Add(listSub);
+							continue;
+						}
                         if (String.Compare(listSub.GetType().FullName, "LambMines.Mine") == 0)
                         {
                             minesToDelete.Add(listSub);
@@ -412,10 +390,12 @@ namespace LambMines
                 foreach (object listSub in (ArrayList)listMain)
                 {
                     Object thisObject = (Object)listSub;
-                    thisObject.Draw(m_sb, gameTime, m_ParentApp.theOffset.getMapDisplacement());
+                    thisObject.Draw(m_sb, gameTime, m_ParentApp.Inputs.offsetHack());
                 }
             }
+            
             m_sb.End();
+
         }
 
         /// <summary>

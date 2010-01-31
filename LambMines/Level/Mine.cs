@@ -54,17 +54,22 @@ namespace LambMines
                 switch (splatter)
                 {
                     case 0:
-                        LocationHack -= new Vector2(110, 70);
+                        //LocationHack -= new Vector2(110, 70);
+						LocationHack -= new Vector2(10, 0);
                         break;
                     case 1:
-                        LocationHack -= new Vector2(80, 45);
+                        //LocationHack -= new Vector2(80, 45);
+						//OK
+						LocationHack += new Vector2(20, 45);
                         break;
                     case 2:
-
-                        LocationHack -= new Vector2(70, 45);
+                        //LocationHack -= new Vector2(70, 45);
+						//OK
+						LocationHack += new Vector2(0, 50);
                         break;
                     case 3:
-                        LocationHack -= new Vector2(175, 70);
+                        //LocationHack -= new Vector2(175, 70);
+						LocationHack += new Vector2(-45, 10);
                         break;
                 }
 

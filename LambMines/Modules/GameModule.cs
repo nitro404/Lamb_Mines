@@ -57,14 +57,19 @@ namespace LambMines
             if (ParentApp.Inputs.IsKeyDown(Keys.Enter) || ParentApp.Inputs.IsButtonPressed(0, Buttons.A))
                 return MODULE_IDENTIFIER.MID_CREDITS_MODULE;
 
-            ///////////////////////////
-            //Temp... reset the game
-            if( ParentApp.Inputs.IsKeyPressed(Keys.F12) )
-                this.Initialize();
 
-			testLevel.ProcessTriggers();
+			//pause game
+			if (!ParentApp.Inputs.IsKeyDown(Keys.P))
+			{
+				///////////////////////////
+				//Temp... reset the game
+				if (ParentApp.Inputs.IsKeyPressed(Keys.F12))
+					this.Initialize();
 
-            testLevel.Update(fElapsedTime);
+				testLevel.ProcessTriggers();
+
+				testLevel.Update(fElapsedTime);
+			}
 
             return MODULE_IDENTIFIER.MID_THIS;    //Continue running the module.
         }

@@ -57,7 +57,7 @@ namespace LambMines
 					return false;
 				}
 			}
-			return true;
+			return isAlive;
 		}
 		public override void Draw(SpriteBatch spriteThing, GameTime gameTime, Vector2 Offset)
 		{
