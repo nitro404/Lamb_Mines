@@ -177,17 +177,17 @@ namespace LambMines
 
 			if (xSign == -1 && ySign == 1)
 			{
-				Error.Trace("x - y +");
+				//Error.Trace("x - y +");
 				result = Math.PI-result;
 			}
 			if (xSign == -1 && ySign == -1)
 			{
-				Error.Trace("x - y -");
+				//Error.Trace("x - y -");
 				result += Math.PI ;
 			}
 			if (xSign == 1 && ySign == -1)
 			{
-				Error.Trace("x + y -");
+				//Error.Trace("x + y -");
 				result = (Math.PI*2)-result;
 			}
 

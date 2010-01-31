@@ -140,14 +140,14 @@ namespace LambMines
 			Vector2 tempVec = new Vector2();
 
             Random rand = new Random();
-            for (int x = 8; x <25; x++)
-            {
-                for (int y = -8; y < 9; y++)
-                {
-            //for (int x = -8; x < 40; x++)
+            //for (int x = 8; x <25; x++)
             //{
-            //    for (int y = -24; y < 24; y++)
+            //    for (int y = -8; y < 9; y++)
             //    {
+            for (int x = -8; x < 34; x++)
+            {
+                for (int y = -20; y < 20; y++)
+                {
                     Vector2 position = new Vector2(x * Settings.SCREEN_TILE_MULTIPLIER_X, y * Settings.SCREEN_TILE_MULTIPLIER_Y);
                     Texture2D tex = textureList[rand.Next(0,9)];
                     Tile tile = new Tile(position, tex);
@@ -293,7 +293,7 @@ namespace LambMines
                 Animation anim = new Animation(textureList[34], 0.1f, true, new Vector2(35, 35), k);
                 anims.Add(anim);
             }
-            Player tempPlayer = new Player(m_ParentApp.Inputs, new Vector2(400, 0), anims, textureList[20]);
+            Player tempPlayer = new Player(m_ParentApp.Inputs, new Vector2(482, -242), anims, textureList[20]);
             ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempPlayer);
             TriggerList.Add(new TriggerObject(200.0f, tempPlayer));
             tempPlayer.parent = this;
@@ -357,17 +357,17 @@ namespace LambMines
 							Object[] tempObjects = ((Object)((TriggerObject)TriggerList[i]).referenceObj).onCollision((Object)planeList[c],textureList);
 							if (tempObjects != null)
 							{
-								Error.Trace("Collison spawn at X: " + ((Object)((TriggerObject)TriggerList[i]).referenceObj).Centre.X + " Y: " + ((Object)((TriggerObject)TriggerList[i]).referenceObj).Centre.Y);
+								//Error.Trace("Collison spawn at X: " + ((Object)((TriggerObject)TriggerList[i]).referenceObj).Centre.X + " Y: " + ((Object)((TriggerObject)TriggerList[i]).referenceObj).Centre.Y);
 								for (int m = 0; m < tempObjects.Length; m++)
 								{
 									if (tempObjects[m].GetType().FullName == "LambMines.Explosion")
 									{
 
 										tempObjects[m].parent = this;
-										TriggerList.Add(new TriggerObject(90*(m+1), tempObjects[m]));
+										TriggerList.Add(new TriggerObject(60*(m+1), tempObjects[m]));
 										((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempObjects[m]);
 
-										Error.Trace("Placeing object X: " + tempObjects[m].Position.X + " Y: " + tempObjects[m].Position.Y);
+										//Error.Trace("Placeing object X: " + tempObjects[m].Position.X + " Y: " + tempObjects[m].Position.Y);
 
 										/*if (tempObject.getExplosionType() != Object.ExplosionType.EX_NONE)
 										{
@@ -482,7 +482,7 @@ namespace LambMines
         {
             //Draw the terrain first.
 
-            device.Clear(Color.Red);
+            device.Clear(Color.ForestGreen);
             m_sb.Begin();
             
 
@@ -517,7 +517,7 @@ namespace LambMines
 
         public void ScoreKill()
         {
-            Score += 100;
+            Score += 25;
         }
 
         /// <summary>

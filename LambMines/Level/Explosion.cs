@@ -67,11 +67,11 @@ namespace LambMines
 					//int splatter = (int)GetAnimationDirection(dir) / 2;
 					Vector2 centerOfExp = new Vector2(Position.X + 245, Position.Y + 191);
 
-					Error.Trace("Explosion location X: " + Position.X + " Y: " + Position.Y);
-					Error.Trace("Explosion Center X: " + centerOfExp.X + " Y: " + centerOfExp.Y);
+                    //Error.Trace("Explosion location X: " + Position.X + " Y: " + Position.Y);
+                    //Error.Trace("Explosion Center X: " + centerOfExp.X + " Y: " + centerOfExp.Y);
 
 					double angle = getAngleTo(centerOfExp, collisionObject.Centre);
-					Error.Trace("Angle is: " + angle.ToString());
+                    //Error.Trace("Angle is: " + angle.ToString());
 					//angle += 45;
 					//if (angle > 360) angle -= 360;
 					int splatter = (int)(((angle + 45) * 4 / 360) % 4);
@@ -102,7 +102,7 @@ namespace LambMines
 					Random rand = new Random(DateTime.Now.Millisecond);
 
 					int randCheck = (splatter * 3) + rand.Next(0, 2);
-					Error.Trace(randCheck.ToString());
+                    //Error.Trace(randCheck.ToString());
 					Tile toAdd = new Tile(LocationHack, bloodSplatters[randCheck]);
 					//Tile toAdd = new Tile(LocationHack, textureList[0]);
 					parent.Spawn(Level.RenderLevel.RL_OBJECTS, toAdd);

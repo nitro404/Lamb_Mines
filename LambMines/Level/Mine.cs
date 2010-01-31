@@ -56,14 +56,14 @@ namespace LambMines
 					animList.Add(anim);
 					Explosion tempExp = new Explosion(new Vector2(Position.X - 48 * 5 - 5, Position.Y - 48 * 4 + 5), animList, textureList[19]);
 					tempExp.setExplosionType(ExplosionType.EX_POP);
-					Error.Trace("Flame Pop explotion at location X: " + Position.X + " Y: " + Position.Y);
+					//Error.Trace("Flame Pop explotion at location X: " + Position.X + " Y: " + Position.Y);
 
 					List<Animation> animList2 = new List<Animation>();
 					Animation anim2 = new Animation(textureList[19], 0.1f, false, new Vector2(220, 280), 0);
 					animList2.Add(anim2);
 					Explosion tempExp2 = new Explosion(new Vector2(Position.X - 48 * 5 - 5, Position.Y - 48 * 4 + 5), animList2, textureList[19]);
 					tempExp2.setExplosionType(ExplosionType.EX_FLAME);
-					Error.Trace("Flame Pop explotion at location X: " + Position.X + " Y: " + Position.Y);
+					//Error.Trace("Flame Pop explotion at location X: " + Position.X + " Y: " + Position.Y);
 
 					Object[] objList = new Object[2];
 					objList[0] = tempExp;
