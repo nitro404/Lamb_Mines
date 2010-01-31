@@ -55,7 +55,7 @@ namespace LambMines
         public override MODULE_IDENTIFIER Update(double fTotalTime, float fElapsedTime)
         {
             if (ParentApp.Inputs.IsKeyDown(Keys.Enter) || ParentApp.Inputs.IsButtonPressed(0, Buttons.A))
-                return MODULE_IDENTIFIER.MID_CREDITS_MODULE;
+                return MODULE_IDENTIFIER.MID_WIN_MODULE;
 
 
 			//pause game

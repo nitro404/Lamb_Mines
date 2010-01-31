@@ -9,6 +9,7 @@ namespace LambMines
         MID_SPLASH_MODULE,
         MID_MENU_MODULE,
         MID_GAME_MODULE,
-        MID_CREDITS_MODULE 
+        MID_WIN_MODULE,
+		MID_LOSE_MODULE
     };
 }

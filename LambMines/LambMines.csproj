@@ -98,10 +98,11 @@
     <Compile Include="Level\Sheep.cs" />
     <Compile Include="Level\Tile.cs" />
     <Compile Include="Log.cs" />
-    <Compile Include="Modules\CreditsModule.cs" />
     <Compile Include="Modules\GameModule.cs" />
+    <Compile Include="Modules\LoseModule.cs" />
     <Compile Include="Modules\MenuModule.cs" />
     <Compile Include="Modules\ModuleIdentifiers.cs" />
+    <Compile Include="Modules\WinScreen.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Application\ScallyWagsApp.cs" />

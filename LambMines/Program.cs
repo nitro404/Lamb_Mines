@@ -12,6 +12,9 @@ namespace LambMines
         {
             ScallyWagsApp game              = null;
             GameModule gameModule           = new GameModule();
+			WinScreenModule winScreenModule = new WinScreenModule();
+			LooseScreenModule loseModule = new LooseScreenModule();
+
             GamerServicesComponent services = new GamerServicesComponent( null );
            
             if( Settings.START_GAME_MODULE )
@@ -19,9 +22,9 @@ namespace LambMines
                 try
                 {
                     game = new ScallyWagsApp( gameModule );
-                    game.AddModule(new MenuModule());    
-                    game.AddModule(new CreditsModule());
-                    game.AddModule(new SplashModule() );
+                    //game.AddModule(new MenuModule());
+					game.AddModule(winScreenModule);
+
                     game.Run();
                 }
                 catch( Exception ex )
@@ -35,9 +38,13 @@ namespace LambMines
                 game = new ScallyWagsApp( new SplashModule() );
                 game.AddModule(new MenuModule());
                 game.AddModule( gameModule);
-                game.AddModule(new CreditsModule());
+				game.AddModule(winScreenModule);
+				game.AddModule(loseModule);
+
+                //game.AddModule(new CreditsModule());
                 game.Run();
             }
         }
     }
 }
+

@@ -14,7 +14,7 @@ namespace LambMines
         public static bool START_FULL_SCREEN = false;                       ///< Should the app start in full screen?
 #endif
         public static bool SHOW_FPS          = false;
-        public static bool START_GAME_MODULE = true;                        ///< Should the app start with the game module?
+        public static bool START_GAME_MODULE = false;                        ///< Should the app start with the game module?
         public static bool DRAW_SAFE_REGION  = false;                       ///< Do you want the hud to draw with the safe region highlighted?
         public static bool USE_COLLISION     = true;                        ///< Turn the collision on or off
         public static bool WOBBLE            = true;                        ///< Toggles the Wobble effect of hte firing Targetter
