@@ -40,7 +40,7 @@ namespace LambMines
                 collisionObject.Kill();//Kill the other object because this is a mine
                 //Kill();
                 Kill();//This object will explode when anything collides with it.
-
+                parent.theOffset.setExplosion(true);
                 List<Texture2D> bloodSplatters = new List<Texture2D>();
                 for (int i = 22; i < 34; i++)
                 {

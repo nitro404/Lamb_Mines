@@ -38,7 +38,6 @@ namespace LambMines
                                                     ///
         SpriteBatch spriteBatch;
 
-        private Offset m_Offset;
                                                           
         #endregion
 
@@ -140,11 +139,6 @@ namespace LambMines
             }
         }
 
-        public Offset theOffset {
-            get {
-                return m_Offset;
-            }
-        }
 
         #endregion
 
@@ -201,7 +195,6 @@ namespace LambMines
             m_font = new FontUtil();
 
             m_Inputs = new InputManager();
-            m_Offset = new Offset();
             //m_soundManager = new SoundManager();
         }
 

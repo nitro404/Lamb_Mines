@@ -23,6 +23,7 @@ namespace LambMines
         List<GamePadState> m_GamePadStates;         ///< The current gamepad states
         List<GamePadState> m_OldGamePadStates;      ///< The previous gamepad states
 
+        Texture2D m_mouseTexture;       
         MouseState m_MouseState;
         MouseState m_OldMouseState;
         bool m_IsScreenPanning;

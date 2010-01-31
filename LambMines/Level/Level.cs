@@ -29,6 +29,8 @@ namespace LambMines
 		private ArrayList AllBarriers;
         Texture2D[] textureList;//The grass object
         private SpriteBatch m_sb;               ///< The sprite batch for 2D rendering
+                                                ///
+        public Offset theOffset;
 
         private struct TriggerObject
         {
@@ -97,6 +99,8 @@ namespace LambMines
 					}
 				}
 			}
+
+            theOffset = new Offset();
 			
 
             //load in all the objects.
@@ -301,6 +305,15 @@ namespace LambMines
 			ArrayList shadowsToDelete = new ArrayList();
 			ArrayList minesToDelete = new ArrayList();
 
+            theOffset.UpdateVariables();
+            theOffset.theExplosion();
+
+            //m_ParentApp.theOffset.incrementVector(m_ParentApp.Inputs.offsetHack());
+
+            theOffset.setMapDisplacement(m_ParentApp.Inputs.offsetHack(
+                theOffset.getMapDisplacement(),
+                theOffset.getOldMapDisplacement()));
+
             //loop through each main list
             foreach (ArrayList listMain in AllObjects)
             {
@@ -308,6 +321,12 @@ namespace LambMines
                 foreach (Object listSub in (ArrayList)listMain)
                 {
                     //Object thisObject = listSub;
+                    if (listSub.WhatAmI() == "Player") {
+                        theOffset.followTarget( (-1 *(listSub.Position)) 
+                            //+ m_ParentApp.theOffset.varienceDisplacement 
+                            + new Vector2(768, 0));//768 is an arbitrary number that allows
+                        //m_ParentApp.theOffset.setMapDisplacement(-1*(listSub.Position));
+                    }
                     if (!listSub.Update(elapsedTime, AllBarriers))
 					{
                         if (String.Compare(listSub.GetType().FullName, "LambMines.Clutter") == 0)
@@ -325,8 +344,10 @@ namespace LambMines
 							{
 								//TriggerList.RemoveAt(i);
 								triggerToDelete.Add(TriggerList[i]);
+                                
 								break;
 							}
+                            
 						}
 						if (listSub.WhatAmI() == "Mine")
 						{
@@ -338,7 +359,8 @@ namespace LambMines
                             minesToDelete.Add(listSub);
                             continue;
                         }
-
+                        if (String.Compare(listSub.GetType().FullName, "LambMines.Explosion") == 0)
+                            theOffset.setExplosion(false);
 						subToDelete.Add(listSub);
 					}
                 }
@@ -390,7 +412,7 @@ namespace LambMines
                 foreach (object listSub in (ArrayList)listMain)
                 {
                     Object thisObject = (Object)listSub;
-                    thisObject.Draw(m_sb, gameTime, m_ParentApp.Inputs.offsetHack());
+                    thisObject.Draw(m_sb, gameTime, theOffset.getMapDisplacement() + theOffset.varienceDisplacement);
                 }
             }
             

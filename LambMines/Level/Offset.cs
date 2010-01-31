@@ -13,12 +13,14 @@ namespace LambMines{
 
         private Vector2 m_MapDisplacement;
         private Vector2 m_OldMapDisplacement;
+        private Vector2 m_varienceDisplacement;
         private bool m_isThereAnExplosion;
         private bool m_isScreenPanning;
 
         public Offset() {
             m_MapDisplacement = Vector2.Zero;
             m_OldMapDisplacement = Vector2.Zero;
+            m_varienceDisplacement = Vector2.Zero;
         }
 
         public void UpdateVariables() {
@@ -52,15 +54,20 @@ namespace LambMines{
         public void theExplosion() {
             if (m_isThereAnExplosion) {
                 if (m_isScreenPanning) {
-                    m_MapDisplacement.X = m_OldMapDisplacement.X + 1;
-                    m_MapDisplacement.Y = m_OldMapDisplacement.Y - 1;
+                    //m_varienceDisplacement.X = m_OldMapDisplacement.X + 1;
+                    //m_varienceDisplacement.Y = m_OldMapDisplacement.Y - 1;
+                    m_varienceDisplacement.X += 1;
+                    m_varienceDisplacement.Y -= 1;
                     m_isScreenPanning = !m_isScreenPanning;
                 }
                 else {
-                    m_MapDisplacement.X = m_OldMapDisplacement.X - 1;
-                    m_MapDisplacement.Y = m_OldMapDisplacement.Y + 1;
+                    //m_varienceDisplacement.X = m_OldMapDisplacement.X - 1;
+                    //m_varienceDisplacement.Y = m_OldMapDisplacement.Y + 1;
+                    m_varienceDisplacement.X -= 1;
+                    m_varienceDisplacement.Y += 1;
                     m_isScreenPanning = !m_isScreenPanning;
                 }
+                //m_MapDisplacement += m_varienceDisplacement;
             }
             //return m_MapDisplacement;
         }
@@ -80,6 +87,11 @@ namespace LambMines{
         }
         public void setOldMapDisplacement(Vector2 NewDisplacement) {
             m_OldMapDisplacement = NewDisplacement;
+        }
+        public Vector2 varienceDisplacement {
+            get {
+                return m_varienceDisplacement;
+            }
         }
         public void setExplosion(bool doIExplode) {
             m_isThereAnExplosion = doIExplode;
