@@ -34,6 +34,7 @@ namespace LambMines
         public bool isAlive
         {
 			get { return StillAlive; }
+            set { StillAlive = value; }
         }
 		public bool Stopped
 		{

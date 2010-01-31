@@ -34,7 +34,8 @@ namespace LambMines
 			}
             //TODO: More collision logic must be applied here.
             collisionObject.Kill();//Kill the other object because this is a mine
-			Kill();//This object will explode when anything collides with it.
+            Kill();
+			//Kill();//This object will explode when anything collides with it.
 
 			List<Animation> animList = new List<Animation>();
 			Animation anim = new Animation(textureList[19], 0.1f, false, new Vector2(220, 280), 0);

@@ -132,7 +132,7 @@ namespace LambMines
                     int val2 = int.Parse(((string[])value.Split(','))[1]);
                     int val3 = int.Parse(((string[])value.Split(','))[2]);
                     List<Animation> anim = new List<Animation>();
-                    anim.Add(new Animation(textureList[val3], 0.1f, true, new Vector2(90,45), 0));
+                    anim.Add(new Animation(textureList[val3], 0.25f, true, new Vector2(90,45), 0));
                     tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
                     Mine tempMine = new Mine(tempVec, anim, textureList[val3]);
                     ((ArrayList)AllObjects[(int)RenderLevel.RL_MINES]).Add(tempMine); TriggerList.Add(new TriggerObject(45.0f, tempMine));
@@ -147,7 +147,7 @@ namespace LambMines
                     int val2 = int.Parse(((string[])value.Split(','))[1]);
                     int val3 = int.Parse(((string[])value.Split(','))[2]);
                     tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-                    Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
+                    Tile tempClutter = new Tile(tempVec, textureList[val3]);
                     ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
                 }
                 foreach (string value in ((ArrayList)fileInfoHash["Trees"]))
@@ -156,7 +156,7 @@ namespace LambMines
                     int val2 = int.Parse(((string[])value.Split(','))[1]);
                     int val3 = int.Parse(((string[])value.Split(','))[2]);
                     tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-                    Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
+                    Tile tempClutter = new Tile(tempVec, textureList[val3]);
                     ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
                 }
                 foreach (string value in ((ArrayList)fileInfoHash["Fences"]))
@@ -165,7 +165,7 @@ namespace LambMines
                     int val2 = int.Parse(((string[])value.Split(','))[1]);
                     int val3 = int.Parse(((string[])value.Split(','))[2]);
                     tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-                    Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
+                    Tile tempClutter = new Tile(tempVec, textureList[val3]);
                     ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
                 }
             }

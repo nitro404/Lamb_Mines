@@ -67,7 +67,7 @@ namespace LambMines
         /// </summary>
         public override bool Update(float elapsedTime)
         {
-			return true;
+			return isAlive;
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace LambMines
         /// </summary>
         public override void Kill()
         {
-
+            KillMe();
         }
 
         public int GetAnimationDirection(Vector2 direction)
