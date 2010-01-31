@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 
-namespace Scallywags
+namespace LambMines
 {
     class Level
     {

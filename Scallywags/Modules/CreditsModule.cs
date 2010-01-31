@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using System.IO;
 
-namespace Scallywags
+namespace LambMines
 {
     /** @class  CreditsModule
      *  @brief  the team credits, a type of module

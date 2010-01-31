@@ -1,4 +1,4 @@
-namespace Scallywags
+namespace LambMines
 {
     /** @enum   MODULE_IDENTIFIER
     *   @brief  numerical identifiers for the module types

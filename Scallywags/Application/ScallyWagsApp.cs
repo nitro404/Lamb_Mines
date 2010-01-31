@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 
-namespace Scallywags
+namespace LambMines
 {
     /** @class  ScallyWagsApp
      *  @brief  the main application class, a type of modular app

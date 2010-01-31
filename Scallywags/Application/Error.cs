@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Scallywags
+namespace LambMines
 {
     /** @class  Error
      *  @brief  a static class to handle error output consistently

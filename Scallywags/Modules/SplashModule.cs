@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 
-namespace Scallywags
+namespace LambMines
 {
     /** @class  SplashModule
      *  @brief  the opening splash screen, a type of module

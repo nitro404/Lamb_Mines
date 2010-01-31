@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Scallywags
+namespace LambMines
 {
     /** @class FontUtil
      *  @brief Font class to handle displaying fonts for testing purposes.

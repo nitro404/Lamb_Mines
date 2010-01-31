@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 
 
-namespace Scallywags
+namespace LambMines
 {
     /** @class  ModuleLoader
      *  @brief  a class to load module content (with a load screen)

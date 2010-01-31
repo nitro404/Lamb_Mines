@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 
-namespace Scallywags
+namespace LambMines
 {
     /** @class  SoundCue
      *  @brief  a wrapper class to help managing sound cues

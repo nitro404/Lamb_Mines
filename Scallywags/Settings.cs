@@ -4,7 +4,7 @@
 
 using System;
 
-namespace Scallywags
+namespace LambMines
 {
     public static class Settings
     {

@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Storage;
 
 #endregion
 
-namespace Scallywags
+namespace LambMines
 {
     /** @enum   ResourceType
      *  @brief  defines the possible types of resources

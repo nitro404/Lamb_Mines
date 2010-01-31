@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework.GamerServices;
 
-namespace Scallywags
+namespace LambMines
 {
     static class Program
     {

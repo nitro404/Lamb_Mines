@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 
 
-namespace Scallywags
+namespace LambMines
 {
     /** @class  SoundManager
      *  @brief  the class to manage sounds

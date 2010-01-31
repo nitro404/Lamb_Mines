@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;    //needed for checking whether or not the guide is visible
 
-namespace Scallywags
+namespace LambMines
 {
     /** @class  GameModule
      *  @brief  the main branch of game execution, a type of module
