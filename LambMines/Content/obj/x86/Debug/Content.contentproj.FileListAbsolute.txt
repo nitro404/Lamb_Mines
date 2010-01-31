@@ -1,1 +1,1 @@
-C:\Users\K\Documents\GGJ2010\lambmines\LambMines\Content\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\AlphaNumeric\Desktop\Lambmines\LambMines\Content\obj\x86\Debug\ResolveAssemblyReference.cache

@@ -85,8 +85,8 @@ namespace LambMines
                         Position += movement;
                         movement.Normalize();
                     }
+                    Error.Trace(Position.ToString());
                 }
-                Error.Trace(Position.ToString());
 
                 return base.Update(elapsedTime, collisionList);
          }

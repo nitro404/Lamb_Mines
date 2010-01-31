@@ -140,10 +140,14 @@ namespace LambMines
 			Vector2 tempVec = new Vector2();
 
             Random rand = new Random();
-            for (int x = 0; x <16; x++)
+            for (int x = 8; x <25; x++)
             {
-                for (int y = 0; y < 16; y++)
+                for (int y = -8; y < 9; y++)
                 {
+            //for (int x = -8; x < 40; x++)
+            //{
+            //    for (int y = -24; y < 24; y++)
+            //    {
                     Vector2 position = new Vector2(x * Settings.SCREEN_TILE_MULTIPLIER_X, y * Settings.SCREEN_TILE_MULTIPLIER_Y);
                     Texture2D tex = textureList[rand.Next(0,9)];
                     Tile tile = new Tile(position, tex);
@@ -151,6 +155,29 @@ namespace LambMines
                     tile.parent = this;
                 }
             }
+
+            //for (int x = 8; x < 25; x++)
+            //{
+            //    for (int y = -8; y < 9; y++)
+            //    {
+            //        List<Animation> animList = new List<Animation>();
+            //        for (int j = 0; j < 8; j++)
+            //        {
+            //            Animation anim = new Animation(textureList[18], 1, true, new Vector2(35, 35), j);
+            //            animList.Add(anim);
+            //        }
+            //        tempVec = new Vector2(x * Settings.SCREEN_TILE_MULTIPLIER_X, x * Settings.SCREEN_TILE_MULTIPLIER_Y);
+            //        Sheep tempSheep = new Sheep(tempVec, animList, textureList[18]);
+
+            //        ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempSheep);
+
+            //        //Clutter tempShadow = new Clutter(tempSheep.Position, textureList[21]);
+            //        //tempShadow.AddShadow(ref tempSheep, textureList[21]);
+            //        //((ArrayList)AllObjects[(int)RenderLevel.RL_SHADOWS]).Add(tempShadow);
+            //        tempSheep.parent = this;
+            //        //tempShadow.parent = this;
+            //    }
+            //}
 
             if (fileInfoHash.Contains("Edges"))
             {
@@ -266,7 +293,7 @@ namespace LambMines
                 Animation anim = new Animation(textureList[34], 0.1f, true, new Vector2(35, 35), k);
                 anims.Add(anim);
             }
-            Player tempPlayer = new Player(m_ParentApp.Inputs, new Vector2(25, 25), anims, textureList[20]);
+            Player tempPlayer = new Player(m_ParentApp.Inputs, new Vector2(400, 0), anims, textureList[20]);
             ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempPlayer);
             TriggerList.Add(new TriggerObject(200.0f, tempPlayer));
             tempPlayer.parent = this;
