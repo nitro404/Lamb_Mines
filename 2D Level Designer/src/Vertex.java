@@ -52,10 +52,9 @@ public class Vertex {
 	public void paintOn(Graphics g) {
 		int radius = 2;
 		if(EditorPanel.gridTop != null) {
-			g.fillOval(World.getIsometricX(x, y)-radius, 
-					   World.getIsometricY(x, y)-radius,
+			g.fillOval(World.getIsometricX(x + World.HORIZONTAL_OFFSET, y - radius), 
+					   World.getIsometricY(x + World.HORIZONTAL_OFFSET, y - radius),
 					   radius * 2, radius * 2);
-System.out.println("DRAW Vert @: " + (EditorPanel.gridTop.x + World.getIsometricX(x, y)-radius) + " , " + (EditorPanel.gridTop.y + World.getIsometricY(x, y)-radius)); 
 		}
 	}
 	

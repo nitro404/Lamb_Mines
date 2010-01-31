@@ -134,7 +134,7 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 	}
 	public void mouseReleased(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON3) {
-			selectedPoint = new Vertex(World.getCartesianPoint(e.getPoint()));
+			selectedPoint = new Vertex(World.removeOffsetFrom(World.getCartesianPoint(e.getPoint())));
 			selectVertex();
 			popupMenuDeleteVertex.setEnabled(selectedVertex != null);
 			popupMenu.show(this, e.getX(), e.getY());
@@ -144,7 +144,7 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 			if(selectedVertex != null) {
 				previousVertex = selectedVertex; 
 			}
-			selectedPoint = new Vertex(World.getCartesianPoint(e.getPoint()));
+			selectedPoint = new Vertex(World.removeOffsetFrom(World.getCartesianPoint(e.getPoint())));
 			selectVertex();
 			
 			if(previousVertex != null && selectedVertex != null && !previousVertex.equals(selectedVertex)) {
@@ -158,7 +158,9 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 		this.update();
 	}
 	public void mouseDragged(MouseEvent e) { }
-	public void mouseMoved(MouseEvent e) { }
+	public void mouseMoved(MouseEvent e) {
+System.out.println((e.getX() - + World.HORIZONTAL_OFFSET) + ", " + e.getY());
+	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if(world != null) {
