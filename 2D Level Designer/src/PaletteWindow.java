@@ -12,7 +12,7 @@ public class PaletteWindow extends JFrame implements ActionListener {
 	
 	public PaletteWindow(EditorWindow editorWindow) {
 		super("Palette");
-		setSize(240, 640);
+		setSize(200, 768);
 		setLocation(editorWindow.getX() + editorWindow.getWidth(), editorWindow.getY());
 		
 		this.editorWindow = editorWindow;

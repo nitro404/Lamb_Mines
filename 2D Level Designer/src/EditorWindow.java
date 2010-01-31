@@ -9,7 +9,8 @@ public class EditorWindow extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	
 	final public static String MAP_DIRECTORY = "\\Maps";
-	final public static String SPRITE_DIRECTORY = "..\\LambMines\\Content\\Textures";
+//	final public static String SPRITE_DIRECTORY = "..\\LambMines\\Content\\Textures";
+	final public static String SPRITE_DIRECTORY = "Sprites";
 	
 	public World world;
 	
@@ -28,7 +29,7 @@ public class EditorWindow extends JFrame implements ActionListener {
 	private JMenu menuHelp;
 	private JMenuItem menuHelpAbout;
 	
-	private EditorPanel editorPanel;
+	public EditorPanel editorPanel;
 	private JScrollPane editorPanelScrollPane;
 	
 	private PaletteWindow paletteWindow;

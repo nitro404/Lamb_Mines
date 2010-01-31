@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
 import java.io.*;
 import java.util.Vector;
 import java.awt.image.BufferedImage;
@@ -21,7 +20,13 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 	private JMenuItem popupMenuDeleteVertex;
 	private JMenuItem popupMenuCancel;
 	
-	private BufferedImage activeTile;
+	public BufferedImage activeTile;
+	public static BufferedImage SHEEP;
+	public static BufferedImage LANDMINE;
+	public static BufferedImage ROCK;
+	public static BufferedImage FENCE;
+	
+	private Point selectedGridBlock;
 	public static int mode;
 	final public static int MODE_TILING = 0;
 	final public static int MODE_DRAWING = 1;
@@ -40,6 +45,10 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 		createPopupMenu();
 		
 		mode = MODE_TILING;
+		selectedGridBlock = null;
+		activeTile = null;
+		
+		loadImages();
 		
 		update();
 	}
@@ -57,6 +66,16 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 		popupMenu.add(popupMenuDeleteVertex);
 		popupMenu.addSeparator();
 		popupMenu.add(popupMenuCancel);
+	}
+	
+	public void loadImages() {
+		try {
+			SHEEP = ImageIO.read(new File(EditorWindow.SPRITE_DIRECTORY + "\\sheep.png"));
+			LANDMINE = ImageIO.read(new File(EditorWindow.SPRITE_DIRECTORY + "\\landmine01.png"));
+			ROCK = ImageIO.read(new File(EditorWindow.SPRITE_DIRECTORY + "\\rocks.png"));
+			FENCE = ImageIO.read(new File(EditorWindow.SPRITE_DIRECTORY + "\\grass_fence03.png"));
+		}
+		catch(Exception e) { }
 	}
 	
 	public void setWorld(World world) {
@@ -146,14 +165,29 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 				}
 			}
 		}
+		else if(mode == MODE_TILING) {
+			if(activeTile == SHEEP) {
+				world.sheep.add(new Entity(new Vertex(selectedGridBlock.x, selectedGridBlock.y), 0));
+			}
+			else if(activeTile == LANDMINE) {
+				world.sheep.add(new Entity(new Vertex(selectedGridBlock.x, selectedGridBlock.y), 0));
+			}
+			else if(activeTile == ROCK) {
+				world.rocks.add(new Entity(new Vertex(selectedGridBlock.x, selectedGridBlock.y), 0));				
+			}
+			else if(activeTile == FENCE) {
+				world.fences.add(new Entity(new Vertex(selectedGridBlock.x, selectedGridBlock.y), 0));				
+			}
+			
+		}
 		this.update();
 	}
 	public void mouseDragged(MouseEvent e) { }
 	public void mouseMoved(MouseEvent e) {
-		update();
 		if(mode == MODE_TILING) {
-			highlightGridBlock(e.getX(), e.getY());
+			getSelectedGridBlock(e.getPoint());
 		}
+		this.repaint();
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -184,13 +218,24 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 		update();
 	}
 	
-	public Vertex getGridBlock(Point p) {
-System.out.println(p.x + ", " + p.y);
-return null;
+	public void getSelectedGridBlock(Point p) {
+		Point origin = World.getCartesianPoint(gridTopIsometric);
+		Point current = World.getCartesianPoint(p);
+		Point offset = new Point(current.x - origin.x, current.y - origin.y);
+		Point location = new Point(offset.x / World.CARTESIAN_GRID_INCREMENT,
+				 				   offset.y / World.CARTESIAN_GRID_INCREMENT);
+		if(location.x < 0 || location.y < 0 || location.x >= world.gridSize.x || location.y >= world.gridSize.y) {
+			selectedGridBlock = null;
+		}
+		selectedGridBlock = location;
 	}
 	
-	public void highlightGridBlock(int x, int y) {
-		getGridBlock(new Point(x, y));
+	public void drawTile(BufferedImage tileToDraw, int x, int y, Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		Point topLeft = World.getIsometricPoint(new Point( x * World.CARTESIAN_GRID_INCREMENT, y * World.CARTESIAN_GRID_INCREMENT));
+		int xPos = ((world.dimensions.width / 2) + topLeft.x - World.CARTESIAN_GRID_INCREMENT + 4);
+		int yPos = topLeft.y - 3;
+		g2.drawImage(tileToDraw, null, xPos, yPos);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -202,6 +247,10 @@ return null;
 		}
 		
 		drawIsometricGrid(g);
+		
+		if(selectedGridBlock != null && activeTile != null) {
+			drawTile(activeTile, selectedGridBlock.x, selectedGridBlock.y, g);
+		}
 	}
 	
 	public void drawIsometricGrid(Graphics g) {
@@ -218,10 +267,27 @@ return null;
 					bottomRight = World.getIsometricPoint(new Point((i*w)+w, (j*w)+w));
 					bottomLeft =  World.getIsometricPoint(new Point( i*w,    (j*w)+w));
 					
-					g.drawLine(offset + topLeft.x,     topLeft.y,     offset + topRight.x,    topRight.y);
-					g.drawLine(offset + topRight.x,    topRight.y,    offset + bottomRight.x, bottomRight.y);
-					g.drawLine(offset + bottomRight.x, bottomRight.y, offset + bottomLeft.x,  bottomLeft.y);
-					g.drawLine(offset + bottomLeft.x,  bottomLeft.y,  offset + topLeft.x,     topLeft.y);
+					if(selectedGridBlock != null && i == selectedGridBlock.x && j == selectedGridBlock.y) {
+						Graphics2D g2 = (Graphics2D) g;
+						Stroke s = g2.getStroke();
+						g2.setStroke(new BasicStroke(2));
+						g2.setColor(new Color(255, 0, 0));
+						
+						g2.drawLine(offset + topLeft.x,     topLeft.y,     offset + topRight.x,    topRight.y);
+						g2.drawLine(offset + topRight.x,    topRight.y,    offset + bottomRight.x, bottomRight.y);
+						g2.drawLine(offset + bottomRight.x, bottomRight.y, offset + bottomLeft.x,  bottomLeft.y);
+						g2.drawLine(offset + bottomLeft.x,  bottomLeft.y,  offset + topLeft.x,     topLeft.y);
+						
+						g2.setStroke(s);
+					}
+					else {
+						g.setColor(new Color(64, 64, 64));
+						
+						g.drawLine(offset + topLeft.x,     topLeft.y,     offset + topRight.x,    topRight.y);
+						g.drawLine(offset + topRight.x,    topRight.y,    offset + bottomRight.x, bottomRight.y);
+						g.drawLine(offset + bottomRight.x, bottomRight.y, offset + bottomLeft.x,  bottomLeft.y);
+						g.drawLine(offset + bottomLeft.x,  bottomLeft.y,  offset + topLeft.x,     topLeft.y);
+					}
 					
 					if(i == 0 && j == 0) {
 						gridTopIsometric = new Point(offset + topLeft.x, topLeft.y);
@@ -240,7 +306,7 @@ return null;
 			}
 		}
 		
-		g.setColor(new Color(255, 0, 0));
+		g.setColor(Color.RED);
 		if(selectedVertex != null && mode == MODE_DRAWING) {
 			selectedVertex.paintOn(g);
 		}

@@ -1,0 +1,12 @@
+2D World: Version 1.2
+Dimensions: 16, 16
+Textures: 0
+Edges: 3
+	386, -386, 387, -147
+	481, -147, 387, -147
+	481, -147, 484, -49
+Mines: 0
+Rocks: 0
+Trees: 0
+Fences: 0
+Sheep: 0

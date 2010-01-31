@@ -6,41 +6,65 @@ import java.util.Vector;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-public class PalettePanel extends JPanel implements Scrollable, ActionListener, MouseListener, MouseMotionListener {
+public class PalettePanel extends JPanel implements Scrollable, ActionListener {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private EditorWindow editorWindow;
 	
-	private BufferedImage image;
+	private BufferedImage activeTile;
+	
+	private Vector<JRadioButton> paletteSelections;
 	
 	public PalettePanel(EditorWindow editorWindow) {
-		setLayout(null);
-		addMouseListener(this);
-		addMouseMotionListener(this);
-		
 		this.editorWindow = editorWindow;
 		
-		testPNG();
+		createPaletteChooser();
+		
+		this.activeTile = EditorPanel.SHEEP;
+		this.editorWindow.editorPanel.activeTile = this.activeTile;
 		
 		update();
 	}
 	
-	public void testPNG() {
-		try {
-			File imageFile = new File(EditorWindow.SPRITE_DIRECTORY + "\\grass_base01.png");
-			image = ImageIO.read(imageFile);
+	public void createPaletteChooser() {
+		int numberOfSprites = 4;
+		paletteSelections = new Vector<JRadioButton>();
+		ButtonGroup paletteSelectionGroup = new ButtonGroup();
+		JRadioButton paletteSelection;
+		for(int i=0;i<numberOfSprites;i++) {
+			paletteSelection = new JRadioButton();
+			paletteSelection.addActionListener(this);
+			paletteSelectionGroup.add(paletteSelection);
+			paletteSelection.setVisible(true);
+			paletteSelections.add(paletteSelection);
+			this.add(paletteSelection);
 		}
-		catch(Exception e) { }
+		paletteSelections.elementAt(0).setSelected(true);
 	}
 	
-	public void drawPNG(Graphics g) {
+	public void drawSprites(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		g2.drawImage(image, null, 0, 20);
+		int yPos = 20;
+		int xPos = 30;
+		int inc = 40;
+		g2.drawImage(EditorPanel.SHEEP, null, xPos + 30, yPos += inc);
+		g2.drawImage(EditorPanel.LANDMINE, null, xPos + 10, yPos += inc);
+		g2.drawImage(EditorPanel.ROCK, null, xPos, yPos += inc);
+		yPos += 75;
+		g2.drawImage(EditorPanel.FENCE, null, xPos, yPos += inc);
+		
+		xPos = 0;
+		yPos = 20;
+		for(int i=0;i<paletteSelections.size();i++) {
+			if(i==2) { yPos += 35; }
+			else if(i==3) { yPos += 75; }
+			paletteSelections.elementAt(i).setLocation(xPos + 5, yPos += inc);
+		}
 	}
 	
 	public Dimension getPreferredSize() {
-		return new Dimension(240, 640);
+		return new Dimension(160, 728);
 	}
 	
 	public Dimension getPreferredScrollableViewportSize() {
@@ -87,26 +111,24 @@ public class PalettePanel extends JPanel implements Scrollable, ActionListener, 
 		return false;
 	}
 	
-	public void mouseClicked(MouseEvent e) { }
-	public void mouseEntered(MouseEvent e) { }
-	public void mouseExited(MouseEvent e) { }
-	public void mousePressed(MouseEvent e) { }
-	
-	public void mouseReleased(MouseEvent e) {
-		if(e.getButton() == MouseEvent.BUTTON3) {
-			
-		}
-		else if(e.getButton() == MouseEvent.BUTTON1) {
-			
-		}
-		this.update();
-	}
-	
-	public void mouseDragged(MouseEvent e) { }
-	public void mouseMoved(MouseEvent e) { }
-	
 	public void actionPerformed(ActionEvent e) {
-		
+		for(int i=0;i<paletteSelections.size();i++) {
+			if(e.getSource() == paletteSelections.elementAt(i)) {
+				if(i == 0) {
+					this.activeTile =  EditorPanel.SHEEP;
+				}
+				else if(i == 1) {
+					this.activeTile =  EditorPanel.LANDMINE;
+				}
+				else if(i == 2) {
+					this.activeTile =  EditorPanel.ROCK;
+				}
+				else if(i == 3) {
+					this.activeTile =  EditorPanel.FENCE;
+				}
+				this.editorWindow.editorPanel.activeTile = this.activeTile;
+			}
+		}
 		this.update();
 	}
 		
@@ -115,7 +137,7 @@ public class PalettePanel extends JPanel implements Scrollable, ActionListener, 
 		
 		g.clearRect(0, 0, this.getWidth(), this.getHeight());
 		
-		drawPNG(g);
+		drawSprites(g);
 	}
 	
 	public void update() {
