@@ -324,8 +324,7 @@ namespace LambMines
 
         public bool AddTrigger(float Radius, Object obj)
         {
-            TriggerObject trigger = new TriggerObject(Radius, obj);
-            ((ArrayList)TriggerList).Add(trigger);
+            //TriggerList.Add(new TriggerObject(Radius, obj));
             return true;
         }
 
@@ -494,6 +493,7 @@ namespace LambMines
             for (int k = 0; k < MineSpawnList.Count;)
             {
                 ((ArrayList)AllObjects[(int)RenderLevel.RL_MINES]).Add(MineSpawnList[k]);
+				TriggerList.Add(new TriggerObject(45.0f,(Mine)MineSpawnList[k]));
                 MineSpawnList.Remove(MineSpawnList[k]);
             }
 

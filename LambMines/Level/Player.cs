@@ -166,6 +166,15 @@ namespace LambMines
             mine.parent = parent;
             parent.SpawnMine(Level.RenderLevel.RL_MINES, mine);
             parent.AddTrigger(45.0f, mine);
+
+
+			//List<Animation> anim = new List<Animation>();
+			//anim.Add(new Animation(textureList[val3], 0.3f, true, new Vector2(90, 45), 0));
+			//tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
+			//Mine tempMine = new Mine(tempVec, anim, textureList[val3]);
+			//((ArrayList)AllObjects[(int)RenderLevel.RL_MINES]).Add(tempMine); TriggerList.Add(new TriggerObject(45.0f, tempMine));
+			//tempMine.parent = this;
+
         }
     }
 }
