@@ -7,7 +7,8 @@ public class EditorWindow extends JFrame implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;
 	
-	final public static String MAP_DIRECTORY = "\\Maps"; 
+	final public static String MAP_DIRECTORY = "\\Maps";
+	final public static String SPRITE_DIRECTORY = "..\\LambMines\\Content\\Textures\\";
 	
 	public World world;
 	

@@ -44,13 +44,17 @@ public class World {
 	public boolean containsBarrier(Graph g) {
 		return this.barriers.contains(g);
 	}
-	
+
 	public static int getIsometricWidth(int width, int height) {
 		return (int) Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
 	}
 	
 	public static int getIsometricHeight(int width, int height) {
 		return (int) (getIsometricWidth(width, height) / 2);
+	}
+	
+	public Point getAdjacentIsometricBlock(int x, int y) {
+		return new Point(x + (World.ISOMETRIC_GRID_WIDTH / 2), y + (World.ISOMETRIC_GRID_HEIGHT / 2));
 	}
 	
 	public static int getIsometricX(int x, int y) {
