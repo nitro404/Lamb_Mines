@@ -64,6 +64,10 @@ namespace LambMines
             return base.Update(elapsedTime);
          }
 
+        public Vector2 playerPos() {
+            return Position;
+        }
+
 		public override Object onCollision(Object collisionObject, Texture2D[] textureList)
         {
             if (input.IsKeyDown(Keys.Space))
@@ -82,6 +86,9 @@ namespace LambMines
                 }
             }
 			return base.onCollision(collisionObject, textureList);
+        }
+        public override string WhatAmI() {
+            return "Player";
         }
     }
 }

@@ -37,6 +37,8 @@ namespace LambMines
         //private SoundManager    m_soundManager;     ///< The sound manager
                                                     ///
         SpriteBatch spriteBatch;
+
+        private Offset m_Offset;
                                                           
         #endregion
 
@@ -138,6 +140,12 @@ namespace LambMines
             }
         }
 
+        public Offset theOffset {
+            get {
+                return m_Offset;
+            }
+        }
+
         #endregion
 
         #region CONSTRUCTION
@@ -193,6 +201,7 @@ namespace LambMines
             m_font = new FontUtil();
 
             m_Inputs = new InputManager();
+            m_Offset = new Offset();
             //m_soundManager = new SoundManager();
         }
 

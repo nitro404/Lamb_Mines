@@ -751,6 +751,37 @@ namespace LambMines
             }
             return m_MapDisplacement;
         }
+        public Vector2 offsetHack(Vector2 currentDisplacement, Vector2 oldDisplacement) {
+            if (IsKeyDown(Keys.Up) && IsKeyDown(Keys.Right)) {
+                currentDisplacement.Y = oldDisplacement.Y + 5;
+            }
+            else if (IsKeyDown(Keys.Up) && IsKeyDown(Keys.Left)) {
+                currentDisplacement.X = oldDisplacement.X + 5;
+            }
+            else if (IsKeyDown(Keys.Down) && IsKeyDown(Keys.Right)) {
+                currentDisplacement.X = oldDisplacement.X - 5;
+            }
+            else if (IsKeyDown(Keys.Down) && IsKeyDown(Keys.Left)) {
+                currentDisplacement.Y = oldDisplacement.Y - 5;
+            }
+            else if (IsKeyDown(Keys.Up)) {
+                currentDisplacement.Y = oldDisplacement.Y + 5;
+                currentDisplacement.X = oldDisplacement.X + 5;
+            }
+            else if (IsKeyDown(Keys.Left)) {
+                currentDisplacement.X = oldDisplacement.X + 5;
+                currentDisplacement.Y = oldDisplacement.Y - 5;
+            }
+            else if (IsKeyDown(Keys.Down)) {
+                currentDisplacement.Y = oldDisplacement.Y - 5;
+                currentDisplacement.X = oldDisplacement.X - 5;
+            }
+            else if (IsKeyDown(Keys.Right)) {
+                currentDisplacement.X = oldDisplacement.X - 5;
+                currentDisplacement.Y = oldDisplacement.Y + 5;
+            }
+            return currentDisplacement;
+        }
         public Vector2 explosion() {
             if(isThereAnExplosion){
                 if (m_IsScreenPanning) {

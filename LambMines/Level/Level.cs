@@ -89,6 +89,8 @@ namespace LambMines
 					}
 				}
 			}
+
+            //m_ParentApp.theOffset.setMapDisplacement(new Vector2(Settings.PREFFERED_WINDOW_WIDTH, Settings.PREFFERED_WINDOW_HEIGHT));
 			
 
             //load in all the objects.
@@ -221,6 +223,7 @@ namespace LambMines
             Player tempPlayer = new Player(m_ParentApp.Inputs, new Vector2(512, 256), anims, textureList[20]);
             ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempPlayer);
             TriggerList.Add(new TriggerObject(200.0f, tempPlayer));
+            //m_ParentApp.theOffset.setMapDisplacement( -1 *(tempPlayer.Position));
 			
             return true;
         }
@@ -279,6 +282,15 @@ namespace LambMines
 			ArrayList shadowsToDelete = new ArrayList();
 			ArrayList minesToDelete = new ArrayList();
 
+            m_ParentApp.theOffset.UpdateVariables();
+            m_ParentApp.theOffset.theExplosion();
+
+            //m_ParentApp.theOffset.incrementVector(m_ParentApp.Inputs.offsetHack());
+
+            m_ParentApp.theOffset.setMapDisplacement(m_ParentApp.Inputs.offsetHack(
+                m_ParentApp.theOffset.getMapDisplacement(),
+                m_ParentApp.theOffset.getOldMapDisplacement()));
+
             //loop through each main list
             foreach (ArrayList listMain in AllObjects)
             {
@@ -286,6 +298,10 @@ namespace LambMines
                 foreach (Object listSub in (ArrayList)listMain)
                 {
                     //Object thisObject = listSub;
+                    if (listSub.WhatAmI() == "Player") {
+                        //m_ParentApp.theOffset.followTarget( (-1 *(listSub.Position)));
+                        //m_ParentApp.theOffset.setMapDisplacement(-1*(listSub.Position));
+                    }
 					if (!listSub.Update(elapsedTime))
 					{
 						if (listSub.WhatAmI() == "Clutter")
@@ -308,8 +324,10 @@ namespace LambMines
 							{
 								//TriggerList.RemoveAt(i);
 								triggerToDelete.Add(TriggerList[i]);
+                                m_ParentApp.theOffset.setExplosion(true);
 								break;
 							}
+                            m_ParentApp.theOffset.setExplosion(false);
 						}
 
 						subToDelete.Add(listSub);
@@ -361,12 +379,10 @@ namespace LambMines
                 foreach (object listSub in (ArrayList)listMain)
                 {
                     Object thisObject = (Object)listSub;
-                    thisObject.Draw(m_sb, gameTime, m_ParentApp.Inputs.offsetHack());
+                    thisObject.Draw(m_sb, gameTime, m_ParentApp.theOffset.getMapDisplacement());
                 }
             }
-            
             m_sb.End();
-
         }
 
         /// <summary>
