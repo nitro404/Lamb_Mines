@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scallywags", "Scallywags.csproj", "{01134F99-1CE9-47AC-900D-A804B810D630}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LambMines", "LambMines.csproj", "{01134F99-1CE9-47AC-900D-A804B810D630}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
