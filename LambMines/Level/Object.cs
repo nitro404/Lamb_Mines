@@ -45,6 +45,11 @@ namespace LambMines
 			get { return GlobalHelpers.GetScreenCoords((new Vector2(position.X * Settings.SCREEN_TILE_MULTIPLIER_X, position.Y * Settings.SCREEN_TILE_MULTIPLIER_Y))); }
 		}
 
+        public virtual Vector2 Centre
+        {
+            get { return new Vector2((myTexture.Width/2) + position.X, (myTexture.Height - 22.5f) + position.Y); }
+        }
+
 		//public methods.
         public void KillMe()
         {

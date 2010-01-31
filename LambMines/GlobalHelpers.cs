@@ -16,6 +16,11 @@ namespace LambMines
     class GlobalHelpers
     {
 
+        public static Vector2 getTilePositionOffset(Vector2 location, float Height)
+        {
+            Vector2 newPos = new Vector2(location.X, location.Y - Height + 145);
+            return newPos;
+        }
         //TEMP TESTS
         public static Vector2 GetScreenCoords(Vector2 iso)
         {

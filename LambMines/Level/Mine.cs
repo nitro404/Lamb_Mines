@@ -13,16 +13,11 @@ using Microsoft.Xna.Framework.GamerServices;
 
 namespace LambMines
 {
-    class Mine:Object
+    class Mine:AnimatedObject
     {
 
-        public Mine(int[] location, Texture2D aTexture)
-            : base(location, aTexture)
-        {
-
-        }
-		public Mine(Vector2 location, Texture2D aTexture)
-			: base(location, aTexture)
+		public Mine(Vector2 location,List<Animation> animations, Texture2D aTexture)
+			: base(location, animations, aTexture)
 		{
 
 		}
@@ -55,9 +50,9 @@ namespace LambMines
         }
         public override void Draw(SpriteBatch spriteThing, GameTime gameTime, Vector2 Offset)
         {
-            spriteThing.Draw(myTexture, GlobalHelpers.GetScreenCoords(Position + Offset), Color.White);
+            base.Draw(spriteThing, gameTime, Offset);
 			if (shadowObject != null)
-				spriteThing.Draw(shadowTexture, GlobalHelpers.GetScreenCoords(Position) + Offset, Color.White);
+                spriteThing.Draw(shadowTexture, GlobalHelpers.GetScreenCoords(Centre) + Offset, Color.White);
 
         }
         public override void Kill()

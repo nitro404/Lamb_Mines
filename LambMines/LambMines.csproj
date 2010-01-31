@@ -110,6 +110,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Utils\Animation\Animation.cs" />
     <Compile Include="Utils\Animation\AnimationPlayer.cs" />
+    <Compile Include="Utils\CollisionHandler.cs" />
     <Compile Include="Utils\FontUtil.cs" />
     <Compile Include="Utils\InputManager.cs" />
     <Compile Include="Utils\Sound\SoundCue.cs" />

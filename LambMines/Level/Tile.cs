@@ -27,7 +27,7 @@ namespace LambMines
 
         public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch sb, Microsoft.Xna.Framework.GameTime gameTime, Vector2 Offset)
         {
-            sb.Draw(myTexture, GlobalHelpers.GetScreenCoords(Position + Offset), Color.White);
+            sb.Draw(myTexture, GlobalHelpers.getTilePositionOffset(GlobalHelpers.GetScreenCoords(Position + Offset), myTexture.Height), Color.White);
         }
 
 		public override Object onCollision(Object collisionObject, Texture2D[] textureList)

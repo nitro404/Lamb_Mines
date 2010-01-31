@@ -38,6 +38,14 @@ namespace LambMines
             get { return animationPlayer; }
         }
 
+        public override Vector2 Centre
+        {
+            get
+            {
+                return new Vector2((animations[0].Dimensions.X/2) + Position.X, (animations[0].Dimensions.Y - 22.5f) + Position.Y);
+            }
+        }
+
         /// <summary>
         /// This is the trigger function that is called when there is a collision on this object. 
         /// Only an object that has been set with an associated onCollisionEvent can be called.

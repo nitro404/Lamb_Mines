@@ -108,100 +108,103 @@ namespace LambMines
                 for (int y = -20; y < 30; y++)
                 {
                     Vector2 position = new Vector2(x * Settings.SCREEN_TILE_MULTIPLIER_X, y * Settings.SCREEN_TILE_MULTIPLIER_Y);
-                    Tile tile = new Tile(position, textureList[rand.Next(0,9)]);
+                    Texture2D tex = textureList[rand.Next(0,9)];
+                    Tile tile = new Tile(position, tex);
                     ((ArrayList)AllObjects[(int)RenderLevel.RL_TERRAIN]).Add(tile);
                 }
             }
 
-			if (fileInfoHash.Contains("Barrier"))
-			{
-				foreach (Hashtable table in (Hashtable)fileInfoHash["Barrier"])
-				{
-					AllBarriers.Add(new ArrayList());
-					foreach (ArrayList secondTable in table)
-					{
-						for (int i = 0; i < secondTable.Count; i++)
-						{
-							//load each of the collision barriers into an array.
-							((ArrayList)AllBarriers[i]).Add(secondTable[i]);
-						}
-					}
-				}
-			}
-			
-			if (fileInfoHash.Contains("Mine"))
-			{
-				foreach (string value in ((ArrayList)fileInfoHash["Mine"]))
-				{
-					int val1 = int.Parse(((string[])value.Split(','))[0]);
-					int val2 = int.Parse(((string[])value.Split(','))[1]);
-					int val3 = int.Parse(((string[])value.Split(','))[2]);
+            if (fileInfoHash.Contains("Barrier"))
+            {
+                foreach (Hashtable table in (Hashtable)fileInfoHash["Barrier"])
+                {
+                    AllBarriers.Add(new ArrayList());
+                    foreach (ArrayList secondTable in table)
+                    {
+                        for (int i = 0; i < secondTable.Count; i++)
+                        {
+                            //load each of the collision barriers into an array.
+                            ((ArrayList)AllBarriers[i]).Add(secondTable[i]);
+                        }
+                    }
+                }
+            }
 
-					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-					Mine tempMine = new Mine(tempVec, textureList[val3]);
-					((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempMine); TriggerList.Add(new TriggerObject(45.0f, tempMine));
-				}
-			}
+            if (fileInfoHash.Contains("Mine"))
+            {
+                foreach (string value in ((ArrayList)fileInfoHash["Mine"]))
+                {
+                    int val1 = int.Parse(((string[])value.Split(','))[0]);
+                    int val2 = int.Parse(((string[])value.Split(','))[1]);
+                    int val3 = int.Parse(((string[])value.Split(','))[2]);
+                    List<Animation> anim = new List<Animation>();
+                    anim.Add(new Animation(textureList[val3], 0.1f, true, new Vector2(90,45), 0));
+                    tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
+                    Mine tempMine = new Mine(tempVec, anim, textureList[val3]);
+                    ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempMine); TriggerList.Add(new TriggerObject(45.0f, tempMine));
+                }
+            }
 
-			if (fileInfoHash.Contains("Rocks") || fileInfoHash.Contains("Trees") || fileInfoHash.Contains("Fences"))
-			{
-				foreach (string value in ((ArrayList)fileInfoHash["Rocks"]))
-				{
-					int val1 = int.Parse(((string[])value.Split(','))[0]);
-					int val2 = int.Parse(((string[])value.Split(','))[1]);
-					int val3 = int.Parse(((string[])value.Split(','))[2]);
-					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
-					((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
-				}
-				foreach (string value in ((ArrayList)fileInfoHash["Trees"]))
-				{
-					int val1 = int.Parse(((string[])value.Split(','))[0]);
-					int val2 = int.Parse(((string[])value.Split(','))[1]);
-					int val3 = int.Parse(((string[])value.Split(','))[2]);
-					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
-					((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
-				}
-				foreach (string value in ((ArrayList)fileInfoHash["Fences"]))
-				{
-					int val1 = int.Parse(((string[])value.Split(','))[0]);
-					int val2 = int.Parse(((string[])value.Split(','))[1]);
-					int val3 = int.Parse(((string[])value.Split(','))[2]);
-					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
-					((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
-				}
-			}
+            if (fileInfoHash.Contains("Rocks") || fileInfoHash.Contains("Trees") || fileInfoHash.Contains("Fences"))
+            {
+                foreach (string value in ((ArrayList)fileInfoHash["Rocks"]))
+                {
+                    int val1 = int.Parse(((string[])value.Split(','))[0]);
+                    int val2 = int.Parse(((string[])value.Split(','))[1]);
+                    int val3 = int.Parse(((string[])value.Split(','))[2]);
+                    tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
+                    Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
+                    ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
+                }
+                foreach (string value in ((ArrayList)fileInfoHash["Trees"]))
+                {
+                    int val1 = int.Parse(((string[])value.Split(','))[0]);
+                    int val2 = int.Parse(((string[])value.Split(','))[1]);
+                    int val3 = int.Parse(((string[])value.Split(','))[2]);
+                    tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
+                    Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
+                    ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
+                }
+                foreach (string value in ((ArrayList)fileInfoHash["Fences"]))
+                {
+                    int val1 = int.Parse(((string[])value.Split(','))[0]);
+                    int val2 = int.Parse(((string[])value.Split(','))[1]);
+                    int val3 = int.Parse(((string[])value.Split(','))[2]);
+                    tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
+                    Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
+                    ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
+                }
+            }
 
-			if (fileInfoHash.Contains("Sheep"))
-			{
-				List<Animation> animList = new List<Animation>();
-				foreach(string value in ((ArrayList)fileInfoHash["Sheep"])){
+            if (fileInfoHash.Contains("Sheep"))
+            {
+                List<Animation> animList = new List<Animation>();
+                foreach (string value in ((ArrayList)fileInfoHash["Sheep"]))
+                {
 
-					int val1 = int.Parse(((string[])value.Split(','))[0]);
-					int val2 = int.Parse(((string[])value.Split(','))[1]);
-					int val3 = int.Parse(((string[])value.Split(','))[2]);
+                    int val1 = int.Parse(((string[])value.Split(','))[0]);
+                    int val2 = int.Parse(((string[])value.Split(','))[1]);
+                    int val3 = int.Parse(((string[])value.Split(','))[2]);
 
-					for (int j = 0; j < 8; j++)
-					{
-						Animation anim = new Animation(textureList[val3], 1, true, new Vector2(35, 35), j);
-						animList.Add(anim);
-					}
-					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
-					Sheep tempSheep = new Sheep(tempVec, animList, textureList[val3]);
+                    for (int j = 0; j < 8; j++)
+                    {
+                        Animation anim = new Animation(textureList[val3], 1, true, new Vector2(35, 35), j);
+                        animList.Add(anim);
+                    }
+                    tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
+                    Sheep tempSheep = new Sheep(tempVec, animList, textureList[val3]);
 
-((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempSheep);
-					
-					Clutter tempShadow = new Clutter(tempSheep.Position, textureList[21]);
-					tempShadow.AddShadow(ref tempSheep, textureList[21]);
-					((ArrayList)AllObjects[(int)RenderLevel.RL_SHADOWS]).Add(tempShadow);
+                    ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempSheep);
 
-					//tempSheep.AddShadow(textureList[21]);
-					
-				}
-			}
-			
+                    Clutter tempShadow = new Clutter(tempSheep.Position, textureList[21]);
+                    tempShadow.AddShadow(ref tempSheep, textureList[21]);
+                    ((ArrayList)AllObjects[(int)RenderLevel.RL_SHADOWS]).Add(tempShadow);
+
+                    //tempSheep.AddShadow(textureList[21]);
+
+                }
+            }
+
             //for (int i = 0; i < 20; i++)
             //{
             //    List<Animation> animList = new List<Animation>();
@@ -221,8 +224,8 @@ namespace LambMines
                 Animation anim = new Animation(textureList[20], 0.1f, true, new Vector2(35, 35), j);
                 anims.Add(anim);
             }
-            Player tempPlayer = new Player(m_ParentApp.Inputs , new Vector2(512, 256), anims, textureList[20]);
-			((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempPlayer);
+            Player tempPlayer = new Player(m_ParentApp.Inputs, new Vector2(512, 256), anims, textureList[20]);
+            ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempPlayer);
             TriggerList.Add(new TriggerObject(200.0f, tempPlayer));
 			
             return true;
