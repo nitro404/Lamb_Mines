@@ -33,6 +33,8 @@ namespace Scallywags
         Vector2 m_MapDisplacement;
         Vector2 m_OldMapDisplacement;
 
+        bool isThereAnExplosion;
+
         int m_Delay;              //<! A delay called after the Reset, that locks the controls for a second, to prevent quick turn spasms
         Keys m_EnableKey;         //<! A Key that will unlock the controller, if locked, LockControls(Key) will lock the Control
 
@@ -78,6 +80,7 @@ namespace Scallywags
             m_MouseState = new MouseState();
             m_OldMouseState = new MouseState();
             m_IsScreenPanning = false;
+            isThereAnExplosion = false;
             
             m_GamePadStates = new List<GamePadState>();
             m_OldGamePadStates = new List<GamePadState>();
@@ -640,11 +643,9 @@ namespace Scallywags
         //Checks if the Right Mouse Button is currently down
         public bool IsMouseRightDown() {
             if (m_MouseState.RightButton == ButtonState.Pressed) {
-                m_IsScreenPanning = true;
-                scrollMap();
                 return true;
             }
-            else { m_IsScreenPanning = false; return false; }
+            else { return false; }
         }
         //Checks if the Middle Mouse Button is currently down
         public bool IsMouseMiddleDown() {
@@ -712,39 +713,72 @@ namespace Scallywags
             return false;
         }
         //Passes a mouse displacement to move the screen
-        public Vector2 scrollMap() {
-            Vector2 MouseDisplacement = GetMousePosition() - GetPrevMousePosition();
-            if (m_IsScreenPanning) {
-                return GlobalHelpers.GetScreenCoords(MouseDisplacement);
-            }
-            return Vector2.Zero;
-        }
+        //public Vector2 scrollMap() {
+        //    Vector2 MouseDisplacement = GetMousePosition() - GetPrevMousePosition();
+        //    //if (m_IsScreenPanning) {
+        //    //    return GlobalHelpers.GetScreenCoords(MouseDisplacement);
+        //    //}
+        //    return Vector2.Zero;
+        //}
         public Vector2 offsetHack() {
-            if (IsKeyDown(Keys.Up)) {
+            if (IsKeyDown(Keys.Up) && IsKeyDown(Keys.Right)) {
                 m_MapDisplacement.Y = m_OldMapDisplacement.Y + 5;
-                if (IsKeyDown(Keys.Right)) {
-                    m_MapDisplacement.X = m_OldMapDisplacement.X - 5;
-                }
-                else if (IsKeyDown(Keys.Left)) {
-                    m_MapDisplacement.X = m_OldMapDisplacement.X + 5;
-                }
+            }
+            else if (IsKeyDown(Keys.Up) && IsKeyDown(Keys.Left)) {
+                m_MapDisplacement.X = m_OldMapDisplacement.X + 5;
+            }
+            else if (IsKeyDown(Keys.Down) && IsKeyDown(Keys.Right)) {
+                m_MapDisplacement.X = m_OldMapDisplacement.X - 5;
+            }
+            else if (IsKeyDown(Keys.Down) && IsKeyDown(Keys.Left)) {
+                m_MapDisplacement.Y = m_OldMapDisplacement.Y - 5;
+            }
+            else if (IsKeyDown(Keys.Up)) {
+                m_MapDisplacement.Y = m_OldMapDisplacement.Y + 5;
+                m_MapDisplacement.X = m_OldMapDisplacement.X + 5;
             }
             else if (IsKeyDown(Keys.Left)) {
                 m_MapDisplacement.X = m_OldMapDisplacement.X + 5;
-                if (IsKeyDown(Keys.Down)) {
-                    m_MapDisplacement.Y = m_OldMapDisplacement.Y - 5;
-                }
+                m_MapDisplacement.Y = m_OldMapDisplacement.Y - 5;
             }
             else if (IsKeyDown(Keys.Down)) {
                 m_MapDisplacement.Y = m_OldMapDisplacement.Y - 5;
-                if (IsKeyDown(Keys.Right)) {
-                    m_MapDisplacement.X = m_OldMapDisplacement.X - 5;
-                }
+                m_MapDisplacement.X = m_OldMapDisplacement.X - 5;
             }
             else if (IsKeyDown(Keys.Right)) {
                 m_MapDisplacement.X = m_OldMapDisplacement.X - 5;
+                m_MapDisplacement.Y = m_OldMapDisplacement.Y + 5;
             }
             return m_MapDisplacement;
+        }
+        public Vector2 explosion() {
+            if(isThereAnExplosion){
+                if (m_IsScreenPanning) {
+                    m_MapDisplacement.X = m_OldMapDisplacement.X + 1;
+                    m_MapDisplacement.Y = m_OldMapDisplacement.Y - 1;
+                    m_IsScreenPanning = !m_IsScreenPanning;
+                }
+                else {
+                    m_MapDisplacement.X = m_OldMapDisplacement.X - 1;
+                    m_MapDisplacement.Y = m_OldMapDisplacement.Y + 1;
+                    m_IsScreenPanning = !m_IsScreenPanning;
+                }
+            }
+            return m_MapDisplacement;
+        }
+        public Vector2 stalkTarget(Vector2 targetPos) {
+            m_MapDisplacement.X = targetPos.X;
+            m_MapDisplacement.Y = targetPos.Y;
+            return m_MapDisplacement;
+        }
+        public Vector2 getMapDisplacement() {
+            return m_MapDisplacement;
+        }
+        public void setExplosion(bool doIExplode) {
+            isThereAnExplosion = doIExplode;
+        }
+        public bool getExplosion() {
+            return isThereAnExplosion;
         }
     }
 }

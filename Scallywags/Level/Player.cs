@@ -62,7 +62,7 @@ namespace Scallywags
                 }
 
             return base.Update(elapsedTime);
-        }
+         }
 
 		public override Object onCollision(Object collisionObject, Texture2D[] textureList)
         {
