@@ -22,7 +22,7 @@ public class World {
 	
 	final public static int CARTESIAN_GRID_INCREMENT = 48;
 	
-	public static int HORIZONTAL_OFFSET;
+//	public static int HORIZONTAL_OFFSET;
 	
 	final public static int ISOMETRIC_GRID_WIDTH = World.getIsometricWidth(GRID_WIDTH, GRID_HEIGHT);
 	final public static int ISOMETRIC_GRID_HEIGHT = World.getIsometricHeight(GRID_WIDTH, GRID_HEIGHT);
@@ -66,14 +66,6 @@ public class World {
 	
 	public void removeEdge(Edge e) {
 		edges.edges.remove(e);
-	}
-	
-	public static Point removeOffsetFrom(Point p) {
-		return new Point(p.x - HORIZONTAL_OFFSET, p.y);
-	}
-	
-	public static Point addOffsetTo(Point p) {
-		return new Point(p.x + HORIZONTAL_OFFSET, p.y);
 	}
 	
 	public static int getIsometricWidth(int width, int height) {
@@ -194,7 +186,7 @@ public class World {
 		world.gridSize = new Vertex(mapWidth, mapHeight);
 		//world.dimensions = new Dimension(mapWidth * ISOMETRIC_GRID_WIDTH, mapHeight * ISOMETRIC_GRID_HEIGHT);
 		world.dimensions = new Dimension(mapWidth * (CARTESIAN_GRID_INCREMENT * 2), mapHeight * CARTESIAN_GRID_INCREMENT);
-		HORIZONTAL_OFFSET = (world.dimensions.width / 2) + 1;
+//		HORIZONTAL_OFFSET = (world.dimensions.width / 2) + 1;
 		
 		// read in the texture names
 		input = in.readLine();

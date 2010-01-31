@@ -21,6 +21,8 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 	private JMenuItem popupMenuDeleteVertex;
 	private JMenuItem popupMenuCancel;
 	
+	private BufferedImage activeTile;
+	
 	public static Point gridTop;
 	public static Point gridRight;
 	public static Point gridBottom;
@@ -34,24 +36,7 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 		
 		createPopupMenu();
 		
-		testPNG();
-		
 		update();
-	}
-	
-	private BufferedImage image;
-	
-	public void testPNG() {
-		try {
-			File imageFile = new File(EditorWindow.SPRITE_DIRECTORY + "\\grass_base01.png");
-			image = ImageIO.read(imageFile);
-		}
-		catch(Exception e) { }
-	}
-	
-	public void drawPNG(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
-		g2.drawImage(image, null, 0, 20);
 	}
 	
 	public void createPopupMenu() {
@@ -129,12 +114,11 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 	public void mouseClicked(MouseEvent e) { }
 	public void mouseEntered(MouseEvent e) { }
 	public void mouseExited(MouseEvent e) { }
-	public void mousePressed(MouseEvent e) {
-		
-	}
+	public void mousePressed(MouseEvent e) { }
+	
 	public void mouseReleased(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON3) {
-			selectedPoint = new Vertex(World.removeOffsetFrom(World.getCartesianPoint(e.getPoint())));
+			selectedPoint = new Vertex(World.getCartesianPoint(e.getPoint()));
 			selectVertex();
 			popupMenuDeleteVertex.setEnabled(selectedVertex != null);
 			popupMenu.show(this, e.getX(), e.getY());
@@ -144,7 +128,7 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 			if(selectedVertex != null) {
 				previousVertex = selectedVertex; 
 			}
-			selectedPoint = new Vertex(World.removeOffsetFrom(World.getCartesianPoint(e.getPoint())));
+			selectedPoint = new Vertex(World.getCartesianPoint(e.getPoint()));
 			selectVertex();
 			
 			if(previousVertex != null && selectedVertex != null && !previousVertex.equals(selectedVertex)) {
@@ -159,7 +143,7 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 	}
 	public void mouseDragged(MouseEvent e) { }
 	public void mouseMoved(MouseEvent e) {
-System.out.println((e.getX() - + World.HORIZONTAL_OFFSET) + ", " + e.getY());
+		
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -197,8 +181,6 @@ System.out.println((e.getX() - + World.HORIZONTAL_OFFSET) + ", " + e.getY());
 			g.clearRect(0, 0, this.getWidth(), this.getHeight());
 			world.paintOn(g);
 		}
-		
-		drawPNG(g);
 		
 		drawIsometricGrid(g);
 	}
