@@ -52,7 +52,7 @@ namespace LambMines
         /// </summary>
         /// <param name="collisionObject">This is a reference to the object that has collided with this event</param>
         /// <returns>Returns FALSE only if this object needs to be destroyed.</returns>
-        public override Object onCollision(Object collisionObject,Texture2D[] textureList)
+        public override Object[] onCollision(Object collisionObject,Texture2D[] textureList)
         {
             return null;
         }
@@ -75,7 +75,15 @@ namespace LambMines
         /// </summary>
         public override void Draw(SpriteBatch sb, GameTime gameTime, Vector2 Offset)
         {
-            animationPlayer.Draw(gameTime, sb, GlobalHelpers.GetScreenCoords(Position + Offset), new SpriteEffects());
+			try
+			{
+				animationPlayer.Draw(gameTime, sb, GlobalHelpers.GetScreenCoords(Position + Offset), new SpriteEffects());
+			}
+			catch (Exception exp)
+			{
+				bool whappit = false;
+				whappit = true;
+			}
         }
 
         /// <summary>

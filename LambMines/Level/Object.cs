@@ -16,6 +16,7 @@ namespace LambMines
 {
     abstract class Object
     {
+		public enum ExplosionType{EX_NONE,EX_POP,EX_FLAME};
 
         //private variables
         private Vector2 position = new Vector2();
@@ -56,7 +57,7 @@ namespace LambMines
 
         public virtual Vector2 Centre
         {
-            get { return new Vector2((myTexture.Width/2) + position.X, (myTexture.Height - 22.5f) + position.Y); }
+            get { return new Vector2( position.X + (myTexture.Width/2),position.Y + (myTexture.Height/2) ); }
         }
 
 		//public methods.
@@ -101,7 +102,7 @@ namespace LambMines
         /// </summary>
         /// <param name="collisionObject">This is a reference to the object that has collided with this event</param>
         /// <returns>Returns FALSE only if this object needs to be destroyed.</returns>
-        abstract public Object onCollision(Object collisionObject,Texture2D[] textureList);
+        abstract public Object[] onCollision(Object collisionObject,Texture2D[] textureList);
 
         /// <summary>
         /// General update loop
@@ -122,6 +123,13 @@ namespace LambMines
 		{
 			return "Object";
 		}
+		virtual public void setExplosionType(ExplosionType nothing){
+
+		}
+		virtual public ExplosionType getExplosionType()
+		{
+			return ExplosionType.EX_NONE;
+		}
 /*
 		virtual public void AddShadow(ref Object shadowObj, Texture2D shadowTex)
 		{
@@ -139,7 +147,7 @@ namespace LambMines
 
         public int GetAnimationDirection(Vector2 direction)
         {
-            double angle = Math.Atan2(direction.Y, direction.X) + (Math.PI * 6 / 8);
+            double angle = Math.Atan2(direction.Y, direction.X) + (Math.PI * 6.0 / 8.0);
             double fraction = angle * 0.5 / Math.PI;
             fraction += 1.0 / 16.0;
             if (fraction >= 1.0)
@@ -152,6 +160,44 @@ namespace LambMines
             return index;
         }
 
+		public double getAngleTo(Vector2 origion, Vector2 yourPos)
+		{
+			//use the sin law to get the angle between thes two vectors
+			//The sin law is A/sin(a)=B/sin(b)
 
+			double yDiff = yourPos.Y - origion.Y;
+			
+			int ySign = Math.Sign(yDiff);
+			int xSign = Math.Sign(yourPos.X - origion.X);
+
+			yDiff = Math.Abs(yDiff);
+
+			double dist = (yourPos - origion).Length();
+			double result = Math.Asin(yDiff/dist);
+
+			if (xSign == -1 && ySign == 1)
+			{
+				Error.Trace("x - y +");
+				result = Math.PI-result;
+			}
+			if (xSign == -1 && ySign == -1)
+			{
+				Error.Trace("x - y -");
+				result += Math.PI ;
+			}
+			if (xSign == 1 && ySign == -1)
+			{
+				Error.Trace("x + y -");
+				result = (Math.PI*2)-result;
+			}
+
+			//if (ySign == -1)
+			//{
+			//	result = (Math.PI * 2) - result;
+			//}
+
+			result = MathHelper.ToDegrees((float)result);
+			return result;
+		}
     }
 }

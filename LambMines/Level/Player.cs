@@ -88,7 +88,32 @@ namespace LambMines
                     Error.Trace(Position.ToString());
                 }
 
+			//HACK
+			/*
+				if (parent.m_ParentApp.Inputs.IsKeyPressed(Keys.H))
+				{
+					List<Animation> animList = new List<Animation>();
+					for (int j = 0; j < 8; j++)
+					{
+						Animation anim = new Animation(parent.textureList[18], 1, true, new Vector2(35, 35), j);
+						animList.Add(anim);
+					}
+					Vector2 tempVec = new Vector2(Position.X,Position.Y);
+					Sheep tempSheep = new Sheep(tempVec, animList, parent.textureList[18]);
+					//((ArrayList)parent.AllObjects[(int)Level.RenderLevel.RL_OBJECTS]).Add(tempSheep);
+					parent.Spawn(Level.RenderLevel.RL_OBJECTS, tempSheep);
+					Clutter tempShadow = new Clutter(tempSheep.Position, parent.textureList[21]);
+					tempShadow.AddShadow(ref tempSheep, parent.textureList[21]);
+					//((ArrayList)parent.AllObjects[(int)Level.RenderLevel.RL_SHADOWS]).Add(tempShadow);
+					parent.Spawn(Level.RenderLevel.RL_SHADOWS, tempShadow);
+					tempSheep.parent = parent;
+					tempShadow.parent = parent;
+					//tempSheep.AddShadow(textureList[21]);
+
+				}
+			*/	
                 return base.Update(elapsedTime, collisionList);
+				//return true;
          }
 
         public bool checkMove(ArrayList collisionList, Vector2 Target)
@@ -104,7 +129,7 @@ namespace LambMines
             return true;
         }
 
-		public override Object onCollision(Object collisionObject, Texture2D[] textureList)
+		public override Object[] onCollision(Object collisionObject, Texture2D[] textureList)
         {
 
             if (String.Compare(collisionObject.GetType().FullName, "LambMines.Sheep") == 0)
@@ -118,6 +143,7 @@ namespace LambMines
                     ((Sheep)collisionObject).Seek(Position);
                 }
             }
+
 
 			return base.onCollision(collisionObject, textureList);
         }

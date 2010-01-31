@@ -349,15 +349,47 @@ namespace LambMines
 					{
 						//check the collision and if the two object collide.
 						//the call the on collision method.
-						Vector2 dist = ((Object)((TriggerObject)TriggerList[i]).referenceObj).Position + new Vector2(16, 16);
-						dist = dist - ((Object)planeList[c]).Position;
+						Vector2 dist = ((Object)((TriggerObject)TriggerList[i]).referenceObj).Centre;
+						dist = dist - ((Object)planeList[c]).Centre;
 						float finalDist = dist.Length();
 						if (finalDist < ((TriggerObject)TriggerList[i]).radius && finalDist != 0 && ((Object)planeList[c]).WhatAmI() != "Explosion" )
 						{
-							Object tempObject = ((Object)((TriggerObject)TriggerList[i]).referenceObj).onCollision((Object)planeList[c],textureList);
-							if (tempObject != null)
+							Object[] tempObjects = ((Object)((TriggerObject)TriggerList[i]).referenceObj).onCollision((Object)planeList[c],textureList);
+							if (tempObjects != null)
 							{
-								((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempObject);
+								Error.Trace("Collison spawn at X: " + ((Object)((TriggerObject)TriggerList[i]).referenceObj).Centre.X + " Y: " + ((Object)((TriggerObject)TriggerList[i]).referenceObj).Centre.Y);
+								for (int m = 0; m < tempObjects.Length; m++)
+								{
+									if (tempObjects[m].GetType().FullName == "LambMines.Explosion")
+									{
+
+										tempObjects[m].parent = this;
+										TriggerList.Add(new TriggerObject(90*(m+1), tempObjects[m]));
+										((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempObjects[m]);
+
+										Error.Trace("Placeing object X: " + tempObjects[m].Position.X + " Y: " + tempObjects[m].Position.Y);
+
+										/*if (tempObject.getExplosionType() != Object.ExplosionType.EX_NONE)
+										{
+											//Another animation must be created here to avoid referencing issues
+											List<Animation> animList = new List<Animation>();
+											Animation anim = new Animation(textureList[19], 0.1f, false, new Vector2(220, 280), 0);
+											animList.Add(anim);
+											Explosion tempExp = new Explosion(new Vector2(tempObject.Position.X - 48 * 5 - 5, tempObject.Position.Y - 48 * 4 + 5), animList, textureList[19]);
+											tempExp.setExplosionType(Object.ExplosionType.EX_FLAME);
+											//tempObject.setExplosionType(Object.ExplosionType.EA_FLAME);
+											TriggerList.Add(new TriggerObject(180, tempExp));
+											tempExp.parent = this;
+											((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempObject);
+											Error.Trace("Spawned flame nuke at X: " + tempExp.Position.X + " Y: " + tempExp.Position.Y);
+										}
+										 * */
+									}
+									else
+									{
+										((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempObjects[m]);
+									}
+								}
 							}
 						}
 					}
@@ -367,6 +399,7 @@ namespace LambMines
 
         public void Update(float elapsedTime)
         {
+			
 			ArrayList triggerToDelete = new ArrayList();
 			ArrayList subToDelete = new ArrayList();
 			ArrayList shadowsToDelete = new ArrayList();
@@ -390,30 +423,20 @@ namespace LambMines
                     }
                     if (!listSub.Update(elapsedTime, AllBarriers))
 					{
-                        if (String.Compare(listSub.GetType().FullName, "LambMines.Clutter") == 0)
+						//Object thisObject = listSub;
+						if (!listSub.Update(elapsedTime, AllBarriers))
 						{
-							//the only clutter object that can be destroyed right now is a shadow.
-							shadowsToDelete.Add(listSub);
-							continue;
-						}
-						//this object has died.
-						//it is a landmine or a sheep.
-						//loop through the trigger list to remove the mine from the list
-						for (int i = 0; i < TriggerList.Count; i++)
-						{
-							if (((TriggerObject)TriggerList[i]).referenceObj == listSub)
-							{
-								//TriggerList.RemoveAt(i);
-								triggerToDelete.Add(TriggerList[i]);
-                                
-								break;
-							}
+							//if (String.Compare(listSub.GetType().FullName, "LambMines.Clutter") == 0)
+							//{
+								for (int i = 0; i < TriggerList.Count; i++)
+								{
+									//TriggerList.RemoveAt(i);.
+									if (((TriggerObject)TriggerList[i]).referenceObj == listSub)
+										triggerToDelete.Add(TriggerList[i]);
+									break;
+								}
+							//}
                             
-						}
-						if (listSub.WhatAmI() == "Mine")
-						{
-							minesToDelete.Add(listSub);
-							continue;
 						}
                         if (String.Compare(listSub.GetType().FullName, "LambMines.Mine") == 0)
                         {
@@ -444,17 +467,13 @@ namespace LambMines
 			{
 				TriggerList.Remove(triggerToDelete[i]);
 			}
-			for (int i = 0; i < subToDelete.Count; i++)
-			{
-				((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Remove(subToDelete[i]);
-			}
-			for (int i = 0; i < shadowsToDelete.Count; i++)
-			{
-				((ArrayList)AllObjects[(int)RenderLevel.RL_SHADOWS]).Remove(shadowsToDelete[i]);
-			}
 			for (int i = 0; i < minesToDelete.Count; i++)
 			{
 				((ArrayList)AllObjects[(int)RenderLevel.RL_MINES]).Remove(minesToDelete[i]);
+			}
+			for (int i = 0; i < subToDelete.Count; i++)
+			{
+				((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Remove(subToDelete[i]);
 			}
 
         }

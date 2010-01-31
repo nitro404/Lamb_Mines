@@ -32,7 +32,7 @@ namespace LambMines
 		/// This is the trigger function that is called when there is a collision on this object.
 		/// </summary>
 		/// <returns>Returns FALSE only if this object needs to be destroyed.</returns>
-		public override Object onCollision(Object collisionObject, Texture2D[] textureList)
+		public override Object[] onCollision(Object collisionObject, Texture2D[] textureList)
 		{
 			//TODO: More collision logic must be applied here.
 			//collisionObject.Kill();//Kill the other object because this is a mine

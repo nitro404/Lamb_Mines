@@ -31,7 +31,7 @@ namespace LambMines
             sb.Draw(myTexture, GlobalHelpers.getTilePositionOffset(GlobalHelpers.GetScreenCoords(Position + Offset), myTexture.Height), Color.White);
         }
 
-		public override Object onCollision(Object collisionObject, Texture2D[] textureList)
+		public override Object[] onCollision(Object collisionObject, Texture2D[] textureList)
         {
             return null;
         }

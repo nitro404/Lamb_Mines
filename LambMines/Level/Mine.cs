@@ -28,71 +28,50 @@ namespace LambMines
         /// This is the trigger function that is called when there is a collision on this object.
         /// </summary>
         /// <returns>Returns FALSE only if this object needs to be destroyed.</returns>
-        public override Object onCollision(Object collisionObject,Texture2D[] textureList)
+        public override Object[] onCollision(Object collisionObject,Texture2D[] textureList)
         {
-            if (time <= 0)
-            {
-                if (collisionObject.GetType() == typeof(Mine))
-                {
-                    return null;
-                }
-                if (String.Compare(collisionObject.GetType().FullName, "LambMines.Sheep") == 0 || String.Compare(collisionObject.GetType().FullName, "LambMines.Player") == 0)
-                {
+			if (time <= 0)
+			{
+				if (collisionObject.GetType() == typeof(Mine))
+				{
+					return null;
+				}
+				if (String.Compare(collisionObject.GetType().FullName, "LambMines.Sheep") == 0 || String.Compare(collisionObject.GetType().FullName, "LambMines.Player") == 0)
+				{
 
-                    //TODO: More collision logic must be applied here.
-                    collisionObject.Kill();//Kill the other object because this is a mine
-                    //Kill();
-                    Kill();//This object will explode when anything collides with it.
-                    parent.theOffset.setExplosion(true);
-                    List<Texture2D> bloodSplatters = new List<Texture2D>();
-                    for (int i = 22; i < 34; i++)
-                    {
-                        bloodSplatters.Add(textureList[i]);
-                    }
+					//TODO: More collision logic must be applied here.
+					collisionObject.Kill();//Kill the other object because this is a mine
+					//Kill();
+					Kill();//This object will explode when anything collides with it.
+					parent.theOffset.setExplosion(true);
+					List<Texture2D> bloodSplatters = new List<Texture2D>();
+					for (int i = 22; i < 34; i++)
+					{
+						bloodSplatters.Add(textureList[i]);
+					}
 
-                    Vector2 dir = collisionObject.Position - this.Position;
-                    int splatter = (int)GetAnimationDirection(dir) / 2;
+					//create the explosion animation
+					List<Animation> animList = new List<Animation>();
+					Animation anim = new Animation(textureList[19], 0.1f, false, new Vector2(220, 280), 0);
+					animList.Add(anim);
+					Explosion tempExp = new Explosion(new Vector2(Position.X - 48 * 5 - 5, Position.Y - 48 * 4 + 5), animList, textureList[19]);
+					tempExp.setExplosionType(ExplosionType.EX_POP);
+					Error.Trace("Flame Pop explotion at location X: " + Position.X + " Y: " + Position.Y);
 
-                    Vector2 LocationHack = collisionObject.Position;
-                    switch (splatter)
-                    {
-                        case 0:
-                            //LocationHack -= new Vector2(110, 70);
-                            LocationHack -= new Vector2(10, 0);
-                            break;
-                        case 1:
-                            //LocationHack -= new Vector2(80, 45);
-                            //OK
-                            LocationHack += new Vector2(20, 45);
-                            break;
-                        case 2:
-                            //LocationHack -= new Vector2(70, 45);
-                            //OK
-                            LocationHack += new Vector2(0, 50);
-                            break;
-                        case 3:
-                            //LocationHack -= new Vector2(175, 70);
-                            LocationHack += new Vector2(-45, 10);
-                            break;
-                    }
+					List<Animation> animList2 = new List<Animation>();
+					Animation anim2 = new Animation(textureList[19], 0.1f, false, new Vector2(220, 280), 0);
+					animList2.Add(anim2);
+					Explosion tempExp2 = new Explosion(new Vector2(Position.X - 48 * 5 - 5, Position.Y - 48 * 4 + 5), animList2, textureList[19]);
+					tempExp2.setExplosionType(ExplosionType.EX_FLAME);
+					Error.Trace("Flame Pop explotion at location X: " + Position.X + " Y: " + Position.Y);
 
-                    Random rand = new Random(DateTime.Now.Millisecond);
+					Object[] objList = new Object[2];
+					objList[0] = tempExp;
+					objList[1] = tempExp2;
 
-                    int randCheck = (splatter * 3) + rand.Next(0, 2);
-                    Error.Trace(randCheck.ToString());
-                    Tile toAdd = new Tile(LocationHack, bloodSplatters[randCheck]);
-                    //Tile toAdd = new Tile(LocationHack, textureList[0]);
-                    parent.Spawn(Level.RenderLevel.RL_OBJECTS, toAdd);
-
-
-                    List<Animation> animList = new List<Animation>();
-                    Animation anim = new Animation(textureList[19], 0.1f, false, new Vector2(220, 280), 0);
-                    animList.Add(anim);
-                    Explosion tempExp = new Explosion(new Vector2(Position.X - 48 * 5 - 5, Position.Y - 48 * 4 + 5), animList, textureList[19]);
-
-                    return tempExp;//This object will be destroyed.
-                }
-            }
+					return objList;
+				}
+			}
             return null;
         }
 
