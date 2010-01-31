@@ -19,9 +19,11 @@ namespace Scallywags
         //private variables
         private Vector2 position = new Vector2();
         public Texture2D myTexture;
-		public Texture2D shadowTexture;
+		public Object shadowObject = null;
+		public Texture2D shadowTexture = null;
         private bool StillAlive = true;
 		private bool AmIStopped = false;
+		public bool iIsAShadow = false;
 
         //properties
         public Vector2 Position
@@ -106,10 +108,19 @@ namespace Scallywags
 			return "Object";
 		}
 
-		virtual public void AddShadow(Texture2D shadowTex)
+		virtual public void AddShadow(ref Object shadowObj, Texture2D shadowTex)
 		{
+			shadowObject = shadowObj;
 			shadowTexture = shadowTex;
+			iIsAShadow = true;
 		}
+		virtual public void AddShadow(ref Sheep shadowObj, Texture2D shadowTex)
+		{
+			shadowObject = (Object)shadowObj;
+			shadowTexture = shadowTex;
+			iIsAShadow = true;
+		}
+
 
     }
 }

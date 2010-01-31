@@ -28,14 +28,16 @@ namespace Scallywags
         public static float GetScreenX(Vector2 iso)
         {
             float xBasic = (float)(iso.X - iso.Y) * (float)Math.Cos(0.46365);
-			//float xBasic = ((float)Math.Cos(0.5) * iso.X) + ((-(float)Math.Sin(0.5)) * iso.Y);
+			//float xBasic = ((float)Math.Cos(0.46365) * iso.X) + ((-(float)Math.Sin(0.46365)) * iso.Y);
+			//float xBasic = ((float)Math.Cos(0.610865238) * iso.X) + ((-(float)Math.Sin(0.610865238)) * iso.Y);
             return xBasic;
         }
 
         public static float GetScreenY(Vector2 iso)
         {
             float yBasic = (float)(iso.X + iso.Y) * (float)Math.Sin(0.46365);
-			//float yBasic = ((float)Math.Sin(0.5) * iso.X) + ((float)Math.Cos(0.5) * iso.Y);
+			//float yBasic = ((float)Math.Sin(0.46365) * iso.X) + ((float)Math.Cos(0.46365) * iso.Y);
+			//float yBasic = ((float)Math.Sin(0.610865238) * iso.X) + ((float)Math.Cos(0.610865238) * iso.Y);
             return yBasic;
         }
     }

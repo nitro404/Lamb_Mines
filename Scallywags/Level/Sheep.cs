@@ -74,7 +74,7 @@ namespace Scallywags
         {
             base.Draw(sb, gameTime, Offset);
 			if (shadowTexture != null)
-				sb.Draw(shadowTexture, GlobalHelpers.GetScreenCoords(Position) + Offset, Color.White);
+				sb.Draw(shadowTexture, GlobalHelpers.GetScreenCoords(Position + Offset), Color.White);
 				//sb.Draw(myTexture, Position + Offset, Color.White);
 				
         }

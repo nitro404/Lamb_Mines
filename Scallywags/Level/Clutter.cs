@@ -44,6 +44,18 @@ namespace Scallywags
 
 		public override bool Update(float elapsedTime)
 		{
+			if (iIsAShadow)
+			{
+				if (shadowObject.isAlive)
+				{
+					//this is a shadow object
+					Position = shadowObject.Position;
+				}
+				else
+				{
+					return false;
+				}
+			}
 			return true;
 		}
 		public override void Draw(SpriteBatch spriteThing, GameTime gameTime, Vector2 Offset)
@@ -55,6 +67,10 @@ namespace Scallywags
 		public override void Kill()
 		{
 			KillMe();
+		}
+		public override string WhatAmI()
+		{
+			return "Clutter";
 		}
 	}
 }

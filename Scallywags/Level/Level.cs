@@ -31,6 +31,7 @@ namespace Scallywags
         }
         private static ArrayList TriggerList = new ArrayList();
         public enum RuleList { RULE_PLACEMENT, RULE_TARGET };
+		public enum RenderLevel { RL_TERRAIN, RL_SHADOWS, RL_OBJECTS };
 
         private XNAModularApp m_ParentApp;
 
@@ -75,7 +76,10 @@ namespace Scallywags
 
             //load in all the objects.
             AllObjects = new ArrayList();
-            AllObjects.Add(new ArrayList());//Add th efirst render plane. This plane will be exclusively for the terrain tiles.
+            AllObjects.Add(new ArrayList());//Add the first render plane. This plane will be exclusively for the terrain tiles.
+			AllObjects.Add(new ArrayList());//Add a second plane for the shadows
+			AllObjects.Add(new ArrayList());//Add a third plane to start placing the objects on
+			
 
 			AllBarriers = new ArrayList();
 
@@ -88,7 +92,7 @@ namespace Scallywags
                 {
                     Vector2 position = new Vector2(x * Settings.SCREEN_TILE_MULTIPLIER_X, y * Settings.SCREEN_TILE_MULTIPLIER_Y);
                     Tile tile = new Tile(position, textureList[rand.Next(0,9)]);
-                    ((ArrayList)AllObjects[0]).Add(tile);
+                    ((ArrayList)AllObjects[(int)RenderLevel.RL_TERRAIN]).Add(tile);
                 }
             }
 
@@ -107,7 +111,7 @@ namespace Scallywags
 					}
 				}
 			}
-			AllObjects.Add(new ArrayList());//Add a second plane to start placing the objects on
+			
 			if (fileInfoHash.Contains("Mine"))
 			{
 				foreach (string value in ((ArrayList)fileInfoHash["Mine"]))
@@ -118,7 +122,7 @@ namespace Scallywags
 
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
 					Mine tempMine = new Mine(tempVec, textureList[val3]);
-					((ArrayList)AllObjects[1]).Add(tempMine); TriggerList.Add(new TriggerObject(45.0f,tempMine));
+					((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempMine); TriggerList.Add(new TriggerObject(45.0f, tempMine));
 				}
 			}
 
@@ -131,7 +135,7 @@ namespace Scallywags
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
 					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
-					((ArrayList)AllObjects[1]).Add(tempClutter);
+					((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
 				}
 				foreach (string value in ((ArrayList)fileInfoHash["Trees"]))
 				{
@@ -140,7 +144,7 @@ namespace Scallywags
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
 					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
-					((ArrayList)AllObjects[1]).Add(tempClutter);
+					((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
 				}
 				foreach (string value in ((ArrayList)fileInfoHash["Fences"]))
 				{
@@ -149,7 +153,7 @@ namespace Scallywags
 					int val3 = int.Parse(((string[])value.Split(','))[2]);
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
 					Clutter tempClutter = new Clutter(tempVec, textureList[val3]);
-					((ArrayList)AllObjects[1]).Add(tempClutter);
+					((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempClutter);
 				}
 			}
 
@@ -169,8 +173,15 @@ namespace Scallywags
 					}
 					tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
 					Sheep tempSheep = new Sheep(tempVec, animList, textureList[val3]);
-					tempSheep.AddShadow(textureList[21]);
-					((ArrayList)AllObjects[1]).Add(tempSheep);
+
+((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempSheep);
+					
+					Clutter tempShadow = new Clutter(tempSheep.Position, textureList[21]);
+					tempShadow.AddShadow(ref tempSheep, textureList[21]);
+					((ArrayList)AllObjects[(int)RenderLevel.RL_SHADOWS]).Add(tempShadow);
+
+					//tempSheep.AddShadow(textureList[21]);
+					
 				}
 			}
 			
@@ -194,7 +205,7 @@ namespace Scallywags
                 anims.Add(anim);
             }
             Player tempPlayer = new Player(m_ParentApp.Inputs , new Vector2(512, 256), anims, textureList[20]);
-            ((ArrayList)AllObjects[1]).Add(tempPlayer);
+			((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempPlayer);
             TriggerList.Add(new TriggerObject(200.0f, tempPlayer));
 			
             return true;
@@ -239,7 +250,7 @@ namespace Scallywags
 							Object tempObject = ((Object)((TriggerObject)TriggerList[i]).referenceObj).onCollision((Object)planeList[c],textureList);
 							if (tempObject != null)
 							{
-								((ArrayList)AllObjects[1]).Add(tempObject);
+								((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempObject);
 							}
 						}
 					}
@@ -251,6 +262,8 @@ namespace Scallywags
         {
 			ArrayList triggerToDelete = new ArrayList();
 			ArrayList subToDelete = new ArrayList();
+			ArrayList shadowsToDelete = new ArrayList();
+
             //loop through each main list
             foreach (ArrayList listMain in AllObjects)
             {
@@ -260,6 +273,12 @@ namespace Scallywags
                     //Object thisObject = listSub;
 					if (!listSub.Update(elapsedTime))
 					{
+						if (listSub.WhatAmI() == "Clutter")
+						{
+							//the only clutter object that can be destroyed right now is a shadow.
+							shadowsToDelete.Add(listSub);
+							continue;
+						}
 						//this object has died.
 						//it is a landmine or a sheep.
 						//loop through the trigger list to remove the mine from the list
@@ -283,7 +302,11 @@ namespace Scallywags
 			}
 			for (int i = 0; i < subToDelete.Count; i++)
 			{
-				((ArrayList)AllObjects[1]).Remove(subToDelete[i]);
+				((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Remove(subToDelete[i]);
+			}
+			for (int i = 0; i < shadowsToDelete.Count; i++)
+			{
+				((ArrayList)AllObjects[(int)RenderLevel.RL_SHADOWS]).Remove(shadowsToDelete[i]);
 			}
         }
 

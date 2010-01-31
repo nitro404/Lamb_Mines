@@ -30,7 +30,9 @@ namespace Scallywags
 
 			base.Update(elapsedTime);
 
-			return isAlive;
+			if (AnimationPlay.IsPlaying)
+				return true;
+			return false;
 
 		}
 
