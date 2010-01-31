@@ -68,7 +68,7 @@ namespace LambMines
         {
             if (input.IsKeyDown(Keys.Space))
             {          
-                if (String.Compare(collisionObject.GetType().FullName, "Scallywags.Sheep") == 0)
+                if (String.Compare(collisionObject.GetType().FullName, "LambMines.Sheep") == 0)
                 {
                     ((Sheep)collisionObject).Seek(Position);
                 }
@@ -76,7 +76,7 @@ namespace LambMines
 
             if (input.IsKeyDown(Keys.B))
             {
-                if (String.Compare(collisionObject.GetType().FullName, "Scallywags.Sheep") == 0)
+                if (String.Compare(collisionObject.GetType().FullName, "LambMines.Sheep") == 0)
                 {
                     ((Sheep)collisionObject).Repel(Position);
                 }
