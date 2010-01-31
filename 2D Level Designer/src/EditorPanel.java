@@ -2,6 +2,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import java.io.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+
 public class EditorPanel extends JPanel implements Scrollable, ActionListener, MouseListener, MouseMotionListener {
 	
 	private static final long serialVersionUID = 1L;
@@ -24,22 +28,19 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 		testPNG();
 	}
 	
+	private BufferedImage image;
+	
 	public void testPNG() {
-	      File infile = new File("image.png");
-	      BufferedImage im =
-	      ImageIO.read(infile);
-
-	      File outfile = new File("image.jpg");
-	      ImageIO.write(im, "jpg", outfile);
-
-	      String[] reader_names =
-	      ImageIO.getReaderFormatNames();
-
-	      String[] writer_names =
-	      ImageIO.getWriterFormatNames();
-
-	      Iterator iter =
-	      getImageReadersBySuffix("png");
+		try {
+			File imageFile = new File(EditorWindow.SPRITE_DIRECTORY + "\\grass_base01.png");
+			image = ImageIO.read(imageFile);
+		}
+		catch(Exception e) { }
+	}
+	
+	public void drawPNG(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		g2.drawImage(image, null, 0, 20);
 	}
 	
 	public void createPopupMenu() {
@@ -142,13 +143,47 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 		
 		if(world != null) {
 			g.clearRect(0, 0, this.getWidth(), this.getHeight());
-			//world.paintOn(g);
+			world.paintOn(g);
 		}
 		
-		drawIsometricGrid(g);	
+		drawPNG(g);
+		
+		drawIsometricGrid(g);
 	}
 	
 	public void drawIsometricGrid(Graphics g) {
+		if(world != null) {
+			g.setColor(new Color(0, 0, 0));
+			Point topLeft, topRight, bottomRight, bottomLeft;
+			
+			int w = World.CARTESIAN_GRID_INCREMENT;
+//System.out.println(world.gridSize.x + ", " + world.gridSize.y);
+			for(int i=0;i<world.gridSize.x;i++) {
+				for(int j=0;j<world.gridSize.y;j++) {
+//			for(int i=0;i<world.gridSize.x;i++) {
+//				for(int j=(-i);j<1 + (2 * i);j++) {
+					g.setColor(new Color(0, 0, 0));
+if(i==0 && j==0) { g.setColor(new Color(255, 0, 0)); }
+					topLeft =     World.getIsometricPoint(new Point( i*w,     j*w));
+					topRight =    World.getIsometricPoint(new Point((i*w)+w,  j*w));
+					bottomRight = World.getIsometricPoint(new Point((i*w)+w, (j*w)+w));
+					bottomLeft =  World.getIsometricPoint(new Point( i*w,    (j*w)+w));
+					
+					topLeft =     World.getCartesianPoint(new Point(topLeft.x, topLeft.y));
+					topRight =    World.getCartesianPoint(new Point(topRight.x, topRight.y));
+					bottomRight = World.getCartesianPoint(new Point(bottomRight.x, bottomRight.y));
+					bottomLeft =  World.getCartesianPoint(new Point(bottomLeft.x, bottomLeft.y));
+					
+					g.drawLine(topLeft.x,     topLeft.y,     topRight.x,    topRight.y);
+					g.drawLine(topRight.x,    topRight.y,    bottomRight.x, bottomRight.y);
+					g.drawLine(bottomRight.x, bottomRight.y, bottomLeft.x,  bottomLeft.y);
+					g.drawLine(bottomLeft.x,  bottomLeft.y,  topLeft.x,     topLeft.y);
+				}
+			}
+		}
+	}
+	
+	/*public void drawIsometricGrid(Graphics g) {
 		Point gridLeft, gridRight, gridBottom, gridTop;
 		
 		g.setColor(new Color(0, 0, 0));
@@ -166,7 +201,7 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 				g.drawLine(gridBottom.x, gridBottom.y, gridLeft.x, gridLeft.y);
 			}
 		}
-	}
+	}*/
 	
 	public void update() {
 		this.repaint();
