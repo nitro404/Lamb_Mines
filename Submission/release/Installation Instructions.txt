@@ -1,0 +1,7 @@
+To run the game open the LambMines.exe
+
+
+You will need to have the XNA libraries installed. It can be found here:
+http://www.microsoft.com/downloads/en/confirmation.aspx?familyId=53867a2a-e249-4560-8011-98eb3e799ef2&displayLang=en
+
+Enjoy the game!
