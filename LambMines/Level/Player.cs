@@ -112,8 +112,8 @@ namespace LambMines
 
 				}
 			*/	
-                return base.Update(elapsedTime, collisionList);
-				//return true;
+                //return base.Update(elapsedTime, collisionList);
+				return true;
          }
 
         public bool checkMove(ArrayList collisionList, Vector2 Target)
@@ -128,6 +128,12 @@ namespace LambMines
             }
             return true;
         }
+		public override void Kill()
+		{
+			base.Kill();
+			parent.isGameOver = true;
+			parent.playerWon = false;
+		}
 
 		public override Object[] onCollision(Object collisionObject, Texture2D[] textureList)
         {

@@ -21,13 +21,11 @@ namespace LambMines
 		public Explosion(Vector2 Location, List<Animation> animationList, Texture2D tex)
             : base(Location, animationList, tex)
         {
-
+			AnimationPlay.PlayAnimation(Animations[0]);
         }
 
         public override bool Update(float elapsedTime, ArrayList collisionList)
 		{
-
-			AnimationPlay.PlayAnimation(Animations[0]);
 
             if (!AnimationPlay.IsPlaying)
             {
@@ -36,9 +34,7 @@ namespace LambMines
 
             base.Update(elapsedTime, collisionList);
 
-			if (AnimationPlay.IsPlaying)
-				return true;
-			return false;
+			return isAlive;
 
 		}
 

@@ -75,15 +75,7 @@ namespace LambMines
         /// </summary>
         public override void Draw(SpriteBatch sb, GameTime gameTime, Vector2 Offset)
         {
-			try
-			{
-				animationPlayer.Draw(gameTime, sb, GlobalHelpers.GetScreenCoords(Position + Offset), new SpriteEffects());
-			}
-			catch (Exception exp)
-			{
-				bool whappit = false;
-				whappit = true;
-			}
+			animationPlayer.Draw(gameTime, sb, GlobalHelpers.GetScreenCoords(Position + Offset), new SpriteEffects());
         }
 
         /// <summary>

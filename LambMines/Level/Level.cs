@@ -37,6 +37,10 @@ namespace LambMines
         int Score;
         SpriteFont scoreFont;
 
+		public MODULE_IDENTIFIER toSwithcTo = MODULE_IDENTIFIER.MID_THIS;
+		public bool isGameOver = false;
+		public bool playerWon = false;
+
         private struct TriggerObject
         {
 			public TriggerObject(float rad, Object objRef) { radius = rad; referenceObj = objRef; }
@@ -70,6 +74,7 @@ namespace LambMines
 
         public void Cleanup()
         {
+			toSwithcTo = MODULE_IDENTIFIER.MID_THIS;
             if (AllObjects != null)
             {
                 AllObjects.Clear();
@@ -428,13 +433,13 @@ namespace LambMines
 						{
 							//if (String.Compare(listSub.GetType().FullName, "LambMines.Clutter") == 0)
 							//{
-								for (int i = 0; i < TriggerList.Count; i++)
+							for (int i = 0; i < TriggerList.Count; i++)
+							{
+								if (((TriggerObject)TriggerList[i]).referenceObj == listSub)
 								{
-									//TriggerList.RemoveAt(i);.
-									if (((TriggerObject)TriggerList[i]).referenceObj == listSub)
-										triggerToDelete.Add(TriggerList[i]);
-									break;
+									triggerToDelete.Add(TriggerList[i]);
 								}
+							}
 							//}
                             
 						}
@@ -445,10 +450,40 @@ namespace LambMines
                         }
                         if (String.Compare(listSub.GetType().FullName, "LambMines.Explosion") == 0)
                             theOffset.setExplosion(false);
+
 						subToDelete.Add(listSub);
 					}
                 }
             }
+
+			//confirm that the list dows not contain dangling participles.
+			for (int i = 0; i < TriggerList.Count; i++)
+			{
+				//TriggerList.RemoveAt(i);.
+				bool found = false;
+				for (int fap = 0; fap < TriggerList.Count; fap++)
+				{
+					//loop through each main list
+					foreach (ArrayList listMain in AllObjects)
+					{
+						//loop through each sub list of objects
+						foreach (Object listSub in (ArrayList)listMain)
+						{
+							if (((TriggerObject)TriggerList[i]).referenceObj == listSub)
+							{
+								//triggerToDelete.Add(TriggerList[i]);
+								found = true;
+							}
+						}
+					}
+				}
+				if (!found)
+				{
+					TriggerList.RemoveAt(i);
+					i--;
+					continue;
+				}
+			}
 
             for (int j = 0; j < ObjSpawnList.Count;)
             {
@@ -476,6 +511,14 @@ namespace LambMines
 				((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Remove(subToDelete[i]);
 			}
 
+
+			if (isGameOver)
+			{
+				if (playerWon)
+					toSwithcTo = MODULE_IDENTIFIER.MID_WIN_MODULE;
+				else
+					toSwithcTo = MODULE_IDENTIFIER.MID_LOSE_MODULE;
+			}
         }
 
 		public void Draw(GraphicsDevice device, GameTime gameTime)

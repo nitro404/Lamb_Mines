@@ -44,11 +44,11 @@ namespace LambMines
 					//Kill();
 					Kill();//This object will explode when anything collides with it.
 					parent.theOffset.setExplosion(true);
-					List<Texture2D> bloodSplatters = new List<Texture2D>();
-					for (int i = 22; i < 34; i++)
-					{
-						bloodSplatters.Add(textureList[i]);
-					}
+					//List<Texture2D> bloodSplatters = new List<Texture2D>();
+					//for (int i = 22; i < 34; i++)
+					//{
+					//	bloodSplatters.Add(textureList[i]);
+					//}
 
 					//create the explosion animation
 					List<Animation> animList = new List<Animation>();

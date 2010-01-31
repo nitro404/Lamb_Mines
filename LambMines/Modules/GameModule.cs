@@ -54,8 +54,10 @@ namespace LambMines
          */
         public override MODULE_IDENTIFIER Update(double fTotalTime, float fElapsedTime)
         {
-            if (ParentApp.Inputs.IsKeyDown(Keys.Enter) || ParentApp.Inputs.IsButtonPressed(0, Buttons.A))
-                return MODULE_IDENTIFIER.MID_WIN_MODULE;
+			//if (ParentApp.Inputs.IsKeyDown(Keys.Enter) || ParentApp.Inputs.IsButtonPressed(0, Buttons.A))
+				//    return MODULE_IDENTIFIER.MID_WIN_MODULE;
+
+				//return testLevel.toSwithcTo;
 
 
 			//pause game
@@ -71,7 +73,7 @@ namespace LambMines
 				testLevel.Update(fElapsedTime);
 			}
 
-            return MODULE_IDENTIFIER.MID_THIS;    //Continue running the module.
+            return testLevel.toSwithcTo;    //Continue running the module.
         }
 
         /** @fn     void Draw( GameTime gameTime )

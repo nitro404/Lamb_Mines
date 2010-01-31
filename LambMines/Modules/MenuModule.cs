@@ -44,7 +44,7 @@ namespace LambMines
         public override void Initialize()
         {
             m_sb = new SpriteBatch(ParentApp.Device);
-            splashTexture = ParentApp.Content.Load<Texture2D>("Content/Textures/screens_intro01");
+            splashTexture = ParentApp.Content.Load<Texture2D>("Content/Textures/screens_tuto01");
         }
 
         /** @fn     MODULE_IDENTIFIER Update( GameTime gameTime )
