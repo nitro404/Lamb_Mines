@@ -37,6 +37,10 @@ public class EditorWindow extends JFrame implements ActionListener {
 		editorPanel = new EditorPanel();
 		editorPanelScrollPane = new JScrollPane(editorPanel);
 		add(editorPanelScrollPane);
+		
+world = World.parseFrom("Maps/level1.2d");
+editorPanel.setWorld(world);
+update();
 	}
 	
 	public void createMenu() {

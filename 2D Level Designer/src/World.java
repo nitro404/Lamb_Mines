@@ -65,15 +65,21 @@ public class World {
 	}*/
 	
 	public static int getIsometricX(int x, int y) { // rotate, then scale
-		int xPos = (int) ((Math.cos(ISOMETRIC_GRID_ANGLE_RAD) * x) + ((-Math.sin(ISOMETRIC_GRID_ANGLE_RAD)) * y));
+		double xPos = x, yPos = y;
+		double constCos = Math.cos(ISOMETRIC_GRID_ANGLE_RAD);
+		double constSin = Math.sin(ISOMETRIC_GRID_ANGLE_RAD);
+		xPos = (constCos * xPos) + ((-constSin) * yPos);
 		xPos *= ISOMETRIC_HORIZONTAL_DOWNSCALE;
-		return xPos;
+		return (int) xPos;
 	}
 	
 	public static int getIsometricY(int x, int y) { // rotate, then scale
-		int yPos = (int) ((Math.sin(ISOMETRIC_GRID_ANGLE_RAD) * x) + (Math.cos(ISOMETRIC_GRID_ANGLE_RAD) * y));
+		double xPos = x, yPos = y;
+		double constCos = Math.cos(ISOMETRIC_GRID_ANGLE_RAD);
+		double constSin = Math.sin(ISOMETRIC_GRID_ANGLE_RAD);
+		yPos = (constSin * xPos) + (constCos * yPos);
 		yPos *= ISOMETRIC_VERTICAL_DOWNSCALE;
-		return yPos;
+		return (int) yPos;
 	}
 	
 	public static Point getIsometricPoint(Point p) {
@@ -81,21 +87,27 @@ public class World {
 	}
 	
 	public static int getCartesianX(int x, int y) {
-		int xPos = x, yPos = y;
-		xPos = (int) ((double) xPos * ISOMETRIC_HORIZONTAL_UPSCALE);
-		yPos = (int) ((double) yPos * ISOMETRIC_VERTICAL_UPSCALE);
-		xPos = (int) ((Math.cos(ISOMETRIC_GRID_ANGLE_RAD) * xPos) + (Math.sin(ISOMETRIC_GRID_ANGLE_RAD) * yPos));
-		yPos = (int) (((-Math.sin(ISOMETRIC_GRID_ANGLE_RAD)) * xPos) + (Math.cos(ISOMETRIC_GRID_ANGLE_RAD) * yPos));
-		return xPos;
+		double xPos = x, yPos = y;
+		double constCos = Math.cos(ISOMETRIC_GRID_ANGLE_RAD);
+		double constSin = Math.sin(ISOMETRIC_GRID_ANGLE_RAD);
+		xPos *= ISOMETRIC_HORIZONTAL_UPSCALE;
+		yPos *= ISOMETRIC_VERTICAL_UPSCALE;
+		double tempX = xPos, tempY = yPos;
+		xPos = (constCos * tempX) + (constSin * tempY);
+		yPos = ((-constSin) * tempX) + (constCos * tempY);
+		return (int) xPos;
 	}
 	
 	public static int getCartesianY(int x, int y) {
-		int xPos = x, yPos = y;
-		xPos = (int) ((double) xPos * ISOMETRIC_HORIZONTAL_UPSCALE);
-		yPos = (int) ((double) yPos * ISOMETRIC_VERTICAL_UPSCALE);
-		xPos = (int) ((Math.cos(ISOMETRIC_GRID_ANGLE_RAD) * xPos) + (Math.sin(ISOMETRIC_GRID_ANGLE_RAD) * yPos));
-		yPos = (int) (((-Math.sin(ISOMETRIC_GRID_ANGLE_RAD)) * xPos) + (Math.cos(ISOMETRIC_GRID_ANGLE_RAD) * yPos));
-		return yPos;
+		double xPos = x, yPos = y;
+		double constCos = Math.cos(ISOMETRIC_GRID_ANGLE_RAD);
+		double constSin = Math.sin(ISOMETRIC_GRID_ANGLE_RAD);
+		xPos *= ISOMETRIC_HORIZONTAL_UPSCALE;
+		yPos *= ISOMETRIC_VERTICAL_UPSCALE;
+		double tempX = xPos, tempY = yPos;
+		xPos = (constCos * tempX) + (constSin * tempY);
+		yPos = ((-constSin) * tempX) + (constCos * tempY);
+		return (int) yPos;
 	}
 	
 	public static Point getCartesianPoint(Point p) {
@@ -160,7 +172,8 @@ public class World {
 		int mapWidth = Integer.valueOf(input.substring(input.indexOf(':', 0) + 1, input.indexOf(',', 0)).trim());
 		int mapHeight = Integer.valueOf(input.substring(input.indexOf(',', 0) + 1, input.length()).trim());
 		world.gridSize = new Vertex(mapWidth, mapHeight);
-		world.dimensions = new Dimension(mapWidth * ISOMETRIC_GRID_WIDTH, mapHeight * ISOMETRIC_GRID_HEIGHT);
+		//world.dimensions = new Dimension(mapWidth * ISOMETRIC_GRID_WIDTH, mapHeight * ISOMETRIC_GRID_HEIGHT);
+		world.dimensions = new Dimension(mapWidth * (CARTESIAN_GRID_INCREMENT * 2), mapHeight * CARTESIAN_GRID_INCREMENT);
 		
 		// read in the texture names
 		input = in.readLine();

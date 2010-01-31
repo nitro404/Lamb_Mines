@@ -157,51 +157,22 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 			Point topLeft, topRight, bottomRight, bottomLeft;
 			
 			int w = World.CARTESIAN_GRID_INCREMENT;
-//System.out.println(world.gridSize.x + ", " + world.gridSize.y);
+			int offset = world.dimensions.width / 2;
 			for(int i=0;i<world.gridSize.x;i++) {
 				for(int j=0;j<world.gridSize.y;j++) {
-//			for(int i=0;i<world.gridSize.x;i++) {
-//				for(int j=(-i);j<1 + (2 * i);j++) {
-					g.setColor(new Color(0, 0, 0));
-if(i==0 && j==0) { g.setColor(new Color(255, 0, 0)); }
 					topLeft =     World.getIsometricPoint(new Point( i*w,     j*w));
 					topRight =    World.getIsometricPoint(new Point((i*w)+w,  j*w));
 					bottomRight = World.getIsometricPoint(new Point((i*w)+w, (j*w)+w));
 					bottomLeft =  World.getIsometricPoint(new Point( i*w,    (j*w)+w));
 					
-					topLeft =     World.getCartesianPoint(new Point(topLeft.x, topLeft.y));
-					topRight =    World.getCartesianPoint(new Point(topRight.x, topRight.y));
-					bottomRight = World.getCartesianPoint(new Point(bottomRight.x, bottomRight.y));
-					bottomLeft =  World.getCartesianPoint(new Point(bottomLeft.x, bottomLeft.y));
-					
-					g.drawLine(topLeft.x,     topLeft.y,     topRight.x,    topRight.y);
-					g.drawLine(topRight.x,    topRight.y,    bottomRight.x, bottomRight.y);
-					g.drawLine(bottomRight.x, bottomRight.y, bottomLeft.x,  bottomLeft.y);
-					g.drawLine(bottomLeft.x,  bottomLeft.y,  topLeft.x,     topLeft.y);
+					g.drawLine(offset + topLeft.x,     topLeft.y,     offset + topRight.x,    topRight.y);
+					g.drawLine(offset + topRight.x,    topRight.y,    offset + bottomRight.x, bottomRight.y);
+					g.drawLine(offset + bottomRight.x, bottomRight.y, offset + bottomLeft.x,  bottomLeft.y);
+					g.drawLine(offset + bottomLeft.x,  bottomLeft.y,  offset + topLeft.x,     topLeft.y);
 				}
 			}
 		}
 	}
-	
-	/*public void drawIsometricGrid(Graphics g) {
-		Point gridLeft, gridRight, gridBottom, gridTop;
-		
-		g.setColor(new Color(0, 0, 0));
-		int x = World.ISOMETRIC_GRID_WIDTH;
-		int y = World.ISOMETRIC_GRID_HEIGHT;
-		for(int i=(x/2);i<getWidth()+x;i+=x) {
-			for(int j=(y/2);j<getHeight()+y;j+=y) {
-				gridLeft = new Point(i, j - (y/2));
-				gridRight = new Point(i, j + (y/2));
-				gridBottom = new Point(i - (x/2), j);
-				gridTop = new Point(i + (x/2), j);
-				g.drawLine(gridLeft.x, gridLeft.y, gridTop.x, gridTop.y);
-				g.drawLine(gridTop.x, gridTop.y, gridRight.x, gridRight.y);
-				g.drawLine(gridRight.x, gridRight.y, gridBottom.x, gridBottom.y);
-				g.drawLine(gridBottom.x, gridBottom.y, gridLeft.x, gridLeft.y);
-			}
-		}
-	}*/
 	
 	public void update() {
 		this.repaint();
