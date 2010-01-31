@@ -34,6 +34,9 @@ namespace LambMines
                                                 ///
         public Offset theOffset;
 
+        int Score;
+        SpriteFont scoreFont;
+
         private struct TriggerObject
         {
 			public TriggerObject(float rad, Object objRef) { radius = rad; referenceObj = objRef; }
@@ -57,6 +60,7 @@ namespace LambMines
             m_sb = new SpriteBatch(m_ParentApp.Device);
             ObjSpawnList = new ArrayList();
             MineSpawnList = new ArrayList();
+            Score = 0;
         }
 
         public Texture2D[] TextureList
@@ -96,6 +100,9 @@ namespace LambMines
         public bool LoadLevel(string levelName)
         {
             Cleanup();
+            Score = 500;
+            scoreFont = m_ParentApp.Content.Load<SpriteFont>("Content/Font/DebugFont");
+
             if (AllObjects != null)
                 Log.WriteToLog(Log.LogErrorLevel.ERROR_MINOR, "The level has already been loaded.");
 
@@ -275,7 +282,11 @@ namespace LambMines
 
         public bool SpawnMine(RenderLevel level, Object obj)
         {
-            MineSpawnList.Add(obj);
+            if (Score >= 200)
+            {
+                MineSpawnList.Add(obj);
+                Score -= 200;
+            }
             return true;
         }
 
@@ -311,7 +322,7 @@ namespace LambMines
 					{
 						//check the collision and if the two object collide.
 						//the call the on collision method.
-						Vector2 dist = ((Object)((TriggerObject)TriggerList[i]).referenceObj).Position;
+						Vector2 dist = ((Object)((TriggerObject)TriggerList[i]).referenceObj).Position + new Vector2(16, 16);
 						dist = dist - ((Object)planeList[c]).Position;
 						float finalDist = dist.Length();
 						if (finalDist < ((TriggerObject)TriggerList[i]).radius && finalDist != 0 && ((Object)planeList[c]).WhatAmI() != "Explosion" )
@@ -457,9 +468,16 @@ namespace LambMines
                     thisObject.Draw(m_sb, gameTime, theOffset.getMapDisplacement() + theOffset.varienceDisplacement);
                 }
             }
+
+            m_sb.DrawString(scoreFont, String.Concat("Score: $", Score.ToString(), "", ""), new Vector2(5, 5), Color.White);
             
             m_sb.End();
 
+        }
+
+        public void ScoreKill()
+        {
+            Score += 100;
         }
 
         /// <summary>

@@ -17,6 +17,7 @@ namespace LambMines
     class Mine:AnimatedObject
     {
         float time;
+
 		public Mine(Vector2 location,List<Animation> animations, Texture2D aTexture)
 			: base(location, animations, aTexture)
 		{

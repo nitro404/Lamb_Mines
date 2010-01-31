@@ -144,6 +144,7 @@ namespace LambMines
 
         public override void Kill()
         {
+            parent.ScoreKill();
             KillMe();
         }
 
