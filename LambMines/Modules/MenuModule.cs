@@ -19,8 +19,11 @@ namespace LambMines
     public class MenuModule : XNAModule
     {
         SpriteBatch m_sb;
-        Animation anim;
-        AnimationPlayer player;
+        Texture2D splashTexture;
+        Rectangle drawnRectangle = new Rectangle(0, 0, Settings.PREFFERED_WINDOW_WIDTH, Settings.PREFFERED_WINDOW_HEIGHT);
+
+//        Animation anim;
+//        AnimationPlayer player;
         /** @fn     MenuModule()
          *  @brief  constructor
          */
@@ -29,7 +32,9 @@ namespace LambMines
         {
             ShowLoadScreen = false;
             RegisterResource(ResourceType.RT_TEXTURE, "Content/Textures/sheep_sheet01");
-            player = new AnimationPlayer();
+            Rectangle drawnRectangle = new Rectangle(0, 0, Settings.PREFFERED_WINDOW_WIDTH, Settings.PREFFERED_WINDOW_HEIGHT);
+
+//            player = new AnimationPlayer();
         }
 
         /** @fn     void Initialize()
@@ -39,8 +44,7 @@ namespace LambMines
         public override void Initialize()
         {
             m_sb = new SpriteBatch(ParentApp.Device);
-            anim = new Animation(Textures["sheep_sheet01"], 2.0f, true, new Vector2(35, 35), 2);
-            player.PlayAnimation(anim);
+            splashTexture = ParentApp.Content.Load<Texture2D>("Content/Textures/screens_intro01");
         }
 
         /** @fn     MODULE_IDENTIFIER Update( GameTime gameTime )
@@ -66,7 +70,8 @@ namespace LambMines
         {
             device.Clear( Color.RosyBrown );//Color.SteelBlue ); //Kind of sky blue
             m_sb.Begin();
-            player.Draw(gameTime, m_sb, new Vector2(0, 0), new SpriteEffects());
+            m_sb.Draw(splashTexture, drawnRectangle, Color.White);
+//            player.Draw(gameTime, m_sb, new Vector2(0, 0), new SpriteEffects());
             m_sb.End();
         }
 
