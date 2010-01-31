@@ -6,7 +6,7 @@ public class World {
 	
 	public Vertex gridSize;
 	public Dimension dimensions;
-	public Vector<Graph> barriers;
+	Graph edges;
 	public Vector<Entity> mines;
 	public Vector<Entity> rocks;
 	public Vector<Entity> trees;
@@ -15,7 +15,7 @@ public class World {
 	Vector<String> textureNames;
 	
 	final public static String WORLD_TYPE = "2D World";
-	final public static double WORLD_VERSION = 1.1;
+	final public static double WORLD_VERSION = 1.2;
 	
 	final public static int GRID_WIDTH = 64;
 	final public static int GRID_HEIGHT = 64;
@@ -28,12 +28,11 @@ public class World {
 	final public static double ISOMETRIC_VERTICAL_DOWNSCALE = 45.0 / 64.0;
 	final public static double ISOMETRIC_HORIZONTAL_UPSCALE = 32.0 / 45.0;
 	final public static double ISOMETRIC_VERTICAL_UPSCALE = 64.0 / 45.0;
-//	final public static double ISOMETRIC_GRID_ANGLE_RAD = Math.atan(1.0 / 2.0);
 	final public static double ISOMETRIC_GRID_ANGLE_RAD = Math.PI / 4.0;
 	final public static double ISOMETRIC_GRID_ANGLE_DEG = ISOMETRIC_GRID_ANGLE_RAD * (180.0 / Math.PI);
 	
 	public World() {
-		this.barriers = new Vector<Graph>();
+		this.edges = new Graph();
 		this.mines = new Vector<Entity>();
 		this.rocks = new Vector<Entity>();
 		this.trees = new Vector<Entity>();
@@ -42,14 +41,29 @@ public class World {
 		this.textureNames = new Vector<String>();
 	}
 	
-	public void addBarrier(Graph g) {
-		if(!this.barriers.contains(g)) {
-			this.barriers.add(g);
+	public void addEdge(Edge e) {
+		this.edges.addEdge(e);
+	}
+
+	public void addVertex(Vertex v) {
+		this.edges.addVertex(v);
+	}
+	
+	public void removeVertex(Vertex v) {
+		edges.verticies.remove(v);
+		Vector<Edge> edgesToRemove = new Vector<Edge>();
+		for(int i=0;i<edges.size();i++) {
+			if(this.edges.edges.elementAt(i).a.equals(v) || this.edges.edges.elementAt(i).b.equals(v)) {
+				edgesToRemove.add(this.edges.edges.elementAt(i));
+			}
+		}
+		for(int i=0;i<edgesToRemove.size();i++) {
+			this.edges.edges.remove(edgesToRemove.elementAt(i));
 		}
 	}
 	
-	public boolean containsBarrier(Graph g) {
-		return this.barriers.contains(g);
+	public void removeEdge(Edge e) {
+		edges.edges.remove(e);
 	}
 
 	public static int getIsometricWidth(int width, int height) {
@@ -59,10 +73,6 @@ public class World {
 	public static int getIsometricHeight(int width, int height) {
 		return (int) (getIsometricWidth(width, height) / 2);
 	}
-	
-	/*public Point getAdjacentIsometricBlock(int x, int y) {
-		return new Point(x + (World.ISOMETRIC_GRID_WIDTH / 2), y + (World.ISOMETRIC_GRID_HEIGHT / 2));
-	}*/
 	
 	public static int getIsometricX(int x, int y) { // rotate, then scale
 		double xPos = x, yPos = y;
@@ -192,30 +202,17 @@ public class World {
 			}
 		}
 		
-		// read in the barriers
+		// read in the corresponding edges for each barrier
 		input = in.readLine();
-		String barriersHeader = input.substring(0, input.indexOf(':', 0)).trim();
-		if(!barriersHeader.equals("Barriers")) {
-			System.out.println("ERROR: Corrupted world file. Expected header \"Edges\", found \"" + barriersHeader + "\".");
+		String edgesHeader = input.substring(0, input.indexOf(':', 0)).trim();
+		if(!edgesHeader.equals("Edges")) {
+			System.out.println("ERROR: Corrupted world file. Expected header \"Edges\", found \"" + edgesHeader + "\".");
 			return null;
 		}
-		int numberOfBarriers = Integer.valueOf(input.substring(input.lastIndexOf(':', input.length() - 1) + 1, input.length()).trim());
-		
-		// read in the corresponding edges for each barrier
-		for(int i=0;i<numberOfBarriers;i++) {
-			Graph newBarrier = new Graph();
-			input = in.readLine();
-			String edgesHeader = input.substring(0, input.indexOf(':', 0)).trim();
-			if(!edgesHeader.equals("Edges")) {
-				System.out.println("ERROR: Corrupted world file. Expected header \"Edges\", found \"" + edgesHeader + "\".");
-				return null;
-			}
-			int numberOfEdges = Integer.valueOf(input.substring(input.lastIndexOf(':', input.length() - 1) + 1, input.length()).trim());
-			for(int j=0;j<numberOfEdges;j++) {
-				input = in.readLine().trim();
-				newBarrier.addEdge(Edge.parseFrom(input));
-			}
-			world.addBarrier(newBarrier);
+		int numberOfEdges = Integer.valueOf(input.substring(input.lastIndexOf(':', input.length() - 1) + 1, input.length()).trim());
+		for(int j=0;j<numberOfEdges;j++) {
+			input = in.readLine().trim();
+			world.addEdge(Edge.parseFrom(input));
 		}
 		
 		// read in the mines
@@ -346,11 +343,9 @@ public class World {
 			out.println("\t" + this.textureNames.elementAt(i));
 		}
 		
-		// write the barriers
-		out.println("Barriers: " + this.barriers.size());
-		for(int i=0;i<this.barriers.size();i++) {
-			this.barriers.elementAt(i).writeTo(out);
-		}
+		// write the edges
+		out.println("Edges: " + this.edges.size());
+		this.edges.writeTo(out);
 		
 		// write the mines
 		out.println("Mines: " + this.mines.size());
@@ -394,22 +389,7 @@ public class World {
 	}
 
 	public void paintOn(Graphics g) {
-		g.setColor(new Color(0, 0, 0));
-		
-		for(int i=0;i<this.barriers.size();i++) {
-			Graph b = this.barriers.elementAt(i);
-			for(int j=0;j<b.edges.size();j++) {
-				b.edges.elementAt(j).paintOn(g);
-			}
-			int[] x = new int[b.verticies.size()];
-			int[] y = new int[b.verticies.size()];
-			for(int j=0;j<b.verticies.size();j++) {
-				x[j] = (int) b.verticies.elementAt(j).x;
-				y[j] = (int) b.verticies.elementAt(j).y;
-			}
-			Polygon p = new Polygon(x, y, b.verticies.size());
-			g.drawPolygon(p);
-		}
+		edges.paintOn(g);
 	}
 	
 	public boolean equals(Object o) {
@@ -418,15 +398,6 @@ public class World {
 		}
 		
 		World w = (World) o;
-		
-		if(this.barriers.size() != w.barriers.size()) {
-			return false;
-		}
-		for(int i=0;i<this.barriers.size();i++) {
-			if(!w.barriers.contains(this.barriers.elementAt(i))) {
-				return false;
-			}
-		}
 		
 		if(this.mines.size() != w.mines.size()) {
 			return false;
@@ -473,15 +444,7 @@ public class World {
 			}
 		}
 		
-		if(this.barriers.size() != w.barriers.size()) {
-			return false;
-		}
-		for(int i=0;i<this.barriers.size();i++) {
-			if(!this.barriers.elementAt(i).equals(w.barriers.elementAt(i))) {
-				return false;
-			}
-		}
-		return true;
+		return this.edges.equals(w.edges);
 	}
 	
 	public String toString() {

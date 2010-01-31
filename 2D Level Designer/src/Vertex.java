@@ -1,4 +1,5 @@
 import java.io.*;
+import java.awt.*;
 
 public class Vertex {
 	
@@ -7,6 +8,11 @@ public class Vertex {
 	public Vertex(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public Vertex(Point p) {
+		this.x = p.x;
+		this.y = p.y;
 	}
 	
 	public int getX() {
@@ -20,6 +26,10 @@ public class Vertex {
 	public void setLocation(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public Point toPoint() {
+		return new Point(x, y);
 	}
 	
 	public static Vertex parseFrom(String input) {
@@ -37,6 +47,16 @@ public class Vertex {
 	
 	public void writeTo(PrintWriter out) {
 		out.print(x + ", " + y);
+	}
+	
+	public void paintOn(Graphics g) {
+		int radius = 2;
+		if(EditorPanel.gridTop != null) {
+			g.fillOval(World.getIsometricX(x, y)-radius, 
+					   World.getIsometricY(x, y)-radius,
+					   radius * 2, radius * 2);
+System.out.println("DRAW Vert @: " + (EditorPanel.gridTop.x + World.getIsometricX(x, y)-radius) + " , " + (EditorPanel.gridTop.y + World.getIsometricY(x, y)-radius)); 
+		}
 	}
 	
 	public boolean equals(Object o) {

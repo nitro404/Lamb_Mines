@@ -1,5 +1,5 @@
 2D World: Version 1.1
-Dimensions: 128, 128
+Dimensions: 32, 32
 Textures: 2
 	Brick
 	Grass

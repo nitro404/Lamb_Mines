@@ -1,5 +1,5 @@
-import java.awt.event.*;
 import java.io.*;
+import java.awt.event.*;
 
 import javax.swing.*;
 
@@ -20,7 +20,7 @@ public class EditorWindow extends JFrame implements ActionListener {
 	private JMenuItem menuFileExit;
 	
 	private EditorPanel editorPanel;
-	JScrollPane editorPanelScrollPane;
+	private JScrollPane editorPanelScrollPane;
 	
 	private JFileChooser fileChooser; 
 	
@@ -37,10 +37,6 @@ public class EditorWindow extends JFrame implements ActionListener {
 		editorPanel = new EditorPanel();
 		editorPanelScrollPane = new JScrollPane(editorPanel);
 		add(editorPanelScrollPane);
-		
-world = World.parseFrom("Maps/level1.2d");
-editorPanel.setWorld(world);
-update();
 	}
 	
 	public void createMenu() {
@@ -79,7 +75,7 @@ update();
 			}
 		}
 		else if(e.getSource().equals(menuFileSaveMap)) {
-			if(fileChooser.showDialog(this, "Open Map") == JFileChooser.APPROVE_OPTION) {
+			if(fileChooser.showDialog(this, "Save Map") == JFileChooser.APPROVE_OPTION) {
 				world.writeTo(fileChooser.getSelectedFile().getAbsolutePath());
 			}
 		}
