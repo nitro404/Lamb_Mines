@@ -22,11 +22,14 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 	private JMenuItem popupMenuCancel;
 	
 	private BufferedImage activeTile;
+	public static int mode;
+	final public static int MODE_TILING = 0;
+	final public static int MODE_DRAWING = 1;
 	
-	public static Point gridTop;
-	public static Point gridRight;
-	public static Point gridBottom;
-	public static Point gridLeft;
+	public static Point gridTopIsometric;
+	public static Point gridRightIsometric;
+	public static Point gridBottomIsometric;
+	public static Point gridLeftIsometric;
 	
 	public EditorPanel() {
 		world = null;
@@ -35,6 +38,8 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 		addMouseMotionListener(this);
 		
 		createPopupMenu();
+		
+		mode = MODE_TILING;
 		
 		update();
 	}
@@ -117,25 +122,27 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 	public void mousePressed(MouseEvent e) { }
 	
 	public void mouseReleased(MouseEvent e) {
-		if(e.getButton() == MouseEvent.BUTTON3) {
-			selectedPoint = new Vertex(World.getCartesianPoint(e.getPoint()));
-			selectVertex();
-			popupMenuDeleteVertex.setEnabled(selectedVertex != null);
-			popupMenu.show(this, e.getX(), e.getY());
-		}
-		else if(e.getButton() == MouseEvent.BUTTON1) {
-			Vertex previousVertex = null;
-			if(selectedVertex != null) {
-				previousVertex = selectedVertex; 
+		if(mode == MODE_DRAWING) {
+			if(e.getButton() == MouseEvent.BUTTON3) {
+				selectedPoint = new Vertex(World.getCartesianPoint(e.getPoint()));
+				selectVertex();
+				popupMenuDeleteVertex.setEnabled(selectedVertex != null);
+				popupMenu.show(this, e.getX(), e.getY());
 			}
-			selectedPoint = new Vertex(World.getCartesianPoint(e.getPoint()));
-			selectVertex();
-			
-			if(previousVertex != null && selectedVertex != null && !previousVertex.equals(selectedVertex)) {
-				int result = JOptionPane.showConfirmDialog(this, "Create edge?", "Edge Creation", JOptionPane.YES_NO_OPTION);
-				if(result == JOptionPane.YES_OPTION) {
-					this.world.addEdge(new Edge(new Vertex(previousVertex.x, previousVertex.y),
-												new Vertex(selectedVertex.x, selectedVertex.y)));
+			else if(e.getButton() == MouseEvent.BUTTON1) {
+				Vertex previousVertex = null;
+				if(selectedVertex != null) {
+					previousVertex = selectedVertex; 
+				}
+				selectedPoint = new Vertex(World.getCartesianPoint(e.getPoint()));
+				selectVertex();
+				
+				if(previousVertex != null && selectedVertex != null && !previousVertex.equals(selectedVertex)) {
+					int result = JOptionPane.showConfirmDialog(this, "Create edge?", "Edge Creation", JOptionPane.YES_NO_OPTION);
+					if(result == JOptionPane.YES_OPTION) {
+						this.world.addEdge(new Edge(new Vertex(previousVertex.x, previousVertex.y),
+													new Vertex(selectedVertex.x, selectedVertex.y)));
+					}
 				}
 			}
 		}
@@ -143,11 +150,14 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 	}
 	public void mouseDragged(MouseEvent e) { }
 	public void mouseMoved(MouseEvent e) {
-		
+		update();
+		if(mode == MODE_TILING) {
+			highlightGridBlock(e.getX(), e.getY());
+		}
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(world != null) {
+		if(world != null && mode == MODE_DRAWING) {
 			if(e.getSource().equals(popupMenuNewVertex)) {
 				world.addVertex(new Vertex(selectedPoint.x, selectedPoint.y));
 				selectedVertex = null;
@@ -172,6 +182,15 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 			}
 		}
 		update();
+	}
+	
+	public Vertex getGridBlock(Point p) {
+System.out.println(p.x + ", " + p.y);
+return null;
+	}
+	
+	public void highlightGridBlock(int x, int y) {
+		getGridBlock(new Point(x, y));
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -205,16 +224,16 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 					g.drawLine(offset + bottomLeft.x,  bottomLeft.y,  offset + topLeft.x,     topLeft.y);
 					
 					if(i == 0 && j == 0) {
-						gridTop = new Point(offset + topLeft.x, topLeft.y);
+						gridTopIsometric = new Point(offset + topLeft.x, topLeft.y);
 					}
 					else if(i == 0 && j == world.gridSize.y - 1) {
-						gridLeft = new Point(offset + bottomLeft.x, bottomLeft.y);
+						gridLeftIsometric = new Point(offset + bottomLeft.x, bottomLeft.y);
 					}
 					else if(i == world.gridSize.x - 1 && j == 0) {
-						gridRight = new Point(offset + topRight.x, topRight.y);
+						gridRightIsometric = new Point(offset + topRight.x, topRight.y);
 					}
 					else if(i == world.gridSize.x - 1 && j == world.gridSize.y - 1) {
-						gridBottom = new Point(offset + bottomRight.x, bottomRight.y);
+						gridBottomIsometric = new Point(offset + bottomRight.x, bottomRight.y);
 						
 					}
 				}
@@ -222,7 +241,9 @@ public class EditorPanel extends JPanel implements Scrollable, ActionListener, M
 		}
 		
 		g.setColor(new Color(255, 0, 0));
-		if(selectedVertex != null) { selectedVertex.paintOn(g); }
+		if(selectedVertex != null && mode == MODE_DRAWING) {
+			selectedVertex.paintOn(g);
+		}
 	}
 	
 	public void update() {

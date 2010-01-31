@@ -22,6 +22,9 @@ public class EditorWindow extends JFrame implements ActionListener {
 	private JMenu menuView;
 	private JMenuItem menuViewPalette;
 	private JMenuItem menuViewDimensions;
+	private JMenu menuMode;
+	private JMenuItem menuModeTile;
+	private JMenuItem menuModeDraw;
 	private JMenu menuHelp;
 	private JMenuItem menuHelpAbout;
 	
@@ -65,6 +68,9 @@ public class EditorWindow extends JFrame implements ActionListener {
 		menuView = new JMenu("View");
 		menuViewPalette = new JMenuItem("Palette");
 		menuViewDimensions = new JMenuItem("Map Dimensions");
+		menuMode = new JMenu("Mode");
+		menuModeTile = new JMenuItem("Tile Textures");
+		menuModeDraw = new JMenuItem("Draw Boundaries");
 		menuHelp = new JMenu("Help");
 		menuHelpAbout = new JMenuItem("About");
 		
@@ -72,9 +78,12 @@ public class EditorWindow extends JFrame implements ActionListener {
 		menuFileOpenMap.addActionListener(this);
 		menuFileSaveMap.addActionListener(this);
 		menuFileExit.addActionListener(this);
-		menuViewPalette.addActionListener(this);;
-		menuViewDimensions.addActionListener(this);;
-		menuHelpAbout.addActionListener(this);;
+		menuViewPalette.addActionListener(this);
+		menuViewDimensions.addActionListener(this);
+		menuMode.addActionListener(this);
+		menuModeTile.addActionListener(this);
+		menuModeDraw.addActionListener(this);
+		menuHelpAbout.addActionListener(this);
 		
 		menuFile.add(menuFileNewMap);
 		menuFile.add(menuFileOpenMap);
@@ -83,10 +92,13 @@ public class EditorWindow extends JFrame implements ActionListener {
 		menuFile.add(menuFileExit);
 		menuView.add(menuViewPalette);
 		menuView.add(menuViewDimensions);
+		menuMode.add(menuModeTile);
+		menuMode.add(menuModeDraw);
 		menuHelp.add(menuHelpAbout);
 		
 		menu.add(menuFile);
 		menu.add(menuView);
+		menu.add(menuMode);
 		menu.add(menuHelp);
 		
 		setJMenuBar(menu);
@@ -115,6 +127,12 @@ public class EditorWindow extends JFrame implements ActionListener {
 		}
 		else if(e.getSource() == menuViewDimensions) {
 			setMapDimensions(world);
+		}
+		else if(e.getSource() == menuModeTile) {
+			EditorPanel.mode = EditorPanel.MODE_TILING;
+		}
+		else if(e.getSource() == menuModeDraw) {
+			EditorPanel.mode = EditorPanel.MODE_DRAWING;
 		}
 		else if(e.getSource() == menuHelpAbout) {
 			JOptionPane.showMessageDialog(this, "Lamb Mines 2D Level Designer created by Kevin Scroggins.", "2D Level Designer", JOptionPane.INFORMATION_MESSAGE);
