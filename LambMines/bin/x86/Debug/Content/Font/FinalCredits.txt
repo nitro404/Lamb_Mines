@@ -1,0 +1,82 @@
+Scallywags
+
+
+
+
+
+Based on the board game
+
+
+		Board Game Team
+
+		
+TO BE FILLED IN LATER
+				
+Instructor
+				
+
+Special Thanks to
+				Algonquin College - Game Development
+				Tony Davidson
+				
+				
+				
+				
+				
+		Video Game Team
+
+
+Lead Development
+				Thomas Baird
+				
+Assistant Developers
+				Michael Allwood
+				Christina Circelli
+				Adrianna Cote
+				Sonya Illian
+				Jakub Laszczyk
+				Bradley Legere
+				Cyril MacIsaac
+				
+Lead Programmer
+				Michael Allwood
+				
+Core Programmers
+				Thomas Baird
+				Jakub Laszczyk
+				Cyril MacIsaac
+				
+Additional Programming
+				Sonya Illian
+				Bradley Legere
+				
+Lead Art
+				Adrianna Cote
+Core Art
+				Christina Circelli
+				Sonya Illian
+				
+Additional Art
+				Michael Alwood
+				Cyril MacIsaac
+				Jakub Laszczyk
+
+Game Testing
+				(none yet)
+				
+Instructor
+				Antonio SantaMaria
+
+Special Thanks to
+				Algonquin College - Game Development
+				Tony Davidson
+				Dushan Horvat
+				
+				
+		
+		
+		
+		
+		Thanks for playing!
+		
+		
