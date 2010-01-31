@@ -29,7 +29,7 @@ namespace LambMines
             speed = 50.0f;
         }
 
-        public override bool Update(float elapsedTime)
+        public override bool Update(float elapsedTime, ArrayList collisionList)
         {
                 Vector2 movement = input.CheckLStick(0);
                 if(input.IsKeyDown(Keys.W))
@@ -55,17 +55,30 @@ namespace LambMines
 
                 if (movement != Vector2.Zero)
                 {
-                    Position += movement;
-                    movement.Normalize();
                     int choose = GetAnimationDirection(movement);
-                    AnimationPlay.PlayAnimation(Animations[choose]);
+                    AnimationPlay.PlayAnimation(Animations[choose + 8]);
+                    if (checkMove(collisionList, Position + movement))
+                    {
+                        Position += movement;
+                        movement.Normalize();
+                    }
                 }
+                Error.Trace(Position.ToString());
 
-            return base.Update(elapsedTime);
+                return base.Update(elapsedTime, collisionList);
          }
 
-        public Vector2 playerPos() {
-            return Position;
+        public bool checkMove(ArrayList collisionList, Vector2 Target)
+        {
+            foreach (Edge edge in collisionList)
+            {
+                Vector2 intersection = new Vector2();
+                if (CollisionHandler.CheckLineIntersection(edge.pointA, edge.pointB, Position, Target, intersection))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
 		public override Object onCollision(Object collisionObject, Texture2D[] textureList)

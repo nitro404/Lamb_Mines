@@ -40,7 +40,7 @@ namespace LambMines
 
             //Rotate the system so that Point B is on the Positive X Axis
             float theCos = b.X / distAB;
-            float theSin = b.X / distAB;
+            float theSin = b.Y / distAB;
             float newX = c.X * theCos + c.Y * theSin;
             c.Y = c.Y * theCos - c.X * theSin; c.X = newX;
             newX = d.X * theCos + d.Y * theSin;

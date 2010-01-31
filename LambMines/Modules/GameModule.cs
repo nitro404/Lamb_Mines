@@ -43,7 +43,7 @@ namespace LambMines
         public override void Initialize()
         {
             testLevel = new Level(ParentApp);
-            testLevel.LoadLevel("Level1.txt");
+            testLevel.LoadLevel("Content/Levels/level1.2d");
         }
 
         /** @fn     MODULE_IDENTIFIER Update( GameTime gameTime )

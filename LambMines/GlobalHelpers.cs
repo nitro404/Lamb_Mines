@@ -18,7 +18,7 @@ namespace LambMines
 
         public static Vector2 getTilePositionOffset(Vector2 location, float Height)
         {
-            Vector2 newPos = new Vector2(location.X, location.Y - Height + 145);
+            Vector2 newPos = new Vector2(location.X, location.Y - Height + 45);
             return newPos;
         }
         //TEMP TESTS

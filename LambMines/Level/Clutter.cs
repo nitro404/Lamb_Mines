@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,7 +43,7 @@ namespace LambMines
 			return null;//This object will be destroyed.
 		}
 
-		public override bool Update(float elapsedTime)
+		public override bool Update(float elapsedTime, ArrayList collisionList)
 		{
 			if (iIsAShadow)
 			{

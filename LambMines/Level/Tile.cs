@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace LambMines
 
         }
 
-        public override bool Update(float elapsedTime)
+        public override bool Update(float elapsedTime, ArrayList collisionList)
         {
 			return true;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,20 +33,61 @@ namespace LambMines
 			{
 				return null;
 			}
-            //TODO: More collision logic must be applied here.
-            collisionObject.Kill();//Kill the other object because this is a mine
-            Kill();
-			//Kill();//This object will explode when anything collides with it.
+            if (String.Compare(collisionObject.GetType().FullName, "LambMines.Sheep") == 0 || String.Compare(collisionObject.GetType().FullName, "LambMines.Player") == 0)
+            {
 
-			List<Animation> animList = new List<Animation>();
-			Animation anim = new Animation(textureList[19], 0.1f, false, new Vector2(220, 280), 0);
-			animList.Add(anim);
-			Explosion tempExp = new Explosion(new Vector2(Position.X-48*5-5,Position.Y-48*4+5), animList, textureList[19]);
+                //TODO: More collision logic must be applied here.
+                collisionObject.Kill();//Kill the other object because this is a mine
+                //Kill();
+                Kill();//This object will explode when anything collides with it.
 
-			return tempExp;//This object will be destroyed.
+                List<Texture2D> bloodSplatters = new List<Texture2D>();
+                for (int i = 22; i < 34; i++)
+                {
+                    bloodSplatters.Add(textureList[i]);
+                }
+
+                Vector2 dir = collisionObject.Position - this.Position;
+                int splatter = (int)GetAnimationDirection(dir) / 2;
+
+                Vector2 LocationHack = collisionObject.Position;
+                switch (splatter)
+                {
+                    case 0:
+                        LocationHack -= new Vector2(110, 70);
+                        break;
+                    case 1:
+                        LocationHack -= new Vector2(80, 45);
+                        break;
+                    case 2:
+
+                        LocationHack -= new Vector2(70, 45);
+                        break;
+                    case 3:
+                        LocationHack -= new Vector2(175, 70);
+                        break;
+                }
+
+                Random rand = new Random(DateTime.Now.Millisecond);
+
+                int randCheck = (splatter * 3) + rand.Next(0, 2);
+                Error.Trace(randCheck.ToString());
+                Tile toAdd = new Tile(LocationHack, bloodSplatters[randCheck]);
+                //Tile toAdd = new Tile(LocationHack, textureList[0]);
+                parent.Spawn(Level.RenderLevel.RL_OBJECTS, toAdd);
+
+
+                List<Animation> animList = new List<Animation>();
+                Animation anim = new Animation(textureList[19], 0.1f, false, new Vector2(220, 280), 0);
+                animList.Add(anim);
+                Explosion tempExp = new Explosion(new Vector2(Position.X - 48 * 5 - 5, Position.Y - 48 * 4 + 5), animList, textureList[19]);
+
+                return tempExp;//This object will be destroyed.
+            }
+            return null;
         }
 
-        public override bool Update(float elapsedTime)
+        public override bool Update(float elapsedTime, ArrayList collisionList)
         {
 			return isAlive;
         }

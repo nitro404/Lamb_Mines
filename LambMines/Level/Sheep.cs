@@ -37,7 +37,7 @@ namespace LambMines
             interest = 0;
         }
 
-        public override bool Update(float elapsedTime)
+        public override bool Update(float elapsedTime, ArrayList collisionList)
         {
             float decision = ai.Next(0, 1000);
             if (decision > 925 + interest)
@@ -53,11 +53,17 @@ namespace LambMines
                 AnimationPlay.PlayAnimation(Animations[choose]);
                 if (dist > elapsedTime)
                 {
-                    Position += (travel * elapsedTime);
+                    if (checkMove(collisionList, Position + travel * elapsedTime))
+                    {
+                        Position += (travel * elapsedTime);
+                    }
                 }
                 else
                 {
-                    Position = goal;
+                    if (checkMove(collisionList, goal))
+                    {
+                        Position = goal;
+                    }
                 }
             }
 
@@ -66,7 +72,7 @@ namespace LambMines
                 interest--;
             }
 
-            return base.Update(elapsedTime);
+            return base.Update(elapsedTime, collisionList);
 
         }
 
@@ -77,6 +83,19 @@ namespace LambMines
                 sb.Draw(shadowTexture, GlobalHelpers.GetScreenCoords(Position + Offset), Color.White);
             //sb.Draw(myTexture, Position + Offset, Color.White);
 
+        }
+
+        public bool checkMove(ArrayList collisionList, Vector2 Target)
+        {
+            foreach (Edge edge in collisionList)
+            {
+                Vector2 intersection = new Vector2();
+                if (CollisionHandler.CheckLineIntersection(edge.pointA, edge.pointB, Position, Target, intersection))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public void Wander()
