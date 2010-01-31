@@ -54,6 +54,10 @@
       <Name>test</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Levels\test3.2d">
+      <Name>test3</Name>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Compile Include="Font\PirateFontExtraLarge.spritefont">
       <Name>PirateFontExtraLarge</Name>
       <Importer>FontDescriptionImporter</Importer>

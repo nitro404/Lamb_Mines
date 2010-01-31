@@ -18,11 +18,18 @@ namespace LambMines
         int frameIndex;
         float time;
         bool isPlaying;
+        bool paused;
 
         public Animation TileSet
         {
             get { return tileSet; }
             set { tileSet = value; }
+        }
+
+        public bool Paused
+        {
+            get { return paused; }
+            set { paused = value; }
         }
 
         public int FrameIndex
@@ -50,6 +57,7 @@ namespace LambMines
             tileSet = animation;
             frameIndex = 0;
             time = 0.0f;
+            paused = false;
             isPlaying = true;
         }
 
@@ -58,8 +66,10 @@ namespace LambMines
 
             if (tileSet == null)
                 throw new NotSupportedException("No animation is currently Playing");
-
-            time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (!paused)
+            {
+                time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
             while (time > tileSet.FrameTime)
             {
                 time -= tileSet.FrameTime;

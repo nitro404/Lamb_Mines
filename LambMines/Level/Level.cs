@@ -27,6 +27,8 @@ namespace LambMines
         //This list must be a list of lists. This way each set of objects is on a different rendering plane so that objects can be rendered ontop of each other.
         private ArrayList AllObjects;
 		private ArrayList AllBarriers;
+        private ArrayList ObjSpawnList;
+        private ArrayList MineSpawnList;
         Texture2D[] textureList;//The grass object
         private SpriteBatch m_sb;               ///< The sprite batch for 2D rendering
                                                 ///
@@ -53,6 +55,13 @@ namespace LambMines
         {
             m_ParentApp = ParentApp;
             m_sb = new SpriteBatch(m_ParentApp.Device);
+            ObjSpawnList = new ArrayList();
+            MineSpawnList = new ArrayList();
+        }
+
+        public Texture2D[] TextureList
+        {
+            get { return textureList; }
         }
 
         public void Cleanup()
@@ -68,6 +77,14 @@ namespace LambMines
             if (TriggerList != null)
             {
                 TriggerList.Clear();
+            }
+            if (ObjSpawnList != null)
+            {
+                ObjSpawnList.Clear();
+            }
+            if (MineSpawnList != null)
+            {
+                MineSpawnList.Clear();
             }
         }
 
@@ -116,9 +133,9 @@ namespace LambMines
 			Vector2 tempVec = new Vector2();
 
             Random rand = new Random();
-            for (int x = -24; x < 24; x++)
+            for (int x = 0; x <16; x++)
             {
-                for (int y = -24; y < 24; y++)
+                for (int y = 0; y < 16; y++)
                 {
                     Vector2 position = new Vector2(x * Settings.SCREEN_TILE_MULTIPLIER_X, y * Settings.SCREEN_TILE_MULTIPLIER_Y);
                     Texture2D tex = textureList[rand.Next(0,9)];
@@ -242,7 +259,7 @@ namespace LambMines
                 Animation anim = new Animation(textureList[34], 0.1f, true, new Vector2(35, 35), k);
                 anims.Add(anim);
             }
-            Player tempPlayer = new Player(m_ParentApp.Inputs, new Vector2(500, 500), anims, textureList[20]);
+            Player tempPlayer = new Player(m_ParentApp.Inputs, new Vector2(25, 25), anims, textureList[20]);
             ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempPlayer);
             TriggerList.Add(new TriggerObject(200.0f, tempPlayer));
             tempPlayer.parent = this;
@@ -250,10 +267,22 @@ namespace LambMines
             return true;
         }
 
-
         public bool Spawn(RenderLevel level, Object obj)
         {
-            ((ArrayList)AllObjects[(int)level]).Add(obj);
+            ObjSpawnList.Add(obj);
+            return true;
+        }
+
+        public bool SpawnMine(RenderLevel level, Object obj)
+        {
+            MineSpawnList.Add(obj);
+            return true;
+        }
+
+        public bool AddTrigger(float Radius, Object obj)
+        {
+            TriggerObject trigger = new TriggerObject(Radius, obj);
+            ((ArrayList)TriggerList).Add(trigger);
             return true;
         }
 
@@ -365,6 +394,19 @@ namespace LambMines
 					}
                 }
             }
+
+            for (int j = 0; j < ObjSpawnList.Count;)
+            {
+                ((ArrayList)AllObjects[(int)RenderLevel.RL_SHADOWS]).Add(ObjSpawnList[j]);
+                ObjSpawnList.Remove(ObjSpawnList[j]);
+            }
+
+            for (int k = 0; k < MineSpawnList.Count;)
+            {
+                ((ArrayList)AllObjects[(int)RenderLevel.RL_MINES]).Add(MineSpawnList[k]);
+                MineSpawnList.Remove(MineSpawnList[k]);
+            }
+
 			//go from the reverse of the list because we are removing entries.
 			for (int i = 0; i < triggerToDelete.Count; i++)
 			{

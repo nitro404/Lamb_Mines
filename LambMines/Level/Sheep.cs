@@ -111,7 +111,7 @@ namespace LambMines
 
         public void Seek(Vector2 value)
         {
-            if (interest < 55)
+            if (interest < 65)
             {
                 float distance = (value - Position).Length();
                 Vector2 direction = value - Position;
