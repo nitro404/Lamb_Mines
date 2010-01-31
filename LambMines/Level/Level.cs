@@ -375,12 +375,6 @@ namespace LambMines
             theOffset.UpdateVariables();
             theOffset.theExplosion();
 
-            //m_ParentApp.theOffset.incrementVector(m_ParentApp.Inputs.offsetHack());
-
-            theOffset.setMapDisplacement(m_ParentApp.Inputs.offsetHack(
-                theOffset.getMapDisplacement(),
-                theOffset.getOldMapDisplacement()));
-
             //loop through each main list
             foreach (ArrayList listMain in AllObjects)
             {

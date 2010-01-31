@@ -65,6 +65,7 @@ namespace LambMines
 			// I'm writing a note here... huge success.
 			// It's hard to overstate my... satisfaction.
             // Aperture Science...
+            // We do what we must... because we can
             StillAlive = false;
         }
 

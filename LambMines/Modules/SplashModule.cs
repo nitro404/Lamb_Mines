@@ -17,6 +17,9 @@ namespace LambMines
      */
     public class SplashModule : XNAModule
     {
+        SpriteBatch newStarterSB;
+        Texture2D splashTexture;
+        Rectangle drawnRectangle = new Rectangle(0, 0, Settings.PREFFERED_WINDOW_WIDTH, Settings.PREFFERED_WINDOW_HEIGHT);
 
         /** @fn     SplashModule()
          *  @brief  constructor, Creates the splash screen with the correct module ID
@@ -36,6 +39,13 @@ namespace LambMines
         public override void Initialize()
         {
             Error.Trace("Splash Module Init");
+            newStarterSB = new SpriteBatch(ParentApp.Device);
+            //splashTexture = Texture2D.FromFile(this.ParentApp.GraphicsDevice, "Textures\\grass_base01.png");
+            splashTexture = new Texture2D(ParentApp.Device, Settings.PREFFERED_WINDOW_WIDTH, Settings.PREFFERED_WINDOW_HEIGHT);// = ParentApp.Content.Load<Texture2D>("\\Textures\\explosion_sheet01.png");
+            splashTexture = ParentApp.Content.Load<Texture2D>("Content/Textures/screens_intro01");
+            //splashTexture = Texture2D.FromFile(ParentApp.Device, "Textures\\explosion_sheet01.xnb");
+                //ParentApp.Content.Load<Texture2D>("\\Textures\\explosion_sheet01.png");
+            //splashTexture = Texture2D.FromFile(ParentApp.Device, ParentApp.Content.Load<Texture2D>("explosion_sheet01.xnb"));
         }
 
         /** @fn     MODULE_IDENTIFIER Update( GameTime gameTime )
@@ -61,7 +71,11 @@ namespace LambMines
         public override void Draw(GraphicsDevice device, GameTime gameTime)
         {
             device.Clear(Color.SeaGreen);
+            
+            newStarterSB.Begin();
+            
+            newStarterSB.Draw(splashTexture, drawnRectangle, Color.White);
+            newStarterSB.End();
         }
-
     }
 }

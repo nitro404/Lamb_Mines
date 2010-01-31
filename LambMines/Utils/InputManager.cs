@@ -812,5 +812,13 @@ namespace LambMines
         public bool getExplosion() {
             return isThereAnExplosion;
         }
+        public Texture2D theMouseTexture{
+            get { return m_mouseTexture; }
+            set { m_mouseTexture = value; }
+        }
+        public MouseState theMouseState {
+            get { return m_MouseState; }
+            set { m_MouseState = value; }
+        }
     }
 }

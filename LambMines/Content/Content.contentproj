@@ -62,10 +62,6 @@
       <Name>test</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Levels\test3.2d">
-      <Name>test3</Name>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Compile Include="Font\PirateFontExtraLarge.spritefont">
       <Name>PirateFontExtraLarge</Name>
       <Importer>FontDescriptionImporter</Importer>
@@ -265,6 +261,23 @@
   <ItemGroup>
     <Compile Include="Textures\wolf_sheet01.png">
       <Name>wolf_sheet01</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\screens_fail01.png">
+      <Name>screens_fail01</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\screens_intro01.png">
+      <Name>screens_intro01</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\screens_success01.png">
+      <Name>screens_success01</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
