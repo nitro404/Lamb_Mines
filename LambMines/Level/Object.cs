@@ -112,13 +112,14 @@ namespace LambMines
 		{
 			return "Object";
 		}
-
+/*
 		virtual public void AddShadow(ref Object shadowObj, Texture2D shadowTex)
 		{
 			shadowObject = shadowObj;
 			shadowTexture = shadowTex;
 			iIsAShadow = true;
 		}
+ */
 		virtual public void AddShadow(ref Sheep shadowObj, Texture2D shadowTex)
 		{
 			shadowObject = (Object)shadowObj;

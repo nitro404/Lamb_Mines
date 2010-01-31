@@ -31,7 +31,7 @@ namespace LambMines
         }
         private static ArrayList TriggerList = new ArrayList();
         public enum RuleList { RULE_PLACEMENT, RULE_TARGET };
-		public enum RenderLevel { RL_TERRAIN, RL_SHADOWS, RL_OBJECTS };
+		public enum RenderLevel { RL_TERRAIN, RL_SHADOWS, RL_MINES, RL_OBJECTS };
 
         private XNAModularApp m_ParentApp;
 
@@ -95,6 +95,7 @@ namespace LambMines
             AllObjects = new ArrayList();
             AllObjects.Add(new ArrayList());//Add the first render plane. This plane will be exclusively for the terrain tiles.
 			AllObjects.Add(new ArrayList());//Add a second plane for the shadows
+			AllObjects.Add(new ArrayList());//Add another place for the mines
 			AllObjects.Add(new ArrayList());//Add a third plane to start placing the objects on
 			
 
@@ -116,18 +117,11 @@ namespace LambMines
 
             if (fileInfoHash.Contains("Barrier"))
             {
-                foreach (Hashtable table in (Hashtable)fileInfoHash["Barrier"])
-                {
-                    AllBarriers.Add(new ArrayList());
-                    foreach (ArrayList secondTable in table)
-                    {
-                        for (int i = 0; i < secondTable.Count; i++)
-                        {
-                            //load each of the collision barriers into an array.
-                            ((ArrayList)AllBarriers[i]).Add(secondTable[i]);
-                        }
-                    }
-                }
+				foreach (string table in (ArrayList)fileInfoHash["Barrier"])
+				{
+					//load each of the collision barriers into an array.
+					AllBarriers.Add( table.Trim().Split(',') );
+				}
             }
 
             if (fileInfoHash.Contains("Mine"))
@@ -141,7 +135,7 @@ namespace LambMines
                     anim.Add(new Animation(textureList[val3], 0.1f, true, new Vector2(90,45), 0));
                     tempVec = new Vector2(val1 * Settings.SCREEN_TILE_MULTIPLIER_X, val2 * Settings.SCREEN_TILE_MULTIPLIER_Y);
                     Mine tempMine = new Mine(tempVec, anim, textureList[val3]);
-                    ((ArrayList)AllObjects[(int)RenderLevel.RL_OBJECTS]).Add(tempMine); TriggerList.Add(new TriggerObject(45.0f, tempMine));
+                    ((ArrayList)AllObjects[(int)RenderLevel.RL_MINES]).Add(tempMine); TriggerList.Add(new TriggerObject(45.0f, tempMine));
                 }
             }
 
@@ -283,6 +277,7 @@ namespace LambMines
 			ArrayList triggerToDelete = new ArrayList();
 			ArrayList subToDelete = new ArrayList();
 			ArrayList shadowsToDelete = new ArrayList();
+			ArrayList minesToDelete = new ArrayList();
 
             //loop through each main list
             foreach (ArrayList listMain in AllObjects)
@@ -299,6 +294,11 @@ namespace LambMines
 							shadowsToDelete.Add(listSub);
 							continue;
 						}
+						if (listSub.WhatAmI() == "Mines")
+						{
+							minesToDelete.Add(listSub);
+							continue;
+						}
 						//this object has died.
 						//it is a landmine or a sheep.
 						//loop through the trigger list to remove the mine from the list
@@ -311,6 +311,7 @@ namespace LambMines
 								break;
 							}
 						}
+
 						subToDelete.Add(listSub);
 					}
                 }
@@ -328,6 +329,11 @@ namespace LambMines
 			{
 				((ArrayList)AllObjects[(int)RenderLevel.RL_SHADOWS]).Remove(shadowsToDelete[i]);
 			}
+			for (int i = 0; i < minesToDelete.Count; i++)
+			{
+				((ArrayList)AllObjects[(int)RenderLevel.RL_MINES]).Remove(minesToDelete[i]);
+			}
+
         }
 
 		public void Draw(GraphicsDevice device, GameTime gameTime)
@@ -409,18 +415,12 @@ namespace LambMines
 				else if (info.StartsWith("Barriers: "))
 				{
 					if (!outHash.Contains("Barriers"))
-						outHash.Add("Barriers", new Hashtable());
+						outHash.Add("Barriers", new ArrayList());
 					int count = int.Parse(info.Substring(10).Trim());
 					for (int i = 0; i < count; i++)
 					{
 						info = theReader.ReadLine();
-						((Hashtable)outHash["Barriers"]).Add(i, new ArrayList());
-						int count2 = int.Parse(info.Substring(7));//"Edges: "
-						for (int c = 0; c < count2; c++)
-						{
-							info = theReader.ReadLine();
-							((ArrayList)((Hashtable)outHash["Barriers"])[i]).Add(info.Trim());
-						}
+						((ArrayList)outHash["Barriers"]).Add(info.Trim());
 					}
 				}
 				else if (info.StartsWith("Mines: "))
