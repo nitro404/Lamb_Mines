@@ -1,0 +1,19 @@
+
+# /2D Level Designer/
+/2D Level Designer/*.lnk
+/2D Level Designer/Misc
+/2D Level Designer/NOTE.txt
+/2D Level Designer/bin
+
+# /2D Level Designer/Maps/
+/2D Level Designer/Maps/Old
+/2D Level Designer/Maps/out.2d
+
+# /LambMines/Content/
+/LambMines/Content/*.db
+
+# /LambMines/Content/Particles/
+/LambMines/Content/Particles/*.db
+
+# /LambMines/Content/Textures/
+/LambMines/Content/Textures/*.db
